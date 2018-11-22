@@ -9,7 +9,7 @@ namespace Model
     /// <summary>
     /// 讲座可选择地点信息
     /// </summary>
-    class T_Base_Place
+    public class T_Base_Place
     {
         /// <summary>
         /// 唯一自增Id

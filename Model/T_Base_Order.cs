@@ -9,7 +9,7 @@ namespace Model
     /// <summary>
     /// 预定报名信息
     /// </summary>
-    class T_Base_Order
+    public class T_Base_Order
     {
         /// <summary>
         /// 唯一自增Id

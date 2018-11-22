@@ -9,7 +9,7 @@ namespace Model
     /// <summary>
     /// 资源管理信息
     /// </summary>
-    class T_Base_Resource
+    public class T_Base_Resource
     {
         /// <summary>
         /// 唯一自增Id

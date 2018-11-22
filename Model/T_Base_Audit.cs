@@ -9,7 +9,7 @@ namespace Model
     /// <summary>
     /// 审核信息
     /// </summary>
-    class T_Base_Audit
+    public class T_Base_Audit
     {
         /// <summary>
         /// 唯一自增Id

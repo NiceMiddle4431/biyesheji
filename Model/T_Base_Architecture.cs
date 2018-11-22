@@ -9,7 +9,7 @@ namespace Model
     /// <summary>
     /// 建筑信息
     /// </summary>
-    class T_Base_Architecture
+    public class T_Base_Architecture
     {
         /// <summary>
         /// 唯一自增Id

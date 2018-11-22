@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Share/_Layout.cshtml";
+}
+<div class="panel panel-headline">
+    <div class="panel-heading">
+        <h3 class="panel-title">地点管理</h3>
+    </div>
+    <table id="ListArchitecture"></table>
+
+</div>
+<link href="~/assets/bootstraptable/src/bootstrap-table.css" rel="stylesheet" />
+<script src="~/assets/bootstraptable/src/bootstrap-table.js"></script>
+<script type="text/javascript">
+    $("#ListArchitecture").bootstrapTable({
+
+        url: 'Place/GetArchitecture',
+        mothod: 'GET',
+        striped: true,
+        pagination: true,
+        sprtable: true,
+        sortOrder: 'asc',
+        sidePagination: 'server',
+        pageNumber: 1,
+        pageSize: rows,
+        pageList: [10, 25, 50, 100],
+        clickToSelect: true,
+    })
+</script>
+

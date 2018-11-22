@@ -9,7 +9,7 @@ namespace Model
     /// <summary>
     /// 签到情况统计
     /// </summary>
-    class T_Base_Statistic
+    public class T_Base_Statistic
     {
         /// <summary>
         /// 唯一自增Id

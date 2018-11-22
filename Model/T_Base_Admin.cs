@@ -9,7 +9,7 @@ namespace Model
     /// <summary>
     /// 用户信息
     /// </summary>
-    class T_Base_Admin
+    public class T_Base_Admin
     {
         /// <summary>
         /// 唯一自增Id

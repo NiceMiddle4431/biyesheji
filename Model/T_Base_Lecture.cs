@@ -9,7 +9,7 @@ namespace Model
     /// <summary>
     /// 讲座信息
     /// </summary>
-    class T_Base_Lecture
+    public class T_Base_Lecture
     {
         /// <summary>
         /// 唯一自增Id

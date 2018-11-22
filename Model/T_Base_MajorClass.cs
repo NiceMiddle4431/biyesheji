@@ -9,7 +9,7 @@ namespace Model
     /// <summary>
     /// 专业班级信息
     /// </summary>
-    class T_Base_MajorClass
+    public class T_Base_MajorClass
     {
         /// <summary>
         /// 唯一自增Id

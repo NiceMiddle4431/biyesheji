@@ -9,7 +9,7 @@ namespace Model
     /// <summary>
     /// 师生信息
     /// </summary>
-    class T_Base_User
+    public class T_Base_User
     {
         /// <summary>
         /// 唯一自增id
