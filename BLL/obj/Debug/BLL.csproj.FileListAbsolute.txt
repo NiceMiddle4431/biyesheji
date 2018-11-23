@@ -1,0 +1,9 @@
+D:\VS2015解决方案\毕业设计\bysj\BLL\bin\Debug\BLL.dll
+D:\VS2015解决方案\毕业设计\bysj\BLL\bin\Debug\BLL.pdb
+D:\VS2015解决方案\毕业设计\bysj\BLL\bin\Debug\DAL.dll
+D:\VS2015解决方案\毕业设计\bysj\BLL\bin\Debug\Model.dll
+D:\VS2015解决方案\毕业设计\bysj\BLL\bin\Debug\DAL.pdb
+D:\VS2015解决方案\毕业设计\bysj\BLL\bin\Debug\Model.pdb
+D:\VS2015解决方案\毕业设计\bysj\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+D:\VS2015解决方案\毕业设计\bysj\BLL\obj\Debug\BLL.dll
+D:\VS2015解决方案\毕业设计\bysj\BLL\obj\Debug\BLL.pdb

@@ -50,3 +50,9 @@ D:\VS2015解决方案\毕业设计\bysj\Web\bin\zh-Hans\System.Web.Mvc.resources
 D:\VS2015解决方案\毕业设计\bysj\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
 D:\VS2015解决方案\毕业设计\bysj\Web\obj\Debug\Web.dll
 D:\VS2015解决方案\毕业设计\bysj\Web\obj\Debug\Web.pdb
+D:\VS2015解决方案\毕业设计\bysj\Web\bin\BLL.dll
+D:\VS2015解决方案\毕业设计\bysj\Web\bin\Model.dll
+D:\VS2015解决方案\毕业设计\bysj\Web\bin\DAL.dll
+D:\VS2015解决方案\毕业设计\bysj\Web\bin\BLL.pdb
+D:\VS2015解决方案\毕业设计\bysj\Web\bin\Model.pdb
+D:\VS2015解决方案\毕业设计\bysj\Web\bin\DAL.pdb
