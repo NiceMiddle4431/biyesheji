@@ -26,11 +26,9 @@ namespace DAL
         /// <summary>
         /// 查询建筑内可举办讲座地点（Id,地点名称，容纳人数）
         /// </summary>
-        /// <param name="PageSize"></param>
-        /// <param name="PageNumber"></param>
         /// <param name="ArchitectureId"></param>
         /// <returns></returns>
-        public List<Model.T_Base_Place> GetPlace(int ArchitectureId)
+        public List<Model.T_Base_Place> GetAllPlace(int ArchitectureId)
         {
             List<Model.T_Base_Place> list = new List<Model.T_Base_Place>();
             SqlConnection co = SqlServerOpen();
@@ -50,6 +48,68 @@ namespace DAL
             co.Close();
             return list;
         }
+
+        /// <summary>
+        /// 保存新增地点信息
+        /// </summary>
+        /// <param name="place"></param>
+        /// <returns></returns>
+        public int AddSavePlace(Model.T_Base_Place Place)
+        {
+            SqlConnection co = SqlServerOpen();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = co;
+            cmd.CommandText = "insert into T_Base_Place values('"+Place.PlaceName+"',"+
+                Place.PeopleNum+","+Place.ArchitectureId+")";
+            int result = cmd.ExecuteNonQuery();
+            co.Close();
+            return result;
+        }
+
+        /// <summary>
+        /// 获取指定Id的地点信息
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public Model.T_Base_Place GetPlace(int Id)
+        {
+            SqlConnection co = SqlServerOpen();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = co;
+            cmd.CommandText = "select * from V_Place_Architecture where Id = " + Id;
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+            Model.T_Base_Place place = new Model.T_Base_Place();
+            place.Id = Convert.ToInt32(reader["Id"]);
+            place.PlaceName = Convert.ToString(reader["PlaceName"]);
+            place.PeopleNum = Convert.ToInt32(reader["PeopleNum"]);
+            place.ArchitectureId = Convert.ToInt32(reader["ArchitectureId"]);
+            Model.T_Base_Architecture architecture = new Model.T_Base_Architecture();
+            architecture.Id = Convert.ToInt32(reader["ArchitectureId"]);
+            architecture.ArchitectureName = Convert.ToString(reader["ArchitectureName"]);
+            place.Architecture = architecture;
+            co.Close();
+            return place;
+        }
+
+        /// <summary>
+        /// 保存修改后的场地信息
+        /// </summary>
+        /// <param name="Place"></param>
+        /// <returns></returns>
+        public int EditSavePlace(Model.T_Base_Place Place)
+        {
+            SqlConnection co = SqlServerOpen();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = co;
+            cmd.CommandText = "update T_Base_Place set PlaceName = '"+Place.PlaceName
+                +"',PeopleNum = "+Place.PeopleNum+",ArchitectureId = "+Place.ArchitectureId
+                +" where Id = "+Place.Id;
+            int result = cmd.ExecuteNonQuery();
+            co.Close();
+            return result;
+        }
+
 
 
 

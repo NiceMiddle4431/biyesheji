@@ -14,13 +14,40 @@ namespace BLL
         /// </summary>
         /// <param name="ArchitectureId"></param>
         /// <returns></returns>
-        public List<Model.T_Base_Place> GetPlace(int ArchitectureId)
+        public List<Model.T_Base_Place> GetAllPlace(int ArchitectureId)
         {
-            List<Model.T_Base_Place> list = new DAL.T_Base_Place().GetPlace(ArchitectureId);
+            List<Model.T_Base_Place> list = new DAL.T_Base_Place().GetAllPlace(ArchitectureId);
             return list;
         }
 
+        /// <summary>
+        /// 保存新增地点信息
+        /// </summary>
+        /// <param name="place"></param>
+        /// <returns></returns>
+        public int AddSavePlace(Model.T_Base_Place Place)
+        {
+            return new DAL.T_Base_Place().AddSavePlace(Place);
+        }
 
+        /// <summary>
+        /// 获取指定Id的地点信息
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public Model.T_Base_Place GetPlace(int Id)
+        {
+            return new DAL.T_Base_Place().GetPlace(Id);
+        }
 
+        /// <summary>
+        /// 保存修改后的场地信息
+        /// </summary>
+        /// <param name="Place"></param>
+        /// <returns></returns>
+        public int EditSavePlace(Model.T_Base_Place Place)
+        {
+            return new DAL.T_Base_Place().EditSavePlace(Place);
+        }
     }
 }

@@ -30,9 +30,15 @@ namespace Model
 
 
         /// <summary>
-        /// 所属建筑
+        /// 所属建筑Id
         /// </summary>
         public int ArchitectureId { get; set; }
+
+        /// <summary>
+        /// 所属建筑信息
+        /// </summary>
+        public Model.T_Base_Architecture Architecture { get; set; }
+
 
     }
 }
