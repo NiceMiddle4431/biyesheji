@@ -49,5 +49,19 @@ namespace BLL
         {
             return new DAL.T_Base_Place().EditSavePlace(Place);
         }
+
+
+        /// <summary>
+        /// 删除场地
+        /// </summary>
+        /// <param name="Ids"></param>
+        /// <returns></returns>
+        public int Delete(string[] Ids)
+        {
+            //防止注入式漏洞
+            string ids = string.Join(",", Ids);
+            return new DAL.T_Base_Place().Delete(ids);
+        }
+
     }
 }

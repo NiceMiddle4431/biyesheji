@@ -88,5 +88,27 @@ namespace Web.Controllers
                 return Json("修改失败");
             }
         }
+
+        /// <summary>
+        /// 删除场地
+        /// </summary>
+        /// <param name="Ids"></param>
+        /// <returns></returns>
+        public JsonResult Delete(string[] Ids)
+        {
+            int result = new BLL.T_Base_Place().Delete(Ids);
+            if (result <= 0)
+            {
+                return Json("删除失败");
+            }
+            else
+            {
+                return Json("删除" + result + "记录");
+            }
+        }
+
+
+
+
     }
 }

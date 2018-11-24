@@ -110,7 +110,21 @@ namespace DAL
             return result;
         }
 
-
+        /// <summary>
+        /// 删除场地
+        /// </summary>
+        /// <param name="Ids"></param>
+        /// <returns></returns>
+        public int Delete(string Ids)
+        {
+            SqlConnection co = SqlServerOpen();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = co;
+            cmd.CommandText = "delete from T_Base_Place where Id in ("+Ids+")";
+            int result = cmd.ExecuteNonQuery();
+            co.Close();
+            return result;
+        }
 
 
     }
