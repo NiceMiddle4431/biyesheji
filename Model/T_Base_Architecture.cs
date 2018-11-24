@@ -21,5 +21,11 @@ namespace Model
         /// 建筑名
         /// </summary>
         public string ArchitectureName { get; set; }
+
+
+        /// <summary>
+        /// 是否是学院 0表示公共建筑（图书馆，大学生活动中心） 1表示是学院
+        /// </summary>
+        public int IsCollege { get; set; }
     }
 }

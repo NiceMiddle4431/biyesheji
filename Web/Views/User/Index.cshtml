@@ -1,31 +1,386 @@
 ﻿
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Share/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="panel panel-headline">
-    <div class="panel-heading">
-        <h3 class="panel-title">用户管理</h3>
+
+<!--查询条件开始-->
+<div class="col-sm-12">
+    <div class="col-sm-3">
+        <label class="col-sm-4 control-label">学号</label>
+        <input class="col-sm-8 round-form" type="text" id="txtNum" name="txtNum" placeholder="请输入学号">
     </div>
-    <table id="ListArchitecture"></table>
-
+    <div class="col-sm-3">
+        <label class="col-sm-4 control-label">姓名</label>
+        <input class="col-sm-8 round-form" type="text" id="txtName" name="txtName" placeholder="请输入姓名">
+    </div>
+    <div class="col-sm-3">
+        <label class="col-sm-4 control-label">班级</label>
+        <input class="col-sm-8 round-form" type="text" id="txtMajorClassName" name="txtMajorClassName" placeholder="请输入班级名称">
+    </div>
+    <div class="col-sm-3">
+        <button id="btn_search" type="button" class="btn btn-default btn-space">
+            查询
+            <span class="fa fa-search" aria-hidden="true"></span>
+        </button>
+        <button id="btn_reset" type="button" class="btn btn-default btn-space">
+            重置
+            <span class="fa fa-eraser" aria-hidden="true"></span>
+        </button>
+    </div>
 </div>
-<link href="~/assets/bootstraptable/src/bootstrap-table.css" rel="stylesheet" />
-<script src="~/assets/bootstraptable/src/bootstrap-table.js"></script>
-<script type="text/javascript">
-    $("#ListArchitecture").bootstrapTable({
+<!--查询条件结束-->
 
-        url: 'User/GetArchitecture',
-        mothod: 'GET',
-        striped: true,
-        pagination: true,
-        sprtable: true,
-        sortOrder: 'asc',
-        sidePagination: 'server',
-        pageNumber: 1,
-        pageSize: rows,
-        pageList: [10, 25, 50, 100],
-        clickToSelect: true,
-    })
-</script>
+
+<!--表格开始-->
+<div class="col-lg-12 col-xs-12">
+    <table id="UserList"></table>
+</div><!-- /col-lg-12 -->
+<!--表格结束-->
+
+
+<!--操作按钮，场地的多条删除和添加开始-->
+<div class="btn-group pull-right" id="toolbar">
+    <button id="AddUser" type="button" class="btn btn-default" data-toggle='modal' data-target='#AddModal'>
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>添加
+    </button>
+    <button id="AddStudents" type="button" class="btn btn-default" data-toggle='modal' data-target='#AddExcel'>
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>批量添加
+    </button>
+    <button id="DeleteUsers" type="button" class="btn btn-default" style="">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+    </button>
+</div>
+<!--操作按钮，场地的多条删除和添加结束-->
+
+
+<!--添加时模态框-->
+<div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="AddModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="AddModalLabel">添加用户信息</h4>
+            </div>
+            <div class="modal-body">
+                <form id="AddForm" class="form-horizontal style-form" method="post" action="##">
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">用户名</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control round-form" id="AddUserName" name="AddUserName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">地点名</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control round-form" id="AddUserName" name="AddUserName">
+                        </div>
+                    </div>
+                    <!--sex-->
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">容纳人数</label>
+                        <div class="col-sm-6">
+                            <select class="form-control round-form" id="AddPeopleNum" ,name="AddPeopleNum"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">地点名</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control round-form" id="AddUserName" name="AddUserName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">地点名</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control round-form" id="AddUserName" name="AddUserName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">地点名</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control round-form" id="AddUserName" name="AddUserName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">地点名</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control round-form" id="AddUserName" name="AddUserName">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="AddClose">关闭</button>
+                <button type="submit" class="btn btn-primary" id="AddSubmit">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--添加时模态框结束-->
+
+
+<!--修改时模态框-->
+<div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="EditModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="EditModalLabel">修改场地信息</h4>
+            </div>
+            <div class="modal-body">
+                <form id="EditForm" class="form-horizontal style-form" method="post" action="##">
+                    <div class="form-group hidden">
+                        <label class="col-sm-2 col-sm-2 control-label">Id</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control round-form" id="EditId" name="EditId">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">地点名</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control round-form" id="EditUserName" name="EditUserName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">容纳人数</label>
+                        <div class="col-sm-6">
+                            <select class="form-control round-form" id="EditPeopleNum" ,name="EditPeopleNum">
+                                <option value="20">20</option>
+                                <option value="40">40</option>
+                                <option value="80">80</option>
+                                <option value="120">120</option>
+                                <option value="250">250</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
+                                <option value="2000">2000</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="EditClose">关闭</button>
+                <button type="submit" class="btn btn-primary" id="EditSubmit">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--修改时模态框结束-->
+
+
+@section javascript{
+    <link href="~/assets/bootstraptable/src/bootstrap-table.css" rel="stylesheet" />
+    <script src="~/assets/bootstraptable/src/bootstrap-table.js"></script>
+
+    <!--表格加载-->
+    <script>
+        $("#UserList").bootstrapTable({
+            url: "/User/GetAllUser",// 获取表格数据的url
+            method: 'post',//请求方式
+            dataType: "json",
+            dataField: "rows",
+            classes: 'table',//边框
+            undefinedText: '',//当数据为 undefined 时显示的字符
+            pagination: true,//启动分页
+            striped: true,  //表格显示条纹，默认为false
+            pagination: true, // 在表格底部显示分页组件，默认false
+            pageList: [10, 25, 50], // 设置页面可以显示的数据条数
+            pageSize: 25, // 页面数据条数
+            pageNumber: 1, // 首页页码
+            showColumns: true,  //显示下拉框勾选要显示的列
+            showRefresh: false,  //显示刷新按钮
+            showToggle: false,//显示一行是否改成竖着
+            showPaginationSwitch: true,//是否显示 下面的分页框
+            search: false, //显示搜索框
+            //toolbar操作
+            toolbar: '#toolbar',//工具按钮用哪个容器
+            toolbarAligh: 'left',//工具栏对齐方式
+            buttonsAligh: 'right',//按钮对齐方式
+
+            sortOrder: "asc",//排序方式
+            locale: 'zh-CN',//中文支持
+            sidePagination: 'server', // 设置为客户端分页
+            queryParamsType: '',//采用自定义查询参数组织方式
+            queryParams: function (params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求               
+                var Num = $("#txtNum").val();
+                var Name = $("#txtName").val();
+                var MajorClassName = $("#txtMajorClassName").val();
+                return {
+                    PageSize: params.pageSize, // 每页要显示的数据条数
+                    PageNumber: params.pageNumber,//请求第几页       
+                    Num: Num,
+                    Name: Name,
+                    MajorClassName: MajorClassName,
+                }
+            },
+
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'Id',
+                title: '学生唯一Id',
+                visible: false,
+                align: 'center',
+                valign: 'middle'
+            }, {
+                field: 'Num',
+                title: '登录账号',
+                align: 'center',
+                valign: 'middle'
+            }, {
+                field: 'Name',
+                title: '姓名',
+                align: 'center',
+                valign: 'middle'
+            },{
+                field: 'Sex',
+                title: '性别',
+                align: 'center',
+                valign: 'middle',
+                formatter: function (value, row, index) {
+                    if (row.Sex == 0) {
+                        return '女';
+                    } else if (row.Sex == 1) {
+                        return '男';
+                    }
+                }
+            },{
+                field: 'MajorClass.MajorClassName',
+                title: '所在班级',
+                align: 'center',
+                valign: 'middle'
+            },{
+                field: 'PhoneNum',
+                title: '联系方式',
+                align: 'center',
+                valign: 'middle'
+            }, {
+                field: 'Number',
+                title: '预约未到次数',
+                align: 'center',
+                valign: 'middle'
+            },{
+                field: 'IsAdmin',
+                title: '是否是管理员',
+                align: 'center',
+                valign: 'middle',
+                formatter: function (value, row, index) {
+                    if (row.IsAdmin == 0) {
+                        return '否';
+                    } else if (row.Sex == 1) {
+                        return '是';
+                    }
+                }   
+            },
+            {
+                title: '操作',
+                align: 'center',
+                valign: 'middle',
+                formatter: function (value, row, index) {
+                    return "<button onclick=\"Edit(" + row.Id +
+                        ")\" data-toggle='modal' data-target='#EditModal' class=\"btn btn-default btn-sm\">" +
+                        "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>修改</span></button>";
+                }
+            }]
+        })
+    </script>
+    <!--表格加载结束-->
+    <!--ajax提交添加场地信息-->
+    <script>
+        //提交场地信息
+        $("#AddSubmit").click(function () {
+            $.ajax({
+                url: "/User/AddSaveUser",
+                data: {
+                    AddUserName: $("#AddUserName").val(),
+                    AddPeopleNum:$("#AddPeopleNum").val(),
+                },
+                type: "POST",
+                dataType: "json",
+                success: function (result) {
+                    alert(result);
+                    $("#AddClose").click();
+                    $("#UserList").bootstrapTable('refresh');
+                }
+            })
+        })
+
+    </script>
+    <!--ajax提交添加场地信息结束-->
+    <!--向修改模态框添加待编辑场地信息-->
+    <script>
+        //编辑场地信息
+        function Edit(Id) {
+            $.ajax({               //获取建筑信息
+                url: "/User/GetUser",
+                data:{Id:Id},
+                type: "POST",
+                dataType: "JSON",
+                success: function (place) {
+                    $("#EditId").val(place.Id);
+                    $("#EditUserName").val(place.UserName)
+                    //容纳人数
+                    for(let i = 0;i<$("#EditPeopleNum option").length;i++){
+                        if(place.PeopleNum == $("#EditPeopleNum").get(0).options[i].value){
+                            $("#EditPeopleNum").get(0).options[i].selected = true;
+                            break;
+                        }
+                    }
+                }
+            })
+        }
+    </script>
+    <!--向修改模态框添加待编辑场地信息结束-->
+    <!--ajax提交编辑后的场地信息-->
+    <script>
+        $("#EditSubmit").click(function () {
+            $.ajax({
+                url: "/User/EditSaveUser",
+                data: {
+                    EditId: $("#EditId").val(),
+                    EditUserName: $("#EditUserName").val(),
+                    EditPeopleNum: $("#EditPeopleNum").val(),
+                    },
+                type: "POST",
+                dataType: "json",
+                success: function (result) {
+                    alert(result);
+                    $("#EditClose").click();
+                    $("#UserList").bootstrapTable('refresh');
+                }
+            })
+        })
+    </script>
+    <!--ajax提交编辑后的场地信息结束-->
+    <!--ajax删除场地信息并更新表格-->
+    <script>
+        $("#DeleteUsers").click(function () {
+
+            var ids = $.map($("#UserList").bootstrapTable('getSelections'),
+                function (row) {
+                    return row.Id;
+                })
+            if (ids.length <= 0) {
+                alert("请选择至少一条的删除记录");
+            } else {
+                if (confirm("确定删除？")) {
+                    $.ajax({
+                        url: "/User/Delete",
+                        type: "POST",
+                        data: { Ids: ids },
+                        dataType: "json",
+                        success: function (result) {
+                            alert(result);
+                            $("#UserList").bootstrapTable('refresh');
+                        }
+                    })
+                }
+            }
+        })
+    </script>
+    <!--ajax删除场地信息并更新表格结束-->
+}
+
+
+
 

@@ -2,3 +2,4 @@ D:\VS2015解决方案\毕业设计\bysj\Model\bin\Debug\Model.dll
 D:\VS2015解决方案\毕业设计\bysj\Model\bin\Debug\Model.pdb
 D:\VS2015解决方案\毕业设计\bysj\Model\obj\Debug\Model.dll
 D:\VS2015解决方案\毕业设计\bysj\Model\obj\Debug\Model.pdb
+D:\VS2015解决方案\毕业设计\bysj\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache

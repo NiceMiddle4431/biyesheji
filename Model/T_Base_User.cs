@@ -42,6 +42,12 @@ namespace Model
 
 
         /// <summary>
+        /// 联系方式
+        /// </summary>
+        public string PhoneNum { get; set; }
+
+
+        /// <summary>
         /// 登录密码（默认学号
         /// </summary>
         public string PassWord { get; set; }
@@ -54,8 +60,16 @@ namespace Model
 
 
         /// <summary>
-        /// 是否管理员   0表示不是管理员    1表示是管理员
+        /// 是否管理员   0表示不是管理员   1表示是管理员
         /// </summary>
         public int IsAdmin { get; set; }
+
+
+        /// <summary>
+        /// 所属专业班级信息
+        /// </summary>
+        public Model.T_Base_MajorClass MajorClass { get; set; }
+
+
     }
 }

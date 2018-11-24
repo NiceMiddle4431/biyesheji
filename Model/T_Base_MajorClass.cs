@@ -28,5 +28,9 @@ namespace Model
         /// </summary>
         public int ArchitectureId { get; set; }
 
+        /// <summary>
+        /// 所属建筑信息
+        /// </summary>
+        public Model.T_Base_Architecture Architecture { get; set; }
     }
 }
