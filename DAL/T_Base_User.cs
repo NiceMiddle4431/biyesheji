@@ -61,7 +61,7 @@ namespace DAL
                 user.MajorClassId = Convert.ToInt32(reader["MajorClassId"]);
                 
                 majorClass.Id = Convert.ToInt32(reader["MajorClassId"]);
-                majorClass.MajorClassName = Convert.ToString(reader["MajorClassName "]);
+                majorClass.MajorClassName = Convert.ToString(reader["MajorClassName"]);
                 majorClass.ArchitectureId = Convert.ToInt32(reader["ArchitectureId"]);
                 architecture.Id = Convert.ToInt32(reader["ArchitectureId"]);
                 architecture.ArchitectureName = Convert.ToString(reader["ArchitectureName"]);
@@ -93,6 +93,32 @@ namespace DAL
             cmd.CommandText = "select count(1) from T_Base_User";
             int count = (int)cmd.ExecuteScalar();
             return count;
+        }
+
+        /// <summary>
+        /// 获取指定学院下全部专业班级
+        /// </summary>
+        /// <returns></returns>
+        public List<Model.T_Base_MajorClass> GetMajorClass(int ArchitectureId)
+        {
+            SqlConnection co = SqlServerOpen();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = co;
+            cmd.CommandText = "select * from T_Base_MajorClass where ArchitectureId = "+ArchitectureId;
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<Model.T_Base_MajorClass> list = new List<Model.T_Base_MajorClass>();
+            while (reader.Read())
+            {
+                Model.T_Base_MajorClass majorClass = new Model.T_Base_MajorClass();
+                majorClass.Id = Convert.ToInt32(reader["Id"]);
+                majorClass.MajorClassName = Convert.ToString(reader["MajorClassName"]);
+                majorClass.ArchitectureId = Convert.ToInt32(reader["ArchitectureId"]);
+                list.Add(majorClass);
+            }
+            reader.Close();
+            co.Close();
+            return list;
+
         }
 
 

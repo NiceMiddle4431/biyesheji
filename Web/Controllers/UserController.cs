@@ -37,5 +37,12 @@ namespace Web.Controllers
             });
         }
 
+
+        public JsonResult GetMajorClass(int ArchitectureId)
+        {
+            return Json(new BLL.T_Base_User().GetMajorClass(ArchitectureId));
+        }
+
+
     }
 }

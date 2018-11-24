@@ -34,5 +34,16 @@ namespace BLL
         {
             return new DAL.T_Base_User().GetCount();
         }
+
+
+        /// <summary>
+        /// 获取全部专业班级
+        /// </summary>
+        /// <returns></returns>
+        public List<Model.T_Base_MajorClass> GetMajorClass(int ArchitectureId)
+        {
+            return new DAL.T_Base_User().GetMajorClass(ArchitectureId);
+        }
+
     }
 }

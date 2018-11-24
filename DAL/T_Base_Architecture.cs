@@ -40,6 +40,7 @@ namespace DAL
                 Model.T_Base_Architecture architecture = new Model.T_Base_Architecture();
                 architecture.Id = Convert.ToInt32(reader["Id"]);
                 architecture.ArchitectureName = Convert.ToString(reader["ArchitectureName"]);
+                architecture.IsCollege = Convert.ToInt32(reader["IsCollege"]);
                 list.Add(architecture);
             }
             reader.Close();

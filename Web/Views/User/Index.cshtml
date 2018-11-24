@@ -39,7 +39,7 @@
 <!--表格结束-->
 
 
-<!--操作按钮，场地的多条删除和添加开始-->
+<!--操作按钮，用户的多条删除和添加开始-->
 <div class="btn-group pull-right" id="toolbar">
     <button id="AddUser" type="button" class="btn btn-default" data-toggle='modal' data-target='#AddModal'>
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>添加
@@ -51,7 +51,7 @@
         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
     </button>
 </div>
-<!--操作按钮，场地的多条删除和添加结束-->
+<!--操作按钮，用户的多条删除和添加结束-->
 
 
 <!--添加时模态框-->
@@ -67,44 +67,62 @@
                     <div class="form-group">
                         <label class="col-sm-2 col-sm-2 control-label">用户名</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control round-form" id="AddUserName" name="AddUserName">
+                            <input type="text" class="form-control round-form" id="AddUserNum" name="AddUserNum">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 col-sm-2 control-label">地点名</label>
+                        <label class="col-sm-2 col-sm-2 control-label">姓名</label>
                         <div class="col-sm-6">
                             <input type="text" class="form-control round-form" id="AddUserName" name="AddUserName">
                         </div>
                     </div>
                     <!--sex-->
                     <div class="form-group">
-                        <label class="col-sm-2 col-sm-2 control-label">容纳人数</label>
+                        <label class="col-sm-2 col-sm-2 control-label">性别</label>
                         <div class="col-sm-6">
-                            <select class="form-control round-form" id="AddPeopleNum" ,name="AddPeopleNum"></select>
+                            <div class="radio">
+                                <label class="col-xs-6 col-lg-6">
+                                    <input type="radio" id="AddSex0" name="AddSex" value="0">
+                                    女
+                                </label>
+                                <label class="col-xs-6 col-lg-6">
+                                    <input type="radio" id="AddSex1" name="AddSex" value="1">
+                                    男
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 col-sm-2 control-label">地点名</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control round-form" id="AddUserName" name="AddUserName">
+                        <label class="col-sm-2 col-sm-2 control-label">学院</label>
+                        <div class="col-sm-6 col-xs-12">
+                            <select class="form-control round-form" id="AddArchitecture" ,name="AddArchitecture"></select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 col-sm-2 control-label">地点名</label>
+                        <label class="col-sm-2 col-sm-2 control-label">专业班级</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control round-form" id="AddUserName" name="AddUserName">
+                            <select class="form-control round-form" id="AddMajorClassId" ,name="AddMajorClassId"></select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 col-sm-2 control-label">地点名</label>
+                        <label class="col-sm-2 col-sm-2 control-label">联系方式</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control round-form" id="AddUserName" name="AddUserName">
+                            <input type="text" class="form-control round-form" id="AddPhoneNum" name="AddPhoneNum">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 col-sm-2 control-label">地点名</label>
+                        <label class="col-sm-2 col-sm-2 control-label">是否管理员</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control round-form" id="AddUserName" name="AddUserName">
+                            <div class="radio">
+                                <label class="col-xs-6 col-lg-6">
+                                    <input type="radio" id="AddIsAdmin0" name="AddIsAdmin" value="0">
+                                    否
+                                </label>
+                                <label class="col-xs-6 col-lg-6">
+                                    <input type="radio" id="AddIsAdmin1" name="AddIsAdmin" value="1">
+                                    是
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -125,7 +143,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="EditModalLabel">修改场地信息</h4>
+                <h4 class="modal-title" id="EditModalLabel">修改用户信息</h4>
             </div>
             <div class="modal-body">
                 <form id="EditForm" class="form-horizontal style-form" method="post" action="##">
@@ -285,14 +303,77 @@
         })
     </script>
     <!--表格加载结束-->
-    <!--ajax提交添加场地信息-->
+
+
+    <!--ajax提交添加用户信息-->
     <script>
-        //提交场地信息
+
+        //获取学院信息
+        $("#AddUser").click(function () {
+            $.ajax({
+                url: "/Architecture/GetAllArchitecture",
+                asyn:false,
+                type: "POST",
+                dataType: "json",
+                success: function (architecture) {
+                    $("#AddArchitecture").empty();
+                    for (let i = 0; i < architecture.length; i++) {
+                        if (i == 0 && architecture[i].IsCollege==1) {
+                            $("#AddArchitecture").append("<option value='" + architecture[i].Id + "' selected='selected'>" + architecture[i].ArchitectureName + "</option>")
+                        } else if (i != 0 && architecture[i].IsCollege == 1) {
+                            $("#AddArchitecture").append("<option value='" + architecture[i].Id + "'>" + architecture[i].ArchitectureName + "</option>")
+                        }
+                    }
+                    //获取专业班级信息
+                    $.ajax({
+                        url: "/User/GetMajorClass",
+                        data: { ArchitectureId: architecture[0].Id },
+                        asyn: false,
+                        type: "POST",
+                        dataType: "json",
+                        success: function (majorClass) {
+                            $("#AddMajorClassId").empty();
+                            for (let i = 0; i < majorClass.length; i++) {
+                                if (i == 0) {
+                                    $("#AddMajorClassId").append("<option value='" + majorClass[i].Id + "' selected='selected'>" + majorClass[i].MajorClassName + "</option>")
+                                } else {
+                                    $("#AddMajorClassId").append("<option value='" + majorClass[i].Id + "'>" + majorClass[i].MajorClassName + "</option>")
+                                }
+                            }
+                        }
+                    })
+                }
+            })
+        })
+
+        //学院改变时班级变化
+        $("#AddArchitecture").change(function () {
+            //获取专业班级信息
+            $.ajax({
+                url: "/User/GetMajorClass",
+                data: { ArchitectureId: $("#AddArchitecture").val()},
+                type: "POST",
+                dataType: "json",
+                success: function (majorClass) {
+                    $("#AddMajorClassId").empty();
+                    for (let i = 0; i < majorClass.length; i++) {
+                        if (i == 0) {
+                            $("#AddMajorClassId").append("<option value='" + majorClass[i].Id + "' selected='selected'>" + majorClass[i].MajorClassName + "</option>")
+                        } else {
+                            $("#AddMajorClassId").append("<option value='" + majorClass[i].Id + "'>" + majorClass[i].MajorClassName + "</option>")
+                        }
+                    }
+                }
+            })
+        })
+
+        //提交用户信息
         $("#AddSubmit").click(function () {
             $.ajax({
                 url: "/User/AddSaveUser",
                 data: {
-                    AddUserName: $("#AddUserName").val(),
+                    AddNum : $("#AddUserName").val(),
+                    AddName : $("#AddUserName").val(),
                     AddPeopleNum:$("#AddPeopleNum").val(),
                 },
                 type: "POST",
@@ -306,10 +387,12 @@
         })
 
     </script>
-    <!--ajax提交添加场地信息结束-->
-    <!--向修改模态框添加待编辑场地信息-->
+    <!--ajax提交添加用户信息结束-->
+
+
+    <!--向修改模态框添加待编辑用户信息-->
     <script>
-        //编辑场地信息
+        //编辑用户信息
         function Edit(Id) {
             $.ajax({               //获取建筑信息
                 url: "/User/GetUser",
@@ -330,8 +413,10 @@
             })
         }
     </script>
-    <!--向修改模态框添加待编辑场地信息结束-->
-    <!--ajax提交编辑后的场地信息-->
+    <!--向修改模态框添加待编辑用户信息结束-->
+
+
+    <!--ajax提交编辑后的用户信息-->
     <script>
         $("#EditSubmit").click(function () {
             $.ajax({
@@ -351,8 +436,8 @@
             })
         })
     </script>
-    <!--ajax提交编辑后的场地信息结束-->
-    <!--ajax删除场地信息并更新表格-->
+    <!--ajax提交编辑后的用户信息结束-->
+    <!--ajax删除用户信息并更新表格-->
     <script>
         $("#DeleteUsers").click(function () {
 
@@ -378,7 +463,7 @@
             }
         })
     </script>
-    <!--ajax删除场地信息并更新表格结束-->
+    <!--ajax删除用户信息并更新表格结束-->
 }
 
 
