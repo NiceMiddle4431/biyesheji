@@ -67,13 +67,13 @@
                     <div class="form-group">
                         <label class="col-sm-2 col-sm-2 control-label">用户名</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control round-form" id="AddUserNum" name="AddUserNum">
+                            <input type="text" class="form-control round-form" id="AddNum" name="AddNum">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 col-sm-2 control-label">姓名</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control round-form" id="AddUserName" name="AddUserName">
+                            <input type="text" class="form-control round-form" id="AddName" name="AddName">
                         </div>
                     </div>
                     <!--sex-->
@@ -147,31 +147,70 @@
             </div>
             <div class="modal-body">
                 <form id="EditForm" class="form-horizontal style-form" method="post" action="##">
-                    <div class="form-group hidden">
+                    <div class="form-group hide">
                         <label class="col-sm-2 col-sm-2 control-label">Id</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-6">
                             <input type="text" class="form-control round-form" id="EditId" name="EditId">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 col-sm-2 control-label">地点名</label>
+                        <label class="col-sm-2 col-sm-2 control-label">用户名</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control round-form" id="EditUserName" name="EditUserName">
+                            <input type="text" class="form-control round-form" id="EditNum" name="EditNum">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 col-sm-2 control-label">容纳人数</label>
+                        <label class="col-sm-2 col-sm-2 control-label">姓名</label>
                         <div class="col-sm-6">
-                            <select class="form-control round-form" id="EditPeopleNum" ,name="EditPeopleNum">
-                                <option value="20">20</option>
-                                <option value="40">40</option>
-                                <option value="80">80</option>
-                                <option value="120">120</option>
-                                <option value="250">250</option>
-                                <option value="500">500</option>
-                                <option value="1000">1000</option>
-                                <option value="2000">2000</option>
-                            </select>
+                            <input type="text" class="form-control round-form" id="EditName" name="EditName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">性别</label>
+                        <div class="col-sm-6">
+                            <div class="radio">
+                                <label class="col-xs-6 col-lg-6">
+                                    <input type="radio" id="EditSex0" name="EditSex" value="0">
+                                    女
+                                </label>
+                                <label class="col-xs-6 col-lg-6">
+                                    <input type="radio" id="EditSex1" name="EditSex" value="1">
+                                    男
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">学院</label>
+                        <div class="col-sm-6 col-xs-12">
+                            <select class="form-control round-form" id="EditArchitecture" ,name="EditArchitecture"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">专业班级</label>
+                        <div class="col-sm-6">
+                            <select class="form-control round-form" id="EditMajorClassId" ,name="EditMajorClassId"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">联系方式</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control round-form" id="EditPhoneNum" name="EditPhoneNum">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">是否管理员</label>
+                        <div class="col-sm-6">
+                            <div class="radio">
+                                <label class="col-xs-6 col-lg-6">
+                                    <input type="radio" id="EditIsAdmin0" name="EditIsAdmin" value="0">
+                                    否
+                                </label>
+                                <label class="col-xs-6 col-lg-6">
+                                    <input type="radio" id="EditIsAdmin1" name="EditIsAdmin" value="1">
+                                    是
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -296,8 +335,11 @@
                 valign: 'middle',
                 formatter: function (value, row, index) {
                     return "<button onclick=\"Edit(" + row.Id +
-                        ")\" data-toggle='modal' data-target='#EditModal' class=\"btn btn-default btn-sm\">" +
-                        "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>修改</span></button>";
+                        ")\" data-toggle='modal' data-target='#EditModal' class='btn btn-default btn-sm'>" +
+                        "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>修改</span></button>"+
+                        "<button onclick='ResetPassword(" + row.Id +
+                        ")' class='btn btn-default btn-sm'>" +
+                        "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>重置密码</span></button>";
                 }
             }]
         })
@@ -372,9 +414,12 @@
             $.ajax({
                 url: "/User/AddSaveUser",
                 data: {
-                    AddNum : $("#AddUserName").val(),
-                    AddName : $("#AddUserName").val(),
-                    AddPeopleNum:$("#AddPeopleNum").val(),
+                    AddNum: $("#AddNum").val(),
+                    AddName: $("#AddName").val(),
+                    AddSex: jQuery('[name="AddSex"]:checked').val(),
+                    AddMajorClassId: $("#AddMajorClassId").val(),
+                    AddPhoneNum: $("#AddPhoneNum").val(),
+                    AddIsAdmin: jQuery('[name="AddIsAdmin"]:checked').val()
                 },
                 type: "POST",
                 dataType: "json",
@@ -390,28 +435,110 @@
     <!--ajax提交添加用户信息结束-->
 
 
+    <!--重置密码开始-->
+    <script type="text/javascript">
+        function ResetPassword(Id) {
+            $.ajax({
+                url: "/User/ResetPassword",
+                data:{UserId : Id},
+                type: "POST",
+                dataType: "json",
+                success: function (result) {
+                    alert(result);
+                }
+            })
+        }
+    </script>
+    <!--重置密码结束-->
+
     <!--向修改模态框添加待编辑用户信息-->
     <script>
         //编辑用户信息
         function Edit(Id) {
-            $.ajax({               //获取建筑信息
+            $.ajax({               //获取用户信息
                 url: "/User/GetUser",
-                data:{Id:Id},
+                data: { UserId: Id },
+                asyn: false,
                 type: "POST",
                 dataType: "JSON",
-                success: function (place) {
-                    $("#EditId").val(place.Id);
-                    $("#EditUserName").val(place.UserName)
-                    //容纳人数
-                    for(let i = 0;i<$("#EditPeopleNum option").length;i++){
-                        if(place.PeopleNum == $("#EditPeopleNum").get(0).options[i].value){
-                            $("#EditPeopleNum").get(0).options[i].selected = true;
-                            break;
+                success: function (user) {
+                    $("#EditId").val(user.Id);
+                    $("#EditNum").val(user.Num);
+                    $("#EditName").val(user.Name);
+                    if (user.Sex == 0) {
+                        $('#EditSex1').removeAttr("checked");
+                        $('#EditSex0').attr("checked", "checked");
+                    } else if (user.Sex == 1) {
+                        $('#EditSex0').removeAttr("checked");
+                        $('#EditSex1').attr("checked", "checked");
+                    }
+                    //获取学院信息
+                    $.ajax({
+                        url: "/Architecture/GetAllArchitecture",
+                        type: "POST",
+                        dataType: "json",
+                        success: function (architecture) {
+                            $("#EditArchitecture").empty();
+                            for (let i = 0; i < architecture.length; i++) {
+                                if (user.MajorClass.ArchitectureId == architecture[i].Id && architecture[i].IsCollege == 1) {
+                                    $("#EditArchitecture").append("<option value='" + architecture[i].Id + "' selected='selected'>" + architecture[i].ArchitectureName + "</option>")
+                                } else if (architecture[i].IsCollege == 1) {
+                                    $("#EditArchitecture").append("<option value='" + architecture[i].Id + "'>" + architecture[i].ArchitectureName + "</option>")
+                                }
+                            }
                         }
+                    })
+                    //获取专业班级信息
+                    $.ajax({
+                        url: "/User/GetMajorClass",
+                        data: { ArchitectureId: user.MajorClass.ArchitectureId },
+                        asyn: false,
+                        type: "POST",
+                        dataType: "json",
+                        success: function (majorClass) {
+                            $("#EditMajorClassId").empty();
+                            for (let i = 0; i < majorClass.length; i++) {
+                                if (user.MajorClassId == majorClass[i].Id) {
+                                    $("#EditMajorClassId").append("<option value='" + majorClass[i].Id + "' selected='selected'>" + majorClass[i].MajorClassName + "</option>")
+                                } else {
+                                    $("#EditMajorClassId").append("<option value='" + majorClass[i].Id + "'>" + majorClass[i].MajorClassName + "</option>")
+                                }
+                            }
+                        }
+                    })
+                    $("#EditPhoneNum").val(user.PhoneNum);
+                    if (user.IsAdmin == 0) {
+                        $('#EditIsAdmin1').removeAttr("checked");
+                        $('#EditIsAdmin0').attr("checked", "checked");
+                    } else if (user.Sex == 1) {
+                        $('#EditIsAdmin0').removeAttr("checked");
+                        $('#EditIsAdmin1').attr("checked", "checked");
                     }
                 }
             })
         }
+
+        //学院改变时班级变化
+        $("#EditArchitecture").change(function () {
+            //获取专业班级信息
+            $.ajax({
+                url: "/User/GetMajorClass",
+                data: { ArchitectureId: $("#EditArchitecture").val() },
+                type: "POST",
+                dataType: "json",
+                success: function (majorClass) {
+                    $("#EditMajorClassId").empty();
+                    for (let i = 0; i < majorClass.length; i++) {
+                        if (i == 0) {
+                            $("#EditMajorClassId").append("<option value='" + majorClass[i].Id + "' selected='selected'>" + majorClass[i].MajorClassName + "</option>")
+                        } else {
+                            $("#EditMajorClassId").append("<option value='" + majorClass[i].Id + "'>" + majorClass[i].MajorClassName + "</option>")
+                        }
+                    }
+                }
+            })
+        })
+
     </script>
     <!--向修改模态框添加待编辑用户信息结束-->
 
@@ -423,8 +550,12 @@
                 url: "/User/EditSaveUser",
                 data: {
                     EditId: $("#EditId").val(),
-                    EditUserName: $("#EditUserName").val(),
-                    EditPeopleNum: $("#EditPeopleNum").val(),
+                    EditNum: $("#EditNum").val(),
+                    EditName: $("#EditName").val(),
+                    EditSex: jQuery('[name="EditSex"]:checked').val(),
+                    EditMajorClassId: $("#EditMajorClassId").val(),
+                    EditPhoneNum: $("#EditPhoneNum").val(),
+                    EditIsAdmin: jQuery('[name="EditIsAdmin"]:checked').val(),
                     },
                 type: "POST",
                 dataType: "json",
@@ -437,6 +568,8 @@
         })
     </script>
     <!--ajax提交编辑后的用户信息结束-->
+
+
     <!--ajax删除用户信息并更新表格-->
     <script>
         $("#DeleteUsers").click(function () {

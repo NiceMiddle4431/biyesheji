@@ -37,13 +37,67 @@ namespace BLL
 
 
         /// <summary>
-        /// 获取全部专业班级
+        /// 根据指定建筑Id获取学院专业
         /// </summary>
         /// <returns></returns>
         public List<Model.T_Base_MajorClass> GetMajorClass(int ArchitectureId)
         {
             return new DAL.T_Base_User().GetMajorClass(ArchitectureId);
         }
+
+
+        /// <summary>
+        /// 保存添加的用户信息
+        /// </summary>
+        /// <param name="User"></param>
+        /// <returns></returns>
+        public int AddSaveUser(Model.T_Base_User User)
+        {
+            return new DAL.T_Base_User().AddSaveUser(User);
+        }
+
+
+        /// <summary>
+        /// 重置用户密码
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        public int ResetPassword(int UserId)
+        {
+            return new DAL.T_Base_User().ResetPassword(UserId);
+        }
+
+        /// <summary>
+        /// 获取指定Id的用户信息
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        public Model.T_Base_User GetUser(int UserId)
+        {
+            return new DAL.T_Base_User().GetUser(UserId);
+        }
+
+        /// <summary>
+        /// 保存修改后的用户信息
+        /// </summary>
+        /// <param name="User"></param>
+        /// <returns></returns>
+        public int EditSaveUser(Model.T_Base_User User)
+        {
+            return new DAL.T_Base_User().EditSaveUser(User);
+        }
+
+        /// <summary>
+        /// 删除学生
+        /// </summary>
+        /// <returns></returns>
+        public int Delete(string[] Ids)
+        {
+            //防止注入式漏洞
+            string ids = string.Join(",", Ids);
+            return new DAL.T_Base_User().Delete(ids);
+        }
+
 
     }
 }

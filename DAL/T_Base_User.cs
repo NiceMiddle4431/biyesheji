@@ -69,7 +69,6 @@ namespace DAL
                 user.MajorClass = majorClass;
                
                 user.PhoneNum =Convert.ToString(reader["PhoneNum"]);
-                user.PassWord = Convert.ToString(reader["PassWord"]);
                 user.Number = Convert.ToInt32(reader["Number"]);
                 user.IsAdmin = Convert.ToInt32(reader["IsAdmin"]);
                 list.Add(user);
@@ -96,7 +95,7 @@ namespace DAL
         }
 
         /// <summary>
-        /// 获取指定学院下全部专业班级
+        /// 根据指定建筑Id获取学院专业
         /// </summary>
         /// <returns></returns>
         public List<Model.T_Base_MajorClass> GetMajorClass(int ArchitectureId)
@@ -118,7 +117,121 @@ namespace DAL
             reader.Close();
             co.Close();
             return list;
+        }
 
+
+        /// <summary>
+        /// 保存添加的用户信息
+        /// </summary>
+        /// <param name="User"></param>
+        /// <returns></returns>
+        public int AddSaveUser(Model.T_Base_User User)
+        {
+            SqlConnection co = SqlServerOpen();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = co;
+            cmd.CommandText = "insert into T_Base_User values('" + User.Num + 
+                "','"+User.Name+"',"+User.Sex+","+User.MajorClassId+",'"+User.PhoneNum
+                +"','"+User.Num+"',0,"+User.IsAdmin+")";
+            int result = cmd.ExecuteNonQuery();
+            co.Close();
+            return result;
+        }
+
+
+        /// <summary>
+        /// 重置用户密码
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        public int ResetPassword(int UserId)
+        {
+            SqlConnection co = SqlServerOpen();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = co;
+            cmd.CommandText = "update T_Base_User set PassWord = "+
+                "(select Num from T_Base_User where Id = "+UserId+") where Id = "+UserId;
+            int result = cmd.ExecuteNonQuery();
+            co.Close();
+            return result;
+        }
+
+        /// <summary>
+        /// 获取指定Id的用户信息
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        public Model.T_Base_User GetUser(int UserId)
+        {
+            SqlConnection co = SqlServerOpen();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = co;
+            cmd.CommandText = "select * from V_User_MajorClass_Architecture where Id = " + UserId;
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+
+            //所属学院信息
+            Model.T_Base_Architecture architecture = new Model.T_Base_Architecture();
+            architecture.Id = Convert.ToInt32(reader["ArchitectureId"]);
+            architecture.ArchitectureName = Convert.ToString(reader["ArchitectureName"]);
+            //所属专业班级信息
+            Model.T_Base_MajorClass majorClass = new Model.T_Base_MajorClass();
+            majorClass.Id = Convert.ToInt32(reader["MajorClassId"]);
+            majorClass.MajorClassName = Convert.ToString(reader["MajorClassName"]);
+            majorClass.ArchitectureId = Convert.ToInt32(reader["ArchitectureId"]);
+            majorClass.Architecture = architecture;
+            //用户信息
+            Model.T_Base_User user = new Model.T_Base_User();
+            user.Id = Convert.ToInt32(reader["Id"]);
+            user.Num = Convert.ToString(reader["Num"]);
+            user.Name = Convert.ToString(reader["Name"]);
+            user.Sex = Convert.ToInt32(reader["Sex"]);
+            user.MajorClassId = Convert.ToInt32(reader["MajorClassId"]);
+            user.PhoneNum = Convert.ToString(reader["PhoneNum"]);
+            user.Password = Convert.ToString(reader["Password"]);
+            user.Number = Convert.ToInt16(reader["Number"]);
+            user.IsAdmin = Convert.ToInt16(reader["IsAdmin"]);
+            user.MajorClass = majorClass;
+
+            reader.Close();
+            co.Close();
+            return user;
+        }
+
+        /// <summary>
+        /// 保存修改后的用户信息
+        /// </summary>
+        /// <param name="User"></param>
+        /// <returns></returns>
+        public int EditSaveUser(Model.T_Base_User User)
+        {
+            SqlConnection co = SqlServerOpen();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = co;
+            cmd.CommandText = "update T_Base_User set Num = '"+User.Num+
+                "',Name = '"+User.Name+"',Sex = "+User.Sex+ ",MajorClassId = "
+                + User.MajorClassId+",PhoneNum = "+User.PhoneNum
+                +",IsAdmin = "+User.IsAdmin+" where Id = "+User.Id;
+            int result = cmd.ExecuteNonQuery();
+            
+            co.Close();
+            return result;
+        }
+
+        /// <summary>
+        /// 删除学生
+        /// </summary>
+        /// <param name="Ids"></param>
+        /// <returns></returns>
+        public int Delete(string Ids)
+        {
+            SqlConnection co = SqlServerOpen();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = co;
+            cmd.CommandText = "delete from T_Base_User where Id in (" + Ids + ")";
+            int result = cmd.ExecuteNonQuery();
+            co.Close();
+            return result;
         }
 
 

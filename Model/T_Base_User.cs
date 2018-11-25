@@ -50,7 +50,7 @@ namespace Model
         /// <summary>
         /// 登录密码（默认学号
         /// </summary>
-        public string PassWord { get; set; }
+        public string Password { get; set; }
 
 
         /// <summary>
