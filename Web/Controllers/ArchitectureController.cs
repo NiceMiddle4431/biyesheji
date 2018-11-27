@@ -32,10 +32,11 @@ namespace Web.Controllers
         /// </summary>
         /// <param name="Architecture"></param>
         /// <returns></returns>
-        public JsonResult AddSaveArchitecture(string AddArchitectureName)
+        public JsonResult AddSaveArchitecture(string AddArchitectureName,int AddIsCollege)
         {
             Model.T_Base_Architecture architecture = new Model.T_Base_Architecture();
             architecture.ArchitectureName = AddArchitectureName;
+            architecture.IsCollege = AddIsCollege;
             int result = new BLL.T_Base_Architecture().AddSaveArchitecture(architecture);
             if (result == 1)
             {
@@ -61,12 +62,12 @@ namespace Web.Controllers
         /// 保存修改后建筑的信息
         /// </summary>
         /// <returns></returns>
-        public JsonResult EditSaveArchitecture(int EditId, string EditArchitectureName)
+        public JsonResult EditSaveArchitecture(int EditId, string EditArchitectureName,int EditIsCollege)
         {
             Model.T_Base_Architecture architecture = new Model.T_Base_Architecture();
             architecture.Id = EditId;
             architecture.ArchitectureName = EditArchitectureName;
-
+            architecture.IsCollege = EditIsCollege;
             int result = new BLL.T_Base_Architecture().EditSaveArchitecture(architecture);
 
             if (result == 1)

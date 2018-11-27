@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    public class T_Base_Architecture
+    public class T_Base_MajorClass
     {
         /// <summary>
         /// 连接到数据库
@@ -21,27 +21,27 @@ namespace DAL
             return co;
         }
 
+
         /// <summary>
-        /// 获取全部建筑
+        /// 获取指定学院的专业班级
         /// </summary>
-        /// <param name="PageSize"></param>
-        /// <param name="PageNumber"></param>
+        /// <param name="ArchitectureId"></param>
         /// <returns></returns>
-        public List<Model.T_Base_Architecture> GetAllArchitecture()
+        public List<Model.T_Base_MajorClass> GetAllMajorClass(int ArchitectureId)
         {
-            List<Model.T_Base_Architecture> list = new List<Model.T_Base_Architecture>();
             SqlConnection co = SqlServerOpen();
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = co;
-            cmd.CommandText = "select * from T_Base_Architecture";
+            cmd.CommandText = "select * from T_Base_MajorClass where ArchitectureId = "+ ArchitectureId;
             SqlDataReader reader = cmd.ExecuteReader();
+            List<Model.T_Base_MajorClass> list = new List<Model.T_Base_MajorClass>();
             while (reader.Read())
             {
-                Model.T_Base_Architecture architecture = new Model.T_Base_Architecture();
-                architecture.Id = Convert.ToInt32(reader["Id"]);
-                architecture.ArchitectureName = Convert.ToString(reader["ArchitectureName"]);
-                architecture.IsCollege = Convert.ToInt32(reader["IsCollege"]);
-                list.Add(architecture);
+                Model.T_Base_MajorClass majorClass = new Model.T_Base_MajorClass();
+                majorClass.Id = Convert.ToInt32(reader["Id"]);
+                majorClass.MajorClassName = Convert.ToString(reader["MajorClassName"]);
+                majorClass.ArchitectureId = Convert.ToInt32(reader["ArchitectureId"]);
+                list.Add(majorClass);
             }
             reader.Close();
             co.Close();
@@ -50,60 +50,66 @@ namespace DAL
 
 
         /// <summary>
-        /// 保存新增地点信息
+        /// 保存新增专业班级信息
         /// </summary>
-        /// <param name="Architecture"></param>
+        /// <param name="majorClass"></param>
         /// <returns></returns>
-        public int AddSaveArchitecture(Model.T_Base_Architecture Architecture)
+        public int AddSaveMajorClass(Model.T_Base_MajorClass MajorClass)
         {
             SqlConnection co = SqlServerOpen();
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = co;
-            cmd.CommandText = "insert into T_Base_Architecture values('" 
-                + Architecture.ArchitectureName + "',"+Architecture.IsCollege+")";
+            cmd.CommandText = "insert into T_Base_MajorClass values('" + MajorClass.MajorClassName + "'," +
+                + MajorClass.ArchitectureId + ")";
             int result = cmd.ExecuteNonQuery();
+            co.Close();
             return result;
         }
 
+
         /// <summary>
-        /// 根据Id获取指定建筑信息
+        /// 获取指定Id的专业班级信息
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public Model.T_Base_Architecture GetArchitecture(int Id)
+        public Model.T_Base_MajorClass GetMajorClass(int Id)
         {
             SqlConnection co = SqlServerOpen();
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = co;
-            cmd.CommandText = "select * from T_Base_Architecture where Id = "+Id;
+            cmd.CommandText = "select * from T_Base_MajorClass where Id = " + Id;
             SqlDataReader reader = cmd.ExecuteReader();
             reader.Read();
-            Model.T_Base_Architecture architecture = new Model.T_Base_Architecture();
-            architecture.Id = Convert.ToInt32(reader["Id"]);
-            architecture.ArchitectureName = Convert.ToString(reader["ArchitectureName"]);
-            architecture.IsCollege = Convert.ToInt32(reader["IsCollege"]);
-            return architecture;
+            Model.T_Base_MajorClass majorClass = new Model.T_Base_MajorClass();
+            majorClass.Id = Convert.ToInt32(reader["Id"]);
+            majorClass.MajorClassName = Convert.ToString(reader["MajorClassName"]);
+            majorClass.ArchitectureId = Convert.ToInt32(reader["ArchitectureId"]);
+            reader.Close();
+            co.Close();
+            return majorClass;
         }
 
+
         /// <summary>
-        /// 保存修改后建筑的信息
+        /// 保存修改后的专业班级信息
         /// </summary>
-        /// <param name="Architecture"></param>
+        /// <param name="MajorClass"></param>
         /// <returns></returns>
-        public int EditSaveArchitecture(Model.T_Base_Architecture Architecture)
+        public int EditSaveMajorClass(Model.T_Base_MajorClass MajorClass)
         {
             SqlConnection co = SqlServerOpen();
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = co;
-            cmd.CommandText = "update T_Base_Architecture set ArchitectureName = '" 
-                + Architecture.ArchitectureName+"',IsCollege = "+Architecture.IsCollege+
-                " where Id = "+Architecture.Id;
+            cmd.CommandText = "update T_Base_MajorClass set MajorClassName = '" + MajorClass.MajorClassName
+                + "',ArchitectureId = " + MajorClass.ArchitectureId + " where Id = " + MajorClass.Id;
             int result = cmd.ExecuteNonQuery();
+            co.Close();
             return result;
         }
 
+
         /// <summary>
-        /// 删除场地
+        /// 删除专业班级
         /// </summary>
         /// <param name="Ids"></param>
         /// <returns></returns>
@@ -112,13 +118,13 @@ namespace DAL
             SqlConnection co = SqlServerOpen();
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = co;
-            cmd.CommandText = "delete from T_Base_Place where ArchitectureId in (" + Ids + ")";
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "delete from T_Base_Architecture where id in (" + Ids + ")";
+            cmd.CommandText = "delete from T_Base_MajorClass where Id in (" + Ids + ")";
             int result = cmd.ExecuteNonQuery();
             co.Close();
             return result;
         }
+
+
 
     }
 }
