@@ -23,7 +23,7 @@ namespace DAL
 
 
         /// <summary>
-        /// 获取指定学院的专业班级
+        /// 获取全部讲座信息
         /// </summary>
         /// <param name="ArchitectureId"></param>
         /// <returns></returns>
@@ -32,7 +32,7 @@ namespace DAL
             SqlConnection co = SqlServerOpen();
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = co;
-            cmd.CommandText = "select * from T_Base_MajorClass where ArchitectureId = "+ ArchitectureId;
+            cmd.CommandText = "select * from T_Base_MajorClass where ArchitectureId = "+ArchitectureId;
             SqlDataReader reader = cmd.ExecuteReader();
             List<Model.T_Base_MajorClass> list = new List<Model.T_Base_MajorClass>();
             while (reader.Read())
@@ -50,7 +50,7 @@ namespace DAL
 
 
         /// <summary>
-        /// 保存新增专业班级信息
+        /// 保存添加的专业班级信息
         /// </summary>
         /// <param name="majorClass"></param>
         /// <returns></returns>
@@ -59,8 +59,8 @@ namespace DAL
             SqlConnection co = SqlServerOpen();
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = co;
-            cmd.CommandText = "insert into T_Base_MajorClass values('" + MajorClass.MajorClassName + "'," +
-                + MajorClass.ArchitectureId + ")";
+            cmd.CommandText = "insert into T_Base_MajorClass values ('"+
+                MajorClass.MajorClassName+"',"+MajorClass.ArchitectureId+")";
             int result = cmd.ExecuteNonQuery();
             co.Close();
             return result;
@@ -70,20 +70,22 @@ namespace DAL
         /// <summary>
         /// 获取指定Id的专业班级信息
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        public Model.T_Base_MajorClass GetMajorClass(int Id)
+        public Model.T_Base_MajorClass GetMajorClass(int id)
         {
             SqlConnection co = SqlServerOpen();
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = co;
-            cmd.CommandText = "select * from T_Base_MajorClass where Id = " + Id;
+            cmd.CommandText = "select * from T_Base_MajorClass where Id = " + id;
             SqlDataReader reader = cmd.ExecuteReader();
             reader.Read();
+
             Model.T_Base_MajorClass majorClass = new Model.T_Base_MajorClass();
             majorClass.Id = Convert.ToInt32(reader["Id"]);
             majorClass.MajorClassName = Convert.ToString(reader["MajorClassName"]);
             majorClass.ArchitectureId = Convert.ToInt32(reader["ArchitectureId"]);
+
             reader.Close();
             co.Close();
             return majorClass;
@@ -91,7 +93,7 @@ namespace DAL
 
 
         /// <summary>
-        /// 保存修改后的专业班级信息
+        /// 保存修改后的信息
         /// </summary>
         /// <param name="MajorClass"></param>
         /// <returns></returns>
@@ -100,8 +102,9 @@ namespace DAL
             SqlConnection co = SqlServerOpen();
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = co;
-            cmd.CommandText = "update T_Base_MajorClass set MajorClassName = '" + MajorClass.MajorClassName
-                + "',ArchitectureId = " + MajorClass.ArchitectureId + " where Id = " + MajorClass.Id;
+            cmd.CommandText = "update T_Base_MajorClass set majorClassName = '"+
+                MajorClass.MajorClassName+"',ArchitectureId = "+MajorClass.ArchitectureId+
+                " where Id = "+MajorClass.Id;
             int result = cmd.ExecuteNonQuery();
             co.Close();
             return result;
@@ -109,7 +112,7 @@ namespace DAL
 
 
         /// <summary>
-        /// 删除专业班级
+        /// 删除讲座
         /// </summary>
         /// <param name="Ids"></param>
         /// <returns></returns>

@@ -633,6 +633,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ArchitectureController.cs" />
+    <Compile Include="Controllers\LectureController.cs" />
     <Compile Include="Controllers\MajorClassController.cs" />
     <Compile Include="Controllers\PlaceController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -773,6 +774,7 @@
     <Content Include="assets\x-editable-develop\test\libs\bootstrap300\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Views\Architecture\Index.cshtml" />
     <Content Include="Views\MajorClass\Index.cshtml" />
+    <Content Include="Views\Lecture\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

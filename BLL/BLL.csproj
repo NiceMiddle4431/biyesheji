@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="T_Base_Lecture.cs" />
     <Compile Include="T_Base_MajorClass.cs" />
     <Compile Include="T_Base_Architecture.cs" />
     <Compile Include="T_Base_Place.cs" />

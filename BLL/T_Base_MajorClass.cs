@@ -9,7 +9,7 @@ namespace BLL
     public class T_Base_MajorClass
     {
         /// <summary>
-        /// 获取指定学院的专业班级
+        /// 获取全部专业班级
         /// </summary>
         /// <param name="ArchitectureId"></param>
         /// <returns></returns>
@@ -20,7 +20,7 @@ namespace BLL
 
 
         /// <summary>
-        /// 保存新增专业班级信息
+        /// 保存添加的专业班级
         /// </summary>
         /// <param name="place"></param>
         /// <returns></returns>
@@ -32,17 +32,18 @@ namespace BLL
         /// <summary>
         /// 获取指定Id的专业班级信息
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        public Model.T_Base_MajorClass GetMajorClass(int Id)
+        public Model.T_Base_MajorClass GetMajorClass(int id)
         {
-            return new DAL.T_Base_MajorClass().GetMajorClass(Id);
+            return new DAL.T_Base_MajorClass().GetMajorClass(id);
         }
 
+
         /// <summary>
-        /// 保存修改后的专业班级信息
+        /// 保存修改后的信息
         /// </summary>
-        /// <param name="MajorClass"></param>
+        /// <param name="Lecture"></param>
         /// <returns></returns>
         public int EditSaveMajorClass(Model.T_Base_MajorClass MajorClass)
         {

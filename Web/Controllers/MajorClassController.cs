@@ -49,7 +49,7 @@ namespace Web.Controllers
 
 
         /// <summary>
-        /// 获取指定Id的地点信息
+        /// 获取指定Id的专业班级信息
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
