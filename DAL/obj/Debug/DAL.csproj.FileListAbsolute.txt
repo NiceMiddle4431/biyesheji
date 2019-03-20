@@ -5,3 +5,4 @@ D:\VS2015解决方案\毕业设计\bysj\DAL\bin\Debug\Model.pdb
 D:\VS2015解决方案\毕业设计\bysj\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
 D:\VS2015解决方案\毕业设计\bysj\DAL\obj\Debug\DAL.dll
 D:\VS2015解决方案\毕业设计\bysj\DAL\obj\Debug\DAL.pdb
+D:\VS2015解决方案\毕业设计\bysj\DAL\bin\Debug\QRCoder.dll

@@ -9,18 +9,6 @@ namespace DAL
 {
     public class T_Base_MajorClass
     {
-        /// <summary>
-        /// 连接到数据库
-        /// </summary>
-        /// <returns></returns>
-        private SqlConnection SqlServerOpen()
-        {
-            SqlConnection co = new SqlConnection();
-            co.ConnectionString = "server=212.64.18.220;uid=bysj;pwd=bysj;database=bysj";
-            co.Open();
-            return co;
-        }
-
 
         /// <summary>
         /// 获取全部讲座信息
@@ -29,9 +17,8 @@ namespace DAL
         /// <returns></returns>
         public List<Model.T_Base_MajorClass> GetAllMajorClass(int ArchitectureId)
         {
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            sqlConfig config = new sqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "select * from T_Base_MajorClass where ArchitectureId = "+ArchitectureId;
             SqlDataReader reader = cmd.ExecuteReader();
             List<Model.T_Base_MajorClass> list = new List<Model.T_Base_MajorClass>();
@@ -44,7 +31,7 @@ namespace DAL
                 list.Add(majorClass);
             }
             reader.Close();
-            co.Close();
+            config.Close();
             return list;
         }
 
@@ -56,13 +43,12 @@ namespace DAL
         /// <returns></returns>
         public int AddSaveMajorClass(Model.T_Base_MajorClass MajorClass)
         {
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            sqlConfig config = new sqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "insert into T_Base_MajorClass values ('"+
                 MajorClass.MajorClassName+"',"+MajorClass.ArchitectureId+")";
             int result = cmd.ExecuteNonQuery();
-            co.Close();
+            config.Close();
             return result;
         }
 
@@ -74,9 +60,8 @@ namespace DAL
         /// <returns></returns>
         public Model.T_Base_MajorClass GetMajorClass(int id)
         {
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            sqlConfig config = new sqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "select * from T_Base_MajorClass where Id = " + id;
             SqlDataReader reader = cmd.ExecuteReader();
             reader.Read();
@@ -87,7 +72,7 @@ namespace DAL
             majorClass.ArchitectureId = Convert.ToInt32(reader["ArchitectureId"]);
 
             reader.Close();
-            co.Close();
+            config.Close();
             return majorClass;
         }
 
@@ -99,14 +84,13 @@ namespace DAL
         /// <returns></returns>
         public int EditSaveMajorClass(Model.T_Base_MajorClass MajorClass)
         {
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            sqlConfig config = new sqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "update T_Base_MajorClass set majorClassName = '"+
                 MajorClass.MajorClassName+"',ArchitectureId = "+MajorClass.ArchitectureId+
                 " where Id = "+MajorClass.Id;
             int result = cmd.ExecuteNonQuery();
-            co.Close();
+            config.Close();
             return result;
         }
 
@@ -118,16 +102,13 @@ namespace DAL
         /// <returns></returns>
         public int Delete(string Ids)
         {
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            sqlConfig config = new sqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "delete from T_Base_MajorClass where Id in (" + Ids + ")";
             int result = cmd.ExecuteNonQuery();
-            co.Close();
+            config.Close();
             return result;
         }
-
-
 
     }
 }

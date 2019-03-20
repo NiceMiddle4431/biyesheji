@@ -10,18 +10,6 @@ namespace DAL
     public class T_Base_Architecture
     {
         /// <summary>
-        /// 连接到数据库
-        /// </summary>
-        /// <returns></returns>
-        private SqlConnection SqlServerOpen()
-        {
-            SqlConnection co = new SqlConnection();
-            co.ConnectionString = "server=212.64.18.220;uid=bysj;pwd=bysj;database=bysj";
-            co.Open();
-            return co;
-        }
-
-        /// <summary>
         /// 获取全部建筑
         /// </summary>
         /// <param name="PageSize"></param>
@@ -30,9 +18,8 @@ namespace DAL
         public List<Model.T_Base_Architecture> GetAllArchitecture()
         {
             List<Model.T_Base_Architecture> list = new List<Model.T_Base_Architecture>();
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            sqlConfig config = new sqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "select * from T_Base_Architecture";
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
@@ -44,7 +31,7 @@ namespace DAL
                 list.Add(architecture);
             }
             reader.Close();
-            co.Close();
+            config.Close();
             return list;
         }
 
@@ -56,12 +43,12 @@ namespace DAL
         /// <returns></returns>
         public int AddSaveArchitecture(Model.T_Base_Architecture Architecture)
         {
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            sqlConfig config = new sqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "insert into T_Base_Architecture values('" 
                 + Architecture.ArchitectureName + "',"+Architecture.IsCollege+")";
             int result = cmd.ExecuteNonQuery();
+            config.Close();
             return result;
         }
 
@@ -72,9 +59,8 @@ namespace DAL
         /// <returns></returns>
         public Model.T_Base_Architecture GetArchitecture(int Id)
         {
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            sqlConfig config = new sqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "select * from T_Base_Architecture where Id = "+Id;
             SqlDataReader reader = cmd.ExecuteReader();
             reader.Read();
@@ -82,6 +68,8 @@ namespace DAL
             architecture.Id = Convert.ToInt32(reader["Id"]);
             architecture.ArchitectureName = Convert.ToString(reader["ArchitectureName"]);
             architecture.IsCollege = Convert.ToInt32(reader["IsCollege"]);
+            reader.Close();
+            config.Close();
             return architecture;
         }
 
@@ -92,13 +80,13 @@ namespace DAL
         /// <returns></returns>
         public int EditSaveArchitecture(Model.T_Base_Architecture Architecture)
         {
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            sqlConfig config = new sqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "update T_Base_Architecture set ArchitectureName = '" 
                 + Architecture.ArchitectureName+"',IsCollege = "+Architecture.IsCollege+
                 " where Id = "+Architecture.Id;
             int result = cmd.ExecuteNonQuery();
+            config.Close();
             return result;
         }
 
@@ -109,14 +97,13 @@ namespace DAL
         /// <returns></returns>
         public int Delete(string Ids)
         {
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            sqlConfig config = new sqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "delete from T_Base_Place where ArchitectureId in (" + Ids + ")";
             cmd.ExecuteNonQuery();
             cmd.CommandText = "delete from T_Base_Architecture where id in (" + Ids + ")";
             int result = cmd.ExecuteNonQuery();
-            co.Close();
+            config.Close();
             return result;
         }
 

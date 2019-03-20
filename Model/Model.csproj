@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.cs" />
     <Compile Include="T_Base_Apply.cs" />
     <Compile Include="T_Base_Audit.cs" />
     <Compile Include="T_Base_Lecture.cs" />

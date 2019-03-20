@@ -9,17 +9,6 @@ namespace DAL
 {
     public class T_Base_User
     {
-        /// <summary>
-        /// 连接到数据库
-        /// </summary>
-        /// <returns></returns>
-        private SqlConnection SqlServerOpen()
-        {
-            SqlConnection co = new SqlConnection();
-            co.ConnectionString = "server=212.64.18.220;uid=bysj;pwd=bysj;database=bysj";
-            co.Open();
-            return co;
-        }
 
         /// <summary>
         /// 按查询信息给出分页学生信息
@@ -36,10 +25,8 @@ namespace DAL
             Num = "'%" + Num + "%'";
             Name = "'%" + Name + "%'";
             MajorClassName = "'%" + MajorClassName + "%'";
-
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            SqlConfig config = new SqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "select top " + PageSize +
                 " * from [V_User_MajorClass_Architecture] where Id not in (select top " + (PageNumber - 1) * PageSize +
                 " Id from [V_User_MajorClass_Architecture] where MajorClassName like " + MajorClassName + 
@@ -75,7 +62,7 @@ namespace DAL
             }
 
             reader.Close();
-            co.Close();
+            config.Close();
             return list;
         }
 
@@ -86,11 +73,11 @@ namespace DAL
         /// <returns></returns>
         public int GetCount()
         {
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            SqlConfig config = new SqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "select count(1) from T_Base_User";
             int count = (int)cmd.ExecuteScalar();
+            config.Close();
             return count;
         }
 
@@ -100,9 +87,8 @@ namespace DAL
         /// <returns></returns>
         public List<Model.T_Base_MajorClass> GetMajorClass(int ArchitectureId)
         {
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            SqlConfig config = new SqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "select * from T_Base_MajorClass where ArchitectureId = "+ArchitectureId;
             SqlDataReader reader = cmd.ExecuteReader();
             List<Model.T_Base_MajorClass> list = new List<Model.T_Base_MajorClass>();
@@ -115,7 +101,7 @@ namespace DAL
                 list.Add(majorClass);
             }
             reader.Close();
-            co.Close();
+            config.Close();
             return list;
         }
 
@@ -127,14 +113,13 @@ namespace DAL
         /// <returns></returns>
         public int AddSaveUser(Model.T_Base_User User)
         {
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            SqlConfig config = new SqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "insert into T_Base_User values('" + User.Num + 
                 "','"+User.Name+"',"+User.Sex+","+User.MajorClassId+",'"+User.PhoneNum
                 +"','"+User.Num+"',0,"+User.IsAdmin+")";
             int result = cmd.ExecuteNonQuery();
-            co.Close();
+            config.Close();
             return result;
         }
 
@@ -146,13 +131,12 @@ namespace DAL
         /// <returns></returns>
         public int ResetPassword(int UserId)
         {
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            SqlConfig config = new SqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "update T_Base_User set PassWord = "+
                 "(select Num from T_Base_User where Id = "+UserId+") where Id = "+UserId;
             int result = cmd.ExecuteNonQuery();
-            co.Close();
+            config.Close();
             return result;
         }
 
@@ -163,9 +147,8 @@ namespace DAL
         /// <returns></returns>
         public Model.T_Base_User GetUser(int UserId)
         {
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            SqlConfig config = new SqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "select * from V_User_MajorClass_Architecture where Id = " + UserId;
             SqlDataReader reader = cmd.ExecuteReader();
             reader.Read();
@@ -194,7 +177,7 @@ namespace DAL
             user.MajorClass = majorClass;
 
             reader.Close();
-            co.Close();
+            config.Close();
             return user;
         }
 
@@ -205,16 +188,15 @@ namespace DAL
         /// <returns></returns>
         public int EditSaveUser(Model.T_Base_User User)
         {
-            SqlConnection co = SqlServerOpen();
+            DAL.SqlConfig config = new SqlConfig();
             SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
             cmd.CommandText = "update T_Base_User set Num = '"+User.Num+
                 "',Name = '"+User.Name+"',Sex = "+User.Sex+ ",MajorClassId = "
                 + User.MajorClassId+",PhoneNum = "+User.PhoneNum
                 +",IsAdmin = "+User.IsAdmin+" where Id = "+User.Id;
             int result = cmd.ExecuteNonQuery();
-            
-            co.Close();
+
+            config.Close();
             return result;
         }
 
@@ -225,15 +207,19 @@ namespace DAL
         /// <returns></returns>
         public int Delete(string Ids)
         {
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            DAL.SqlConfig config = new SqlConfig(); ;
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "delete from T_Base_User where Id in (" + Ids + ")";
             int result = cmd.ExecuteNonQuery();
-            co.Close();
+            config.Close();
             return result;
         }
 
+
+        //public Model.T_Base_User CheckUser(string LoginName, string Password)
+        //{
+            
+        //}
 
     }
 }

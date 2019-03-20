@@ -10,18 +10,6 @@ namespace DAL
 {
     public class T_Base_Place
     {
-        /// <summary>
-        /// 连接到数据库
-        /// </summary>
-        /// <returns></returns>
-        private SqlConnection SqlServerOpen()
-        {
-            SqlConnection co = new SqlConnection();
-            co.ConnectionString = "server=212.64.18.220;uid=bysj;pwd=bysj;database=bysj";
-            co.Open();
-            return co;
-        }
-
 
         /// <summary>
         /// 查询建筑内可举办讲座地点（Id,地点名称，容纳人数）
@@ -31,9 +19,8 @@ namespace DAL
         public List<Model.T_Base_Place> GetAllPlace(int ArchitectureId)
         {
             List<Model.T_Base_Place> list = new List<Model.T_Base_Place>();
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            sqlConfig config = new sqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "select * from T_Base_Place where ArchitectureId = "+ ArchitectureId;
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
@@ -45,7 +32,7 @@ namespace DAL
                 list.Add(place);
             }
             reader.Close();
-            co.Close();
+            config.Close();
             return list;
         }
 
@@ -56,13 +43,12 @@ namespace DAL
         /// <returns></returns>
         public int AddSavePlace(Model.T_Base_Place Place)
         {
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            sqlConfig config = new sqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "insert into T_Base_Place values('"+Place.PlaceName+"',"+
                 Place.PeopleNum+","+Place.ArchitectureId+")";
             int result = cmd.ExecuteNonQuery();
-            co.Close();
+            config.Close();
             return result;
         }
 
@@ -73,9 +59,8 @@ namespace DAL
         /// <returns></returns>
         public Model.T_Base_Place GetPlace(int Id)
         {
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            sqlConfig config = new sqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "select * from V_Place_Architecture where Id = " + Id;
             SqlDataReader reader = cmd.ExecuteReader();
             reader.Read();
@@ -88,7 +73,7 @@ namespace DAL
             architecture.Id = Convert.ToInt32(reader["ArchitectureId"]);
             architecture.ArchitectureName = Convert.ToString(reader["ArchitectureName"]);
             place.Architecture = architecture;
-            co.Close();
+            config.Close();
             return place;
         }
 
@@ -99,14 +84,13 @@ namespace DAL
         /// <returns></returns>
         public int EditSavePlace(Model.T_Base_Place Place)
         {
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            sqlConfig config = new sqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "update T_Base_Place set PlaceName = '"+Place.PlaceName
                 +"',PeopleNum = "+Place.PeopleNum+",ArchitectureId = "+Place.ArchitectureId
                 +" where Id = "+Place.Id;
             int result = cmd.ExecuteNonQuery();
-            co.Close();
+            config.Close();
             return result;
         }
 
@@ -117,12 +101,11 @@ namespace DAL
         /// <returns></returns>
         public int Delete(string Ids)
         {
-            SqlConnection co = SqlServerOpen();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = co;
+            sqlConfig config = new sqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "delete from T_Base_Place where Id in ("+Ids+")";
             int result = cmd.ExecuteNonQuery();
-            co.Close();
+            config.Close();
             return result;
         }
 

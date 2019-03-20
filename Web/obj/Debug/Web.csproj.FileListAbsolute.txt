@@ -56,3 +56,4 @@ D:\VS2015解决方案\毕业设计\bysj\Web\bin\DAL.dll
 D:\VS2015解决方案\毕业设计\bysj\Web\bin\BLL.pdb
 D:\VS2015解决方案\毕业设计\bysj\Web\bin\Model.pdb
 D:\VS2015解决方案\毕业设计\bysj\Web\bin\DAL.pdb
+D:\VS2015解决方案\毕业设计\bysj\Web\bin\QRCoder.dll

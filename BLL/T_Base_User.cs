@@ -99,5 +99,10 @@ namespace BLL
         }
 
 
+        //public Model.T_Base_User CheckUser(string LoginName,string Password)
+        //{
+        //    return new DAL.T_Base_User().CheckUser(LoginName, Password);
+        //}
+
     }
 }

@@ -11,6 +11,7 @@ namespace Web.Controllers
         // GET: Lecture
         public ActionResult Index()
         {
+
             return View();
         }
 
@@ -20,9 +21,12 @@ namespace Web.Controllers
         /// </summary>
         /// <param name="ArchitectureId"></param>
         /// <returns></returns>
-        public JsonResult GetAllLecture()
+        public JsonResult GetAllLecture(string ParamLecture,int PageSize,int PageNumber)
         {
-            return Json(new BLL.T_Base_Lecture().GetAllLecture());
+            return Json(new {
+                total = new BLL.T_Base_Lecture().GetCount() ,
+                rows = new BLL.T_Base_Lecture().GetAllLecture(ParamLecture, PageSize, PageNumber)
+                });
         }
 
         /// <summary>
@@ -31,12 +35,20 @@ namespace Web.Controllers
         /// <param name="AddLectureName"></param>
         /// <param name="AddArchitectureId"></param>
         /// <returns></returns>
-        public JsonResult AddSaveLecture(string AddLectureName, int AddArchitectureId)
+        public JsonResult AddSaveLecture(string AddNum,string AddSubject,string AddSummary,
+            DateTime AddLectureTime,DateTime AddDeathLine,float AddSpan,int AddExpectPeople,
+            int AddArchitectureId,int AddPlaceId, decimal AddScore)
         {
             Model.T_Base_Lecture lecture = new Model.T_Base_Lecture();
-
-            int result = new BLL.T_Base_Lecture().AddSaveLecture(lecture);
-            if (result == 1)
+            lecture.Subject = AddSubject;
+            lecture.Summary = AddSummary;
+            lecture.LectureTime = AddLectureTime;
+            lecture.DeathLine = AddDeathLine;
+            lecture.Span = AddSpan;
+            lecture.ExpectPeople = AddExpectPeople;
+            lecture.Score = AddScore;
+            int result = new BLL.T_Base_Lecture().AddSaveLecture(AddNum,lecture,AddPlaceId);
+            if (result != -1)
             {
                 return Json("添加成功");
             }
@@ -98,6 +110,20 @@ namespace Web.Controllers
             }
         }
 
-
+        //获取容纳人数
+        public JsonResult GetRoomNum()
+        {
+            return Json(Model.Config.roomNum);
+        }
+        //获取持续时间
+        public JsonResult GetSpanTime()
+        {
+            return Json(Model.Config.spanTime);
+        }
+        //获取讲座学分
+        public JsonResult GetScore()
+        {
+            return Json(Model.Config.score);
+        }
     }
 }
