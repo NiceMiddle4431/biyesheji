@@ -13,9 +13,9 @@ namespace BLL
      /// </summary>
      /// <param name="ArchitectureId"></param>
      /// <returns></returns>
-        public List<Model.T_Base_Apply> GetAllLecture(string ParamLecture, int PageSize, int PageNumber)
+        public List<Model.T_Base_Apply> GetAllLecture(string ParamLecture, int PageSize, int PageNumber,string State)
         {
-            return new DAL.T_Base_Lecture().GetAllLecture(ParamLecture, PageSize,  PageNumber);
+            return new DAL.T_Base_Lecture().GetAllLecture(ParamLecture, PageSize,  PageNumber,State);
         }
 
 
@@ -23,9 +23,9 @@ namespace BLL
         /// 获取数据库内记录总数
         /// </summary>
         /// <returns></returns>
-        public int GetCount()
+        public int GetCount(string State)
         {
-            return new DAL.T_Base_Lecture().GetCount();
+            return new DAL.T_Base_Lecture().GetCount(State);
         }
 
 
@@ -60,9 +60,9 @@ namespace BLL
         /// </summary>
         /// <param name="Lecture"></param>
         /// <returns></returns>
-        public int EditSaveLecture(Model.T_Base_Lecture Lecture)
+        public int EditSaveLecture(string EditNum, int EditApplyId, Model.T_Base_Lecture Lecture, int EditPlaceId)
         {
-            return new DAL.T_Base_Lecture().EditSaveLecture(Lecture);
+            return new DAL.T_Base_Lecture().EditSaveLecture(EditNum, EditApplyId, Lecture, EditPlaceId);
         }
 
 
@@ -78,5 +78,34 @@ namespace BLL
             return new DAL.T_Base_Lecture().Delete(ids);
         }
 
+
+        public List<Model.T_Base_Apply> GetPersonalAllLecture(string Num)
+        {
+            return new DAL.T_Base_Lecture().GetPersonalAllLecture(Num);
+        }
+
+
+        public int Order(string Num, int LectureId)
+        {
+            return new DAL.T_Base_Lecture().Order(Num,LectureId);
+        }
+
+
+        /// <summary>
+        /// 报名功能显示（报名，以报名，截止报名
+        /// </summary>
+        /// <param name="Num"></param>
+        /// <param name="LectureId"></param>
+        /// <returns></returns>
+        public int OrderSelect(string Num, int LectureId)
+        {
+            return new DAL.T_Base_Lecture().OrderSelect(Num,LectureId);
+        }
+
+
+        public int OrderDelete(string Num, int LectureId)
+        {
+            return new DAL.T_Base_Lecture().OrderDelete(Num,LectureId);
+        }
     }
 }

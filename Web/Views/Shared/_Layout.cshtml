@@ -45,10 +45,30 @@
             <a href="index.html" class="logo"><b>高校讲座管理系统</b></a>
             <!--logo end-->
 
-            <div class="top-menu">
-                <ul class="nav pull-right top-menu">
-                    <li><a class="logout" href="login.html">Logout</a></li>
+            <div class="nav notify-row" id="top_menu">
+                <!--  notification start -->
+                <ul class="nav top-menu">
+                    <!-- settings start -->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+                            <i class="fa fa-tasks"></i>
+                            <span class="badge bg-theme">3</span>
+                        </a>
+                        <ul id="Message" class="dropdown-menu extended tasks-bar">
+                            <div class="notify-arrow notify-arrow-green"></div>
+                            <li>
+                                <div class="task-info">
+                                    <div class="desc">Payments Sent</div>
+                                </div>
+                            </li>
+                            <li class="external">
+                                <a href="#">See All Tasks</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- settings end -->
                 </ul>
+                <!--  notification end -->
             </div>
         </header>
         <!--header end-->
@@ -79,7 +99,19 @@
                     <li class="mt">
                         <a class="" href="/Lecture/Index">
                             <i class="fa fa-dashboard"></i>
+                            <span>讲座列表</span>
+                        </a>
+                    </li>
+                    <li class="mt">
+                        <a class="" href="/Lecture/Personal">
+                            <i class="fa fa-dashboard"></i>
                             <span>讲座管理</span>
+                        </a>
+                    </li>
+                    <li class="mt">
+                        <a class="" href="/Review/Index">
+                            <i class="fa fa-dashboard"></i>
+                            <span>审核处理</span>
                         </a>
                     </li>
                 </ul>
@@ -123,6 +155,23 @@
 <!--script for this page-->
 <script src="/assets/js/sparkline-chart.js"></script>
 <script src="/assets/js/zabuto_calendar.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: "/Lecture/OrderMessage",
+                date:{
+                    RoleId:1,
+                    Num:'15211220001'
+                },
+                type: "POST",
+                dataType: "JSON",
+                success: function (result) {
+                    
+                }
+            })
+        })
+    </script>
 </body>
 </html>
 @RenderSection("javascript",false)

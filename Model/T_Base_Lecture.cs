@@ -80,8 +80,17 @@ namespace Model
         /// <summary>
         /// 讲座分数
         /// </summary>
-        public decimal Score { get; set; }
+        public double Score { get; set; }
 
 
+        /// <summary>
+        /// 拒绝时间
+        /// </summary>
+        public DateTime AuditTIme { get; set; }
+
+        /// <summary>
+        /// 拒绝理由
+        /// </summary>
+        public string Reason { get; set; }
     }
 }

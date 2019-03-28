@@ -19,7 +19,7 @@ namespace DAL
         public List<Model.T_Base_Place> GetAllPlace(int ArchitectureId)
         {
             List<Model.T_Base_Place> list = new List<Model.T_Base_Place>();
-            sqlConfig config = new sqlConfig();
+            SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "select * from T_Base_Place where ArchitectureId = "+ ArchitectureId;
             SqlDataReader reader = cmd.ExecuteReader();
@@ -43,7 +43,7 @@ namespace DAL
         /// <returns></returns>
         public int AddSavePlace(Model.T_Base_Place Place)
         {
-            sqlConfig config = new sqlConfig();
+            SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "insert into T_Base_Place values('"+Place.PlaceName+"',"+
                 Place.PeopleNum+","+Place.ArchitectureId+")";
@@ -59,7 +59,7 @@ namespace DAL
         /// <returns></returns>
         public Model.T_Base_Place GetPlace(int Id)
         {
-            sqlConfig config = new sqlConfig();
+            SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "select * from V_Place_Architecture where Id = " + Id;
             SqlDataReader reader = cmd.ExecuteReader();
@@ -84,7 +84,7 @@ namespace DAL
         /// <returns></returns>
         public int EditSavePlace(Model.T_Base_Place Place)
         {
-            sqlConfig config = new sqlConfig();
+            SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "update T_Base_Place set PlaceName = '"+Place.PlaceName
                 +"',PeopleNum = "+Place.PeopleNum+",ArchitectureId = "+Place.ArchitectureId
@@ -101,7 +101,7 @@ namespace DAL
         /// <returns></returns>
         public int Delete(string Ids)
         {
-            sqlConfig config = new sqlConfig();
+            SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "delete from T_Base_Place where Id in ("+Ids+")";
             int result = cmd.ExecuteNonQuery();

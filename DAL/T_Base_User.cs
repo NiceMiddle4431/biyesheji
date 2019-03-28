@@ -216,10 +216,36 @@ namespace DAL
         }
 
 
-        //public Model.T_Base_User CheckUser(string LoginName, string Password)
-        //{
-            
-        //}
+        public Model.T_Base_User CheckUser(string LoginName, string Password)
+        {
+            Model.T_Base_User user = new Model.T_Base_User();
+            SqlConfig config = new SqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
+            cmd.CommandText = "select * from T_Base_User where Num = '"+LoginName
+                +"' and PassWord = '"+Password+"'";
+            int result = cmd.ExecuteNonQuery();
+            if(result == 1)
+            {
+                SqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                user.Id = Convert.ToInt32(reader["Id"]);
+                user.Num = Convert.ToString(reader["Num"]);
+                user.Name = Convert.ToString(reader["Name"]);
+                user.Sex = Convert.ToInt32(reader["Sex"]);
+                user.MajorClassId = Convert.ToInt32(reader["MajorClassId"]);
+                user.PhoneNum = Convert.ToString(reader["PhoneNum"]);
+                user.Password = Convert.ToString(reader["Password"]);
+                user.Number = Convert.ToInt32(reader["Number"]);
+                user.IsAdmin = Convert.ToInt32(reader["IsAdmin"]);
+                reader.Close();
+            }
+            else
+            {
+                user = null;
+            }
+            config.Close();
+            return user;
+        }
 
     }
 }

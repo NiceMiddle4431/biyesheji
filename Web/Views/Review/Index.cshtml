@@ -1,0 +1,249 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--拒绝时添加理由模态框-->
+<button id="AddAudit" type="button" class="btn btn-default hidden" data-toggle='modal' data-target='#AddModal'> </button>
+<div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="AddModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="AddModalLabel">请输入拒绝理由</h4>
+            </div>
+            <div class="modal-body">
+                <form id="AddForm" class="form-horizontal style-form" method="post" action="##">
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">拒绝理由</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control round-form" id="AddReason" name="AddReason">
+                        </div>
+                        <label class="col-sm-6 col-sm-6 control-label">最多250个字</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="AddClose">关闭</button>
+                <button type="submit" class="btn btn-primary" id="AddSubmit">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--拒绝时添加理由模态框结束-->
+
+<!--表格开始-->
+<br />
+<div class="col-lg-12 col-xs-12">
+    <div class="col-lg-1 col-xs-1">
+        <input id="btnSearch" type="button" class="btn btn-primary btn-space" value="查询" />
+    </div>
+    <div class="col-lg-11 col-xs-11">
+        <input id="txtSearch" type="text" class="form-control round-form" placeholder="请输入讲座主题或举办人姓名" />
+    </div>
+</div>
+<br />
+<div class="col-lg-12 col-xs-12">
+    <table id="ReviewList"></table>
+</div><!-- /col-lg-12 -->
+<!--表格结束-->
+
+@section javascript{
+    <link href="~/assets/bootstraptable/src/bootstrap-table.css" rel="stylesheet" />
+    <script src="~/assets/bootstraptable/src/bootstrap-table.js"></script>
+    <!--表格加载-->
+    <script>
+        $("#ReviewList").bootstrapTable({
+                url: "/Review/GetAllLecture",// 获取表格数据的url
+                method: 'post',//请求方式
+                dataType: "json",
+                dataField: "rows",
+                classes: 'table',//边框
+                undefinedText: '',//当数据为 undefined 时显示的字符
+                pagination: true,//启动分页
+                striped: true,  //表格显示条纹，默认为false
+                pagination: true, // 在表格底部显示分页组件，默认false
+                pageList: [10, 25, 50], // 设置页面可以显示的数据条数
+                pageSize: 10, // 页面数据条数
+                pageNumber: 1, // 首页页码
+                showColumns: true,  //显示下拉框勾选要显示的列
+                showRefresh: false,  //显示刷新按钮
+                showToggle: false,//显示一行是否改成竖着
+                showPaginationSwitch: true,//是否显示 下面的分页框
+                search: false, //显示搜索框
+                detailView: true,       //详情页面显示
+                //toolbar操作
+                toolbar: '#toolbar',//工具按钮用哪个容器
+                toolbarAligh: 'left',//工具栏对齐方式
+                buttonsAligh: 'right',//按钮对齐方式
+
+                sortOrder: "asc",//排序方式
+                locale: 'zh-CN',//中文支持
+                sidePagination: 'server', // 设置为服务器端分页
+
+                queryParamsType: '',//采用自定义查询参数组织方式
+                queryParams: function (params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求
+                    return {
+                        ParamLecture: $("txtSearch").val(),
+                        PageSize: params.pageSize, // 每页要显示的数据条数
+                        PageNumber: params.pageNumber,//请求第几页
+                    }
+                },
+
+                columns: [{
+                    checkbox: true
+                }, {
+                    field: 'Id',
+                    title: '讲座信息Id',
+                    visible: false,
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'Lecture.Subject',
+                    title: '讲座信息名',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'User.Name',
+                    title: '负责人',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    title: '开始时间',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (value, row, index) {
+                        return changeDateFormat(row.Lecture.LectureTime);
+                    }
+                }, {
+                    title: '报名截止时间',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (value, row, index) {
+                        return changeDateFormat(row.Lecture.DeathLine);
+                    },
+
+                }, {
+                    field: 'Place.PlaceName',
+                    title: '举办地点',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    title: '操作',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (value, row, index) {
+                        let str = "<button onclick='Review(" + row.Id + "," + row.Lecture.Id +
+                            ",1," + row.Num + ")' class='btn btn-default btn-sm'>" +
+                            "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>同意</span></button>" +
+                            "<button onclick='Review(" + row.Id + "," + row.Lecture.Id +
+                            ",2," + row.Num + ")' class='btn btn-default btn-sm'>" +
+                            "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>拒绝</span></button>";
+                        return str;
+                    }
+                }],
+
+                //子页面（详情页）内容
+                onExpandRow: function (index, row, $detail) {
+                    oTableInit.InitSubTable(index, row, $detail);
+                }
+
+            })
+    </script>
+    <script>
+            var oTableInit = new Object();
+            oTableInit.InitSubTable = function (index, row, $detail) {
+                var cur_table = $detail.html('<table></table>').find('table');
+                $(cur_table).bootstrapTable({
+                    url: "/Lecture/GetLecture?Id=" + row.Id,// 获取表格数据的url
+                    method: 'post',//请求方式
+                    dataType: "json",
+                    dataField: "data",
+                    datailView: true,
+                    pageSize: 10, // 页面数据条数
+                    pageNumber: 1, // 首页页码
+                    pageList: [10, 25],
+                    columns: [{
+                        field: "Lecture.Summary",
+                        title: '内容简介',
+                        align: 'center',
+                        valign: 'middle'
+                    }, {
+                        field: "User.PhoneNum",
+                        title: '联系方式',
+                        align: 'center',
+                        valign: 'middle'
+                    }],
+                    //无线循环取子表，直到子表里面没有记录
+                    onExpandRow: function (index, row, $Subdetail) {
+                        oTableInit.InitSubTable(index, row, $Subdetail);
+                    }
+                });
+                return oTableInit;
+            };
+
+            //日期转换
+            function changeDateFormat(cellval) {
+                if (cellval != null) {
+                    var date = new Date(parseInt(cellval.replace("/Date(", "").replace(")/", ""), 10));
+                    var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+                    var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+                    var hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+                    var minute = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+                    return date.getFullYear() + "/" + month + "/" + currentDate + " "
+                    + hours + ":" + minute;
+                }
+            }
+    </script>
+    <!--表格加载结束-->
+
+    <!--审核-->
+    <script>
+        function Review(ApplyId,LectureId, State, Num) {
+                let result = confirm("确认拒绝？");
+                if (result) {
+                    if (State == 1) {
+                        $.ajax({
+                            url: "/Review/Review",
+                            data: {
+                                ApplyId: ApplyId,
+                                LectureId:LectureId,
+                                State: State,
+                                Num: Num
+                            },
+                            type: "POST",
+                            dataType: "json",
+                            success: function (result) {
+                                alert(result);
+                                $("#ReviewList").bootstrapTable('refresh');
+                            }
+                        })
+                    } else if (State == 2) {
+                        $("#AddAudit").click();
+                        $("#AddSubmit").click(function () {
+                            $.ajax({
+                                url: "/Review/Review",
+                                data: {
+                                    ApplyId: ApplyId,
+                                    LectureId: LectureId,
+                                    State: State,
+                                    Num: Num,
+                                    Reason: $("#AddReason").val()
+                                },
+                                type: "POST",
+                                dataType: "json",
+                                success: function (result) {
+                                    alert(result);
+                                    $("#AddClose").click();
+                                    $("#ReviewList").bootstrapTable('refresh');
+                                }
+                            })
+                        })
+                    }
+                }
+            }
+    </script>
+    <!--审核结束-->
+}
+

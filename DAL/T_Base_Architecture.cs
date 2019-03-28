@@ -18,7 +18,7 @@ namespace DAL
         public List<Model.T_Base_Architecture> GetAllArchitecture()
         {
             List<Model.T_Base_Architecture> list = new List<Model.T_Base_Architecture>();
-            sqlConfig config = new sqlConfig();
+            SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "select * from T_Base_Architecture";
             SqlDataReader reader = cmd.ExecuteReader();
@@ -43,7 +43,7 @@ namespace DAL
         /// <returns></returns>
         public int AddSaveArchitecture(Model.T_Base_Architecture Architecture)
         {
-            sqlConfig config = new sqlConfig();
+            SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "insert into T_Base_Architecture values('" 
                 + Architecture.ArchitectureName + "',"+Architecture.IsCollege+")";
@@ -59,7 +59,7 @@ namespace DAL
         /// <returns></returns>
         public Model.T_Base_Architecture GetArchitecture(int Id)
         {
-            sqlConfig config = new sqlConfig();
+            SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "select * from T_Base_Architecture where Id = "+Id;
             SqlDataReader reader = cmd.ExecuteReader();
@@ -80,7 +80,7 @@ namespace DAL
         /// <returns></returns>
         public int EditSaveArchitecture(Model.T_Base_Architecture Architecture)
         {
-            sqlConfig config = new sqlConfig();
+            SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "update T_Base_Architecture set ArchitectureName = '" 
                 + Architecture.ArchitectureName+"',IsCollege = "+Architecture.IsCollege+
@@ -97,7 +97,7 @@ namespace DAL
         /// <returns></returns>
         public int Delete(string Ids)
         {
-            sqlConfig config = new sqlConfig();
+            SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "delete from T_Base_Place where ArchitectureId in (" + Ids + ")";
             cmd.ExecuteNonQuery();

@@ -17,7 +17,7 @@ namespace DAL
         /// <returns></returns>
         public List<Model.T_Base_MajorClass> GetAllMajorClass(int ArchitectureId)
         {
-            sqlConfig config = new sqlConfig();
+            SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "select * from T_Base_MajorClass where ArchitectureId = "+ArchitectureId;
             SqlDataReader reader = cmd.ExecuteReader();
@@ -43,7 +43,7 @@ namespace DAL
         /// <returns></returns>
         public int AddSaveMajorClass(Model.T_Base_MajorClass MajorClass)
         {
-            sqlConfig config = new sqlConfig();
+            SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "insert into T_Base_MajorClass values ('"+
                 MajorClass.MajorClassName+"',"+MajorClass.ArchitectureId+")";
@@ -60,7 +60,7 @@ namespace DAL
         /// <returns></returns>
         public Model.T_Base_MajorClass GetMajorClass(int id)
         {
-            sqlConfig config = new sqlConfig();
+            SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "select * from T_Base_MajorClass where Id = " + id;
             SqlDataReader reader = cmd.ExecuteReader();
@@ -84,7 +84,7 @@ namespace DAL
         /// <returns></returns>
         public int EditSaveMajorClass(Model.T_Base_MajorClass MajorClass)
         {
-            sqlConfig config = new sqlConfig();
+            SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "update T_Base_MajorClass set majorClassName = '"+
                 MajorClass.MajorClassName+"',ArchitectureId = "+MajorClass.ArchitectureId+
@@ -102,7 +102,7 @@ namespace DAL
         /// <returns></returns>
         public int Delete(string Ids)
         {
-            sqlConfig config = new sqlConfig();
+            SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "delete from T_Base_MajorClass where Id in (" + Ids + ")";
             int result = cmd.ExecuteNonQuery();

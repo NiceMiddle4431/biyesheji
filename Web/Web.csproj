@@ -637,6 +637,7 @@
     <Compile Include="Controllers\LectureController.cs" />
     <Compile Include="Controllers\MajorClassController.cs" />
     <Compile Include="Controllers\PlaceController.cs" />
+    <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\SignInController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -779,6 +780,8 @@
     <Content Include="Views\Lecture\Index.cshtml" />
     <Content Include="Views\SignIn\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Lecture\Personal.cshtml" />
+    <Content Include="Views\Review\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

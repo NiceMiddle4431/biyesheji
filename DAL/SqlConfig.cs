@@ -9,11 +9,11 @@ using System.Data.SqlClient;
 
 namespace DAL
 {
-    public class sqlConfig
+    public class SqlConfig
     {
         private SqlConnection co;
         private SqlCommand cmd;
-        public sqlConfig()
+        public SqlConfig()
         {
             co = new SqlConnection();
             co.ConnectionString = "server=212.64.18.220;uid=bysj;pwd=bysj;database=bysj";
