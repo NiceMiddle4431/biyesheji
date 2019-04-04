@@ -633,6 +633,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ArchitectureController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\LectureController.cs" />
     <Compile Include="Controllers\MajorClassController.cs" />
@@ -798,6 +799,7 @@
     <Folder Include="Models\" />
     <Folder Include="QRCode\" />
     <Folder Include="upLoad\" />
+    <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BLL\BLL.csproj">
