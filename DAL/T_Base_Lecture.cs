@@ -60,11 +60,11 @@ namespace DAL
                 lecture.Subject = Convert.ToString(reader["Subject"]);
                 lecture.Summary = Convert.ToString(reader["Summary"]);
                 lecture.State = Convert.ToInt32(reader["State"]);
-                lecture.CRCodeStart = Convert.ToString(reader["CRCodeStart"]);
-                lecture.CRCodeEnd = Convert.ToString(reader["CRCodeEnd"]);
+                lecture.QRCode = Convert.ToString(reader["QRCode"]);
+
                 lecture.DeathLine = Convert.ToDateTime(reader["DeathLine"]);
                 lecture.LectureTime = Convert.ToDateTime(reader["LectureTime"]);
-                lecture.Span = Convert.ToInt32(reader["Span"]);
+                lecture.Span = Convert.ToDouble(reader["Span"]);
                 lecture.ExpectPeople = Convert.ToInt32(reader["ExpectPeople"]);
                 lecture.RealPeople = Convert.ToInt32(reader["RealPeople"]);
                 lecture.Score = Convert.ToDouble(reader["Score"]);
@@ -145,11 +145,10 @@ namespace DAL
                 lecture.Subject = Convert.ToString(reader["Subject"]);
                 lecture.Summary = Convert.ToString(reader["Summary"]);
                 lecture.State = Convert.ToInt32(reader["State"]);
-                lecture.CRCodeStart = Convert.ToString(reader["CRCodeStart"]);
-                lecture.CRCodeEnd = Convert.ToString(reader["CRCodeEnd"]);
+                lecture.QRCode = Convert.ToString(reader["QRCode"]);
                 lecture.DeathLine = Convert.ToDateTime(reader["DeathLine"]);
                 lecture.LectureTime = Convert.ToDateTime(reader["LectureTime"]);
-                lecture.Span = Convert.ToInt32(reader["Span"]);
+                lecture.Span = Convert.ToDouble(reader["Span"]);
                 lecture.ExpectPeople = Convert.ToInt32(reader["ExpectPeople"]);
                 lecture.RealPeople = Convert.ToInt32(reader["RealPeople"]);
                 lecture.Score = Convert.ToDouble(reader["Score"]);
@@ -198,7 +197,7 @@ namespace DAL
                 if (CheckDateTime(Lecture.LectureTime, Lecture.Span, AddPlaceId))
                 {
                     cmd.CommandText = "insert into T_Base_Lecture " +
-                        "values('" + Lecture.Subject + "','" + Lecture.Summary + "',0,-1,-1,'" + Lecture.DeathLine + "','" +
+                        "values('" + Lecture.Subject + "','" + Lecture.Summary + "',0,-1,'" + Lecture.DeathLine + "','" +
                         Lecture.LectureTime + "'," + Lecture.Span + "," + Lecture.ExpectPeople + ",0," + Lecture.Score + ")";
                     cmd.ExecuteNonQuery();
                     cmd.CommandText = "select top 1 Id from T_Base_Lecture order by Id desc";
@@ -207,10 +206,8 @@ namespace DAL
                         AddNum + "'," + result + "," + AddPlaceId + ",'" + DateTime.Now + "')";
                     cmd.ExecuteNonQuery();
                     cmd.Transaction.Commit();
-                    QRCodeSave(result + "-1");  //开始    
-                    QRCodeSave(result + "-2");  //结束
-                    cmd.CommandText = "updata T_Base_Lecture set QRCodeStart = '" + result + "-1',QRCodeEnd = '" + result + "-2'"
-                        + " where Id = " + result;
+                    QRCodeSave(""+result);      
+                    cmd.CommandText = "update T_Base_Lecture set QRCode = " + result + " where Id = " + result;
                     cmd.ExecuteNonQuery();
                 }else
                 {
@@ -232,7 +229,7 @@ namespace DAL
         /// <param name="strQRCodeName"></param>
         private void QRCodeSave(string strQRCodeName)
         {
-            string strCode = "http://212.64.18.220:8080/SignIn/Index";
+            string strCode = "http://212.64.18.220:1234/Statistic/Index?LectureId="+strQRCodeName;
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(strCode, QRCodeGenerator.ECCLevel.Q);
             QRCode qrCode = new QRCode(qrCodeData);
@@ -349,11 +346,10 @@ namespace DAL
                 lecture.Subject = Convert.ToString(reader["Subject"]);
                 lecture.Summary = Convert.ToString(reader["Summary"]);
                 lecture.State = Convert.ToInt32(reader["State"]);
-                lecture.CRCodeStart = Convert.ToString(reader["CRCodeStart"]);
-                lecture.CRCodeEnd = Convert.ToString(reader["CRCodeEnd"]);
+                lecture.QRCode = Convert.ToString(reader["QRCode"]);
                 lecture.DeathLine = Convert.ToDateTime(reader["DeathLine"]);
                 lecture.LectureTime = Convert.ToDateTime(reader["LectureTime"]);
-                lecture.Span = Convert.ToInt32(reader["Span"]);
+                lecture.Span = Convert.ToDouble(reader["Span"]);
                 lecture.ExpectPeople = Convert.ToInt32(reader["ExpectPeople"]);
                 lecture.RealPeople = Convert.ToInt32(reader["RealPeople"]);
                 lecture.Score = Convert.ToDouble(reader["Score"]);
@@ -384,14 +380,14 @@ namespace DAL
         /// <param name="Span"></param>
         /// <param name="PlaceId"></param>
         /// <returns></returns>
-        public Boolean CheckDateTime(DateTime StartTime,float Span,int PlaceId)
+        public Boolean CheckDateTime(DateTime StartTime,double Span,int PlaceId)
         {
             DateTime EndTime = StartTime.AddHours(Span);
 
             SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "select * from V_User_Lecture_Place where PlaceId = "+PlaceId
-                + " and '"+StartTime.ToString("yyyy/MM/dd")+ "' = FORMAT(LectureTime,'yyyy/MM/dd')";
+                + " and '"+StartTime.ToString("yyyy/MM/dd")+ "' = FORMAT(LectureTime,'yyyy/MM/dd') and State = 1";
             SqlDataReader reader = cmd.ExecuteReader();
             
             while (reader.Read())
@@ -494,7 +490,12 @@ namespace DAL
             return result;
         }
 
-
+        /// <summary>
+        /// 取消报名
+        /// </summary>
+        /// <param name="Num"></param>
+        /// <param name="LectureId"></param>
+        /// <returns></returns>
         public int OrderDelete(string Num, int LectureId)
         {
             SqlConfig config = new SqlConfig();

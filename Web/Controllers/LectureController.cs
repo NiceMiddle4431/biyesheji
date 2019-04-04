@@ -252,9 +252,5 @@ namespace Web.Controllers
         }
 
 
-        public JsonResult OrderMessage(int RoleId,string Num="")
-        {
-
-        }
     }
 }

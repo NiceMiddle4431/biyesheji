@@ -176,6 +176,19 @@
                     title: '联系方式',
                     align: 'center',
                     valign: 'middle'
+                }, {
+                    field: "Lecture.Span",
+                    title: '持续时间',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (value, row, index) {
+                        return value+"/h"
+                    }
+                }, {
+                    field: "Lecture.Score",
+                    title: '可获学分',
+                    align: 'center',
+                    valign: 'middle'
                 }],
                 //无线循环取子表，直到子表里面没有记录
                 onExpandRow: function (index, row, $Subdetail) {

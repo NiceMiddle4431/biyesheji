@@ -38,8 +38,10 @@ namespace Model
         /// <summary>
         /// 最多三个附件所处位置
         /// </summary>
-        public string FilePositon1 { get; set; }
-        public string FilePositon2 { get; set; }
-        public string FilePositon3 { get; set; }
+        public string FilePosition1 { get; set; }
+        public string FilePosition2 { get; set; }
+        public string FilePosition3 { get; set; }
+
+        public DateTime ResourceDate { get; set; }
     }
 }

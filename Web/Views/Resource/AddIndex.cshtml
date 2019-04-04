@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "AddIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int LectureId = ViewBag.LectureId;
+}
+
+<br />
+<br />
+<br />
+<div class="row mt">
+    <div class="col-lg-12">
+        <div class="form-panel">
+            <form id="AddForm" class="form-horizontal style-form" method="post" action="/Resource/AddSaveResource" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label class="col-sm-2 col-sm-2 control-label">学号</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control round-form" id="AddNum" name="AddNum" placeholder="15211220001"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 col-sm-2 control-label">讲座Id</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control round-form" id="AddLectureId" name="AddLectureId" placeholder="@LectureId" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 col-sm-2 control-label">内容</label>
+                    <div class="col-sm-6">
+                        <textarea class="form-control round-form" id="AddContent" name="AddContent"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 col-sm-2 control-label">附件一</label>
+                    <div class="col-sm-6">
+                        <input type="file" class="form-control round-form" id="AddFilePosition1" name="AddFilePosition1" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 col-sm-2 control-label">附件二</label>
+                    <div class="col-sm-6">
+                        <input type="file" class="form-control round-form" id="AddFilePosition2" name="AddFilePosition2" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 col-sm-2 control-label">附件三</label>
+                    <div class="col-sm-6">
+                        <input type="file" class="form-control round-form" id="AddFilePosition3" name="AddFilePosition3" />
+                    </div>
+                </div>
+                <button type="button" class="btn btn-default" id="AddClose">关闭</button>
+                <button type="submit" class="btn btn-primary" id="AddSubmit">提交</button>
+            </form>
+        </div>
+    </div>
+</div>

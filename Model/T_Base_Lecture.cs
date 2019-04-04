@@ -36,15 +36,9 @@ namespace Model
 
 
         /// <summary>
-        /// 讲座签到二维码保存
+        /// 讲座二维码保存
         /// </summary>
-        public string CRCodeStart { get; set; }
-
-
-        /// <summary>
-        /// 讲座签退二维码保存
-        /// </summary>
-        public string CRCodeEnd { get; set; }
+        public string QRCode { get; set; }
 
 
         /// <summary>
@@ -62,7 +56,7 @@ namespace Model
         /// <summary>
         /// 持续时间
         /// </summary>
-        public float Span { get; set; }
+        public double Span { get; set; }
 
 
         /// <summary>

@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    int LectureId = ViewBag.LectureId;
+}
+<br />
+<br />
+<form id="AddForm" class="form-horizontal style-form" method="post" action="##">
+    <div class="form-group">
+        <div class="col-sm-6">
+            <input type="text" class="form-control round-form" id="Num" name="Num" placeholder="请确保输入正确的学号">
+        </div>
+    </div>
+</form>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal" id="Close">关闭</button>
+    <button type="submit" class="btn btn-primary" id="Submit">提交</button>
+</div>
+
+<script src="/scripts/jquery-3.3.1.js"></script>
+<script language="javascript" type="text/javascript" src="http://pv.sohu.com/cityjson">
+</script>
+<script>
+    document.write(returnCitySN.cip);
+</script>
+<script>
+    $("#Submit").click(function () {
+        $.ajax({
+            url: "/Statistic/AddSaveStatistic",
+            data: {
+                //Num: $("#Num").val(),
+                Num:'15211220001',
+                LectureId: @LectureId,
+                Ip:returnCitySN.cip,
+            },
+            type: "POST",
+            dataType: "json",
+            success: function (result) {
+                alert(result);
+                close();
+            }
+        })
+
+    })
+</script>
