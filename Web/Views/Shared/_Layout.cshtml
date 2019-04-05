@@ -112,21 +112,10 @@
                     @foreach (Model.T_Base_RoleMenu roleMenu in list)
                     {
                         <li class="mt">
-                            @if (roleMenu.Display != "讲座管理")
-                            {
-                                <a class="" href="/@roleMenu.Controller/@roleMenu.Action">
-                                    <i class="fa fa-dashboard"></i>
-                                    <span>@roleMenu.Display</span>
-                                </a>
-                            }
-                            else
-                            {
-                                <a class="" href="/@roleMenu.Controller/@roleMenu.Action?Num=@Num">
-                                    <i class="fa fa-dashboard"></i>
-                                    <span>@roleMenu.Display</span>
-                                </a>
-                            }
-
+                            <a class="" href="/@roleMenu.Controller/@roleMenu.Action?Num=@Num&Role=@RoleId">
+                                <i class="fa fa-dashboard"></i>
+                                <span>@roleMenu.Display</span>
+                            </a>
                         </li>
                     }
 

@@ -27,7 +27,7 @@ namespace Model
             spanTime.Add(10);
 
             score.Add(0.1);
-            score.Add(0.3);
+            score.Add(0.33);
             score.Add(0.5);
             score.Add(1);
             score.Add(1.5);

@@ -12,5 +12,10 @@ namespace BLL
         {
             return new DAL.Statistic().AddSaveStatistic(Num,LectureId,Ip);
         }
+
+        public List<Model.T_Base_Statistic> GetAllAttendance(string Num)
+        {
+            return new DAL.Statistic().GetAllAttendance(Num);
+        }
     }
 }

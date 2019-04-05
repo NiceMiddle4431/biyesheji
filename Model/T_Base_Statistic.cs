@@ -32,13 +32,13 @@ namespace Model
         /// <summary>
         /// 签到记录  0表示未签到，1表示签到成功
         /// </summary>
-        public int Start { get; set; }
+        public DateTime StartTime { get; set; }
 
 
         /// <summary>
         /// 签退记录  0表示未签到，1表示签到成功
         /// </summary>
-        public int End { get; set; }
+        public DateTime EndTime { get; set; }
 
 
         /// <summary>
@@ -46,5 +46,10 @@ namespace Model
         /// </summary>
         public string Ip { get; set; }
 
+
+        /// <summary>
+        /// 记录讲座信息
+        /// </summary>
+        public Model.T_Base_Lecture Lecture { get; set; }
     }
 }

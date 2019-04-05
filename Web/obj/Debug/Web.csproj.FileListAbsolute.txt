@@ -57,3 +57,9 @@ D:\VS2015解决方案\毕业设计\bysj\Web\bin\zh-Hans\System.Web.Helpers.resou
 D:\VS2015解决方案\毕业设计\bysj\Web\bin\zh-Hans\System.Web.Mvc.resources.dll
 D:\VS2015解决方案\毕业设计\bysj\Web\obj\Debug\Web.dll
 D:\VS2015解决方案\毕业设计\bysj\Web\obj\Debug\Web.pdb
+D:\VS2015解决方案\毕业设计\bysj\Web\bin\ICSharpCode.SharpZipLib.dll
+D:\VS2015解决方案\毕业设计\bysj\Web\bin\NPOI.dll
+D:\VS2015解决方案\毕业设计\bysj\Web\bin\NPOI.OOXML.dll
+D:\VS2015解决方案\毕业设计\bysj\Web\bin\NPOI.OpenXml4Net.dll
+D:\VS2015解决方案\毕业设计\bysj\Web\bin\NPOI.OpenXmlFormats.dll
+D:\VS2015解决方案\毕业设计\bysj\Web\bin\ICSharpCode.SharpZipLib.xml

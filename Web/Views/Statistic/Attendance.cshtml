@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewBag.Title = "Attendance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string Num = ViewBag.Num;
+}
+
+<a href='/Statistic/SaveAllAttendanceExcel?Num=@Num' target='_blank'>导出Excel</a>
+
+<!--表格开始-->
+<div class="col-lg-12 col-xs-12">
+    <table id="AttendanceList"></table>
+</div><!-- /col-lg-12 -->
+<!--表格结束-->
+
+
+@section javascript{
+    <link href="~/assets/bootstraptable/src/bootstrap-table.css" rel="stylesheet" />
+    <script src="~/assets/bootstraptable/src/bootstrap-table.js"></script>
+
+    <!--表格加载-->
+    <script>
+        $("#AttendanceList").bootstrapTable({
+            url: "/Statistic/GetAllAttendance?Num=@Num",// 获取表格数据的url
+            method: 'post',//请求方式
+            dataType: "json",
+            dataField: "rows",
+            classes: 'table',//边框
+            undefinedText: '',//当数据为 undefined 时显示的字符
+            pagination: true,//启动分页
+            striped: true,  //表格显示条纹，默认为false
+            pagination: true, // 在表格底部显示分页组件，默认false
+            pageList: [10, 25, 50], // 设置页面可以显示的数据条数
+            pageSize: 10, // 页面数据条数
+            pageNumber: 1, // 首页页码
+            showColumns: true,  //显示下拉框勾选要显示的列
+            showRefresh: false,  //显示刷新按钮
+            showToggle: false,//显示一行是否改成竖着
+            showPaginationSwitch: true,//是否显示 下面的分页框
+            search: true, //显示搜索框
+
+            sortOrder: "asc",//排序方式
+            locale: 'zh-CN',//中文支持
+            sidePagination: 'client', // 设置为客户端分页
+
+            columns: [{
+                field: 'Id',
+                title: '场地Id',
+                visible: false,
+                align: 'center',
+                valign: 'middle'
+            }, {
+                field: 'Lecture.Subject',
+                title: '主题',
+                align: 'center',
+                valign: 'middle'
+            }, {
+                field: 'StartTime',
+                title: '签到时间',
+                align: 'center',
+                valign: 'middle',
+                formatter: function (value, row, index) {
+                    var date = changeDateFormat(value);
+                    return date;
+                },
+            }, {
+                field: 'EndTime',
+                title: '签退时间',
+                align: 'center',
+                valign: 'middle',
+                formatter: function (value, row, index) {
+                    var date = changeDateFormat(value);
+                    if (date == '1900/01/01 00:05') {
+                        date = "未签退";
+                    }
+                    return date;
+                },
+            }, {
+                field: 'Lecture.Score',
+                title: '学分',
+                align: 'center',
+                valign: 'middle',
+                formatter: function (value, row, index) {
+                    var date = changeDateFormat(row.EndTime);
+                    var score = value;
+                    if (date == '1900/01/01 00:05') {
+                        score = 0;
+                    }
+                    return score;
+                },
+            }]
+        })
+
+        //日期转换
+        function changeDateFormat(cellval) {
+            if (cellval != null) {
+                var date = new Date(parseInt(cellval.replace("/Date(", "").replace(")/", ""), 10));
+                var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+                var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+                var hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+                var minute = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+                return date.getFullYear() + "/" + month + "/" + currentDate + " "
+                + hours + ":" + minute;
+            }
+        }
+    </script>
+    <!--表格加载结束-->
+
+
+}
+

@@ -77,5 +77,41 @@ namespace DAL
             config.Close();
             return -1;                  //签到失败
         }
+
+
+        /// <summary>
+        /// 查询出席的讲座
+        /// </summary>
+        /// <param name="Num"></param>
+        /// <returns></returns>
+        public List<Model.T_Base_Statistic> GetAllAttendance(string Num)
+        {
+            List<Model.T_Base_Statistic> list = new List<Model.T_Base_Statistic>();
+            SqlConfig config = new SqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
+            cmd.CommandText = "select * from V_Lecture_Statistic where Num = '" + Num + "'";
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Model.T_Base_Statistic statistic = new Model.T_Base_Statistic();
+                Model.T_Base_Lecture lecture = new Model.T_Base_Lecture();
+                lecture.Id = Convert.ToInt32(reader["Id"]);
+                lecture.Subject = Convert.ToString(reader["Subject"]);
+                lecture.Score = Convert.ToDouble(reader["Score"]);
+                lecture.RealPeople = Convert.ToInt32(reader["RealPeople"]);
+                lecture.LectureTime = Convert.ToDateTime(reader["LectureTime"]);
+
+                statistic.Id = Convert.ToInt32(reader["StatisticId"]);
+                statistic.Num = Convert.ToString(reader["Num"]);
+                statistic.StartTime = Convert.ToDateTime(reader["StartTime"]);
+                statistic.EndTime = Convert.ToDateTime(reader["EndTime"]);
+                statistic.Lecture = lecture;
+
+                list.Add(statistic);
+            }
+
+            config.Close();
+            return list;
+        }
     }
 }
