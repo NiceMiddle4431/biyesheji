@@ -3406,7 +3406,7 @@ $(function(){
 HTML5 input types.
 Following types are supported:
 
-* password
+* PassWord
 * email
 * url
 * tel
@@ -3441,17 +3441,17 @@ $(function(){
 **/ 
 
 /*
-Password
+PassWord
 */
 (function ($) {
     "use strict";
     
-    var Password = function (options) {
-        this.init('password', options, Password.defaults);
+    var PassWord = function (options) {
+        this.init('PassWord', options, PassWord.defaults);
     };
-    $.fn.editableutils.inherit(Password, $.fn.editabletypes.text);
-    $.extend(Password.prototype, {
-       //do not display password, show '[hidden]' instead
+    $.fn.editableutils.inherit(PassWord, $.fn.editabletypes.text);
+    $.extend(PassWord.prototype, {
+       //do not display PassWord, show '[hidden]' instead
        value2html: function(value, element) {
            if(value) {
                $(element).text('[hidden]');
@@ -3459,15 +3459,15 @@ Password
                $(element).empty(); 
            }
        },
-       //as password not displayed, should not set value by html
+       //as PassWord not displayed, should not set value by html
        html2value: function(html) {
            return null;
        }       
     });    
-    Password.defaults = $.extend({}, $.fn.editabletypes.text.defaults, {
-        tpl: '<input type="password">'
+    PassWord.defaults = $.extend({}, $.fn.editabletypes.text.defaults, {
+        tpl: '<input type="PassWord">'
     });
-    $.fn.editabletypes.password = Password;
+    $.fn.editabletypes.PassWord = PassWord;
 }(window.jQuery));
 
 

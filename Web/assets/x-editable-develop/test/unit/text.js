@@ -455,11 +455,11 @@ $(function () {
 		equal(e.html(), html, 'html again ok');
     });         
 
-   test("password", function () {
+   test("PassWord", function () {
           var v = '123', v1 = '456';
        
           var e = $('<a href="#" data-pk="1" data-name="name" data-value="'+v+'"></a>').appendTo('#qunit-fixture').editable({
-                type: 'password',
+                type: 'PassWord',
                 url: function(params) {
                    equal(params.value, v1, 'submitted value correct'); 
                 }
@@ -470,7 +470,7 @@ $(function () {
             e.click()
             var p = tip(e);
             ok(p.is(':visible'), 'popover visible');
-            var $input = p.find('input[type="password"]');
+            var $input = p.find('input[type="PassWord"]');
             ok($input.length, 'input exists');
             equal($input.val(), v, 'input contains correct value');
             $input.val(v1);

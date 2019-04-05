@@ -26,8 +26,11 @@ namespace Model
         /// <summary>
         /// 登录密码
         /// </summary>
-        public string Password { get; set; }
+        public string PassWord { get; set; }
 
-
+        /// <summary>
+        /// 角色
+        /// </summary>
+        public int Role { get; set; }
     }
 }

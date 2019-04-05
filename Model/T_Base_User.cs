@@ -50,7 +50,7 @@ namespace Model
         /// <summary>
         /// 登录密码（默认学号
         /// </summary>
-        public string Password { get; set; }
+        public string PassWord { get; set; }
 
 
         /// <summary>
@@ -70,6 +70,11 @@ namespace Model
         /// </summary>
         public Model.T_Base_MajorClass MajorClass { get; set; }
 
+
+        /// <summary>
+        /// 角色
+        /// </summary>
+        public int Role { get; set; }
 
     }
 }

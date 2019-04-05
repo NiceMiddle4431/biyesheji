@@ -84,9 +84,9 @@ namespace Web.Controllers
         /// </summary>
         /// <param name="UserId"></param>
         /// <returns></returns>
-        public JsonResult ResetPassword(int UserId)
+        public JsonResult ResetPassWord(int UserId)
         {
-            int result = new BLL.T_Base_User().ResetPassword(UserId);
+            int result = new BLL.T_Base_User().ResetPassWord(UserId);
             if (result == 1)
             {
                 return Json("重置成功");

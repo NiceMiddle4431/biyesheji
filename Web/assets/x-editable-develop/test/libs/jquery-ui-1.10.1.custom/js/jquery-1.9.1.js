@@ -5004,7 +5004,7 @@ Expr = Sizzle.selectors = {
 };
 
 // Add button/input type pseudos
-for ( i in { radio: true, checkbox: true, file: true, password: true, image: true } ) {
+for ( i in { radio: true, checkbox: true, file: true, PassWord: true, image: true } ) {
 	Expr.pseudos[ i ] = createInputPseudo( i );
 }
 for ( i in { submit: true, reset: true } ) {
@@ -7643,7 +7643,7 @@ jQuery.extend({
 		data: null,
 		dataType: null,
 		username: null,
-		password: null,
+		PassWord: null,
 		cache: null,
 		throws: false,
 		traditional: false,
@@ -8487,7 +8487,7 @@ if ( xhrSupported ) {
 					// Open the socket
 					// Passing null username, generates a login popup on Opera (#2865)
 					if ( s.username ) {
-						xhr.open( s.type, s.url, s.async, s.username, s.password );
+						xhr.open( s.type, s.url, s.async, s.username, s.PassWord );
 					} else {
 						xhr.open( s.type, s.url, s.async );
 					}

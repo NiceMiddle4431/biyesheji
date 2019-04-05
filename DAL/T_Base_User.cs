@@ -129,7 +129,7 @@ namespace DAL
         /// </summary>
         /// <param name="UserId"></param>
         /// <returns></returns>
-        public int ResetPassword(int UserId)
+        public int ResetPassWord(int UserId)
         {
             SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
@@ -171,10 +171,52 @@ namespace DAL
             user.Sex = Convert.ToInt32(reader["Sex"]);
             user.MajorClassId = Convert.ToInt32(reader["MajorClassId"]);
             user.PhoneNum = Convert.ToString(reader["PhoneNum"]);
-            user.Password = Convert.ToString(reader["Password"]);
+            user.PassWord = Convert.ToString(reader["PassWord"]);
             user.Number = Convert.ToInt16(reader["Number"]);
             user.IsAdmin = Convert.ToInt16(reader["IsAdmin"]);
             user.MajorClass = majorClass;
+
+            reader.Close();
+            config.Close();
+            return user;
+        }
+
+        /// <summary>
+        /// 获取指定Num的用户信息
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        public Model.T_Base_User GetUser(string Num)
+        {
+            SqlConfig config = new SqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
+            cmd.CommandText = "select * from V_User_MajorClass_Architecture where Num = '" + Num+"'";
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+
+            //所属学院信息
+            Model.T_Base_Architecture architecture = new Model.T_Base_Architecture();
+            architecture.Id = Convert.ToInt32(reader["ArchitectureId"]);
+            architecture.ArchitectureName = Convert.ToString(reader["ArchitectureName"]);
+            //所属专业班级信息
+            Model.T_Base_MajorClass majorClass = new Model.T_Base_MajorClass();
+            majorClass.Id = Convert.ToInt32(reader["MajorClassId"]);
+            majorClass.MajorClassName = Convert.ToString(reader["MajorClassName"]);
+            majorClass.ArchitectureId = Convert.ToInt32(reader["ArchitectureId"]);
+            majorClass.Architecture = architecture;
+            //用户信息
+            Model.T_Base_User user = new Model.T_Base_User();
+            user.Id = Convert.ToInt32(reader["Id"]);
+            user.Num = Convert.ToString(reader["Num"]);
+            user.Name = Convert.ToString(reader["Name"]);
+            user.Sex = Convert.ToInt32(reader["Sex"]);
+            user.MajorClassId = Convert.ToInt32(reader["MajorClassId"]);
+            user.PhoneNum = Convert.ToString(reader["PhoneNum"]);
+            user.PassWord = Convert.ToString(reader["PassWord"]);
+            user.Number = Convert.ToInt16(reader["Number"]);
+            user.IsAdmin = Convert.ToInt16(reader["IsAdmin"]);
+            user.MajorClass = majorClass;
+            user.Role = Convert.ToInt32(reader["Role"]);
 
             reader.Close();
             config.Close();
@@ -216,13 +258,13 @@ namespace DAL
         }
 
 
-        public Model.T_Base_User CheckUser(string LoginName, string Password)
+        public Model.T_Base_User CheckUser(string LoginName, string PassWord)
         {
             Model.T_Base_User user = new Model.T_Base_User();
             SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "select * from T_Base_User where Num = '"+LoginName
-                +"' and PassWord = '"+Password+"'";
+                +"' and PassWord = '"+PassWord+"'";
             int result = cmd.ExecuteNonQuery();
             if(result == 1)
             {
@@ -234,7 +276,7 @@ namespace DAL
                 user.Sex = Convert.ToInt32(reader["Sex"]);
                 user.MajorClassId = Convert.ToInt32(reader["MajorClassId"]);
                 user.PhoneNum = Convert.ToString(reader["PhoneNum"]);
-                user.Password = Convert.ToString(reader["Password"]);
+                user.PassWord = Convert.ToString(reader["PassWord"]);
                 user.Number = Convert.ToInt32(reader["Number"]);
                 user.IsAdmin = Convert.ToInt32(reader["IsAdmin"]);
                 reader.Close();

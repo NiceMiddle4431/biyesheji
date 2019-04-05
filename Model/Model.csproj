@@ -45,6 +45,7 @@
     <Compile Include="T_Base_Audit.cs" />
     <Compile Include="T_Base_Lecture.cs" />
     <Compile Include="T_Base_MajorClass.cs" />
+    <Compile Include="T_Base_RoleMenu.cs" />
     <Compile Include="T_Base_Order.cs" />
     <Compile Include="T_Base_Place.cs" />
     <Compile Include="T_Base_Resource.cs" />

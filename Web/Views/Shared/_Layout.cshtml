@@ -1,4 +1,30 @@
-﻿<!DOCTYPE html>
+﻿@{
+    string Num = "";
+    List<Model.T_Base_RoleMenu> list = new List<Model.T_Base_RoleMenu>();
+
+    Model.T_Base_Admin admin = new Model.T_Base_Admin();
+    Model.T_Base_User user = new Model.T_Base_User();
+
+    int RoleId = -1;
+    if (HttpContext.Current.User != null)
+    {
+        var ticket = (HttpContext.Current.User.Identity as FormsIdentity).Ticket;
+        Num = ticket.Name;
+        RoleId = ticket.Version;
+        BLL.Home bll_home = new BLL.Home();
+        list = bll_home.GetRoleMenu(RoleId);
+        if (RoleId == 2 || RoleId == 3)
+        {
+            user = new BLL.T_Base_User().GetUser(Num);
+
+        }
+        else if (RoleId == 1)
+        {
+            admin = new BLL.T_Base_Admin().GetAdmin(Num);
+        }
+    }
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -82,9 +108,29 @@
                 <ul class="sidebar-menu" id="nav-accordion">
 
                     <p class="centered"></p>
-                    <h5 class="centered">登录者名字</h5>
+                    <h5 class="centered">@Num</h5>
+                    @foreach (Model.T_Base_RoleMenu roleMenu in list)
+                    {
+                        <li class="mt">
+                            @if (roleMenu.Display != "讲座管理")
+                            {
+                                <a class="" href="/@roleMenu.Controller/@roleMenu.Action">
+                                    <i class="fa fa-dashboard"></i>
+                                    <span>@roleMenu.Display</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="" href="/@roleMenu.Controller/@roleMenu.Action?Num=@Num">
+                                    <i class="fa fa-dashboard"></i>
+                                    <span>@roleMenu.Display</span>
+                                </a>
+                            }
 
-                    <li class="mt">
+                        </li>
+                    }
+
+                    @*<li class="mt">
                         <a class="" href="/Architecture/Index">
                             <i class="fa fa-dashboard"></i>
                             <span>场地管理</span>
@@ -113,7 +159,7 @@
                             <i class="fa fa-dashboard"></i>
                             <span>审核处理</span>
                         </a>
-                    </li>
+                    </li>*@
                 </ul>
                 <!-- sidebar menu end-->
             </div>

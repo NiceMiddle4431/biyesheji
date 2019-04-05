@@ -126,8 +126,9 @@ namespace Web.Controllers
         /// 个人申请讲座管理
         /// </summary>
         /// <returns></returns>
-        public ActionResult Personal()
+        public ActionResult Personal(string Num)
         {
+            ViewBag.Num = Num;
             return View();
         }
 

@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Personal";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string Num = ViewBag.Num;
 }
 
 <!--申请时模态框-->
@@ -237,7 +238,7 @@
     <!--表格加载-->
     <script>
             $("#LectureList").bootstrapTable({
-                url: "/Lecture/GetPersonalAllLecture?Num=15211220001",// 获取表格数据的url
+                url: "/Lecture/GetPersonalAllLecture?Num=@Num",// 获取表格数据的url
                 method: 'post',//请求方式
                 dataType: "json",
                 dataField: "rows",
@@ -396,7 +397,7 @@
             $.ajax({
                 url: "/Lecture/AddSaveLecture",
                 data: {
-                    AddNum: '15211220001',
+                    AddNum: @Num,
                     AddSubject: $("#AddSubject").val(),
                     AddSummary: $("#AddSummary").val(),
                     AddLectureTime: $("#AddLectureTime").val(),
@@ -475,7 +476,7 @@
             $.ajax({
                 url: "/Lecture/EditSaveLecture",
                 data: {
-                    EditNum: "15211220001",
+                    EditNum: @Num,
                     EditApplyId: $("#EditApplyId").val(),
                     EditLectureId: $("#EditLectureId").val(),
                     EditSubject: $("#EditSubject").val(),

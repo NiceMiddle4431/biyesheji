@@ -336,7 +336,7 @@
                     return "<button onclick=\"Edit(" + row.Id +
                         ")\" data-toggle='modal' data-target='#EditModal' class='btn btn-default btn-sm'>" +
                         "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>修改</span></button>"+
-                        "<button onclick='ResetPassword(" + row.Id +
+                        "<button onclick='ResetPassWord(" + row.Id +
                         ")' class='btn btn-default btn-sm'>" +
                         "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>重置密码</span></button>";
                 }
@@ -436,9 +436,9 @@
 
     <!--重置密码开始-->
     <script type="text/javascript">
-        function ResetPassword(Id) {
+        function ResetPassWord(Id) {
             $.ajax({
-                url: "/User/ResetPassword",
+                url: "/User/ResetPassWord",
                 data:{UserId : Id},
                 type: "POST",
                 dataType: "json",

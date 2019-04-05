@@ -62,9 +62,9 @@ namespace BLL
         /// </summary>
         /// <param name="UserId"></param>
         /// <returns></returns>
-        public int ResetPassword(int UserId)
+        public int ResetPassWord(int UserId)
         {
-            return new DAL.T_Base_User().ResetPassword(UserId);
+            return new DAL.T_Base_User().ResetPassWord(UserId);
         }
 
         /// <summary>
@@ -75,6 +75,16 @@ namespace BLL
         public Model.T_Base_User GetUser(int UserId)
         {
             return new DAL.T_Base_User().GetUser(UserId);
+        }
+
+        /// <summary>
+        /// 获取指定学号的用户信息
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        public Model.T_Base_User GetUser(string Num)
+        {
+            return new DAL.T_Base_User().GetUser(Num);
         }
 
         /// <summary>
@@ -99,9 +109,9 @@ namespace BLL
         }
 
 
-        public Model.T_Base_User CheckUser(string LoginName, string Password)
+        public Model.T_Base_User CheckUser(string LoginName, string PassWord)
         {
-            return new DAL.T_Base_User().CheckUser(LoginName, Password);
+            return new DAL.T_Base_User().CheckUser(LoginName, PassWord);
         }
 
     }

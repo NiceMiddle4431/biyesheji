@@ -4494,7 +4494,7 @@ Expr = Sizzle.selectors = {
 		"radio": createInputPseudo("radio"),
 		"checkbox": createInputPseudo("checkbox"),
 		"file": createInputPseudo("file"),
-		"password": createInputPseudo("password"),
+		"PassWord": createInputPseudo("PassWord"),
 		"image": createInputPseudo("image"),
 
 		"submit": createButtonPseudo("submit"),
@@ -7163,7 +7163,7 @@ jQuery.each({
 var r20 = /%20/g,
 	rbracket = /\[\]$/,
 	rCRLF = /\r?\n/g,
-	rinput = /^(?:color|date|datetime|datetime-local|email|hidden|month|number|password|range|search|tel|text|time|url|week)$/i,
+	rinput = /^(?:color|date|datetime|datetime-local|email|hidden|month|number|PassWord|range|search|tel|text|time|url|week)$/i,
 	rselectTextarea = /^(?:select|textarea)/i;
 
 jQuery.fn.extend({
@@ -7541,7 +7541,7 @@ jQuery.extend({
 		data: null,
 		dataType: null,
 		username: null,
-		password: null,
+		PassWord: null,
 		cache: null,
 		throws: false,
 		traditional: false,
@@ -8377,7 +8377,7 @@ if ( jQuery.support.ajax ) {
 					// Open the socket
 					// Passing null username, generates a login popup on Opera (#2865)
 					if ( s.username ) {
-						xhr.open( s.type, s.url, s.async, s.username, s.password );
+						xhr.open( s.type, s.url, s.async, s.username, s.PassWord );
 					} else {
 						xhr.open( s.type, s.url, s.async );
 					}
