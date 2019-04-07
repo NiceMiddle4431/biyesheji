@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
+using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
 
 namespace Web.Controllers
 {
@@ -158,6 +161,79 @@ namespace Web.Controllers
             {
                 return Json("删除" + result + "记录");
             }
+        }
+
+
+        public ActionResult ExcelIndex() {
+
+            return View();
+        } 
+
+        public JsonResult SaveExcelUser()
+        {
+            var file = Request.Files["AddFile"];
+            if (file.ContentLength == 0)
+            {
+                return Json("请添加文件");
+            }
+            string path = Server.MapPath("\\upLoad\\");
+            string[] strfile = file.FileName.Split('.');
+            string type = "."+strfile[strfile.Length - 1];
+            string fileName = "";
+            for (int i = 0; i < strfile.Length-1; i++)
+            {
+                fileName += strfile[i];
+            }
+            fileName += DateTime.Now.ToString("yyyyMMddHHmmssffff") + type;
+            file.SaveAs(path + fileName);
+            
+            FileStream fs = new FileStream(path+fileName, FileMode.Open);
+            if (fs.Length == 0)
+            {
+                return Json("文件不存在");
+            }
+            HSSFWorkbook wk = new HSSFWorkbook(fs);
+            ISheet sheet = wk.GetSheetAt(0);
+
+            List<Model.T_Base_User> list = new List<Model.T_Base_User>();
+            for (int i = 1; i <= sheet.LastRowNum; i++)
+            {
+                IRow row = sheet.GetRow(i);
+                if(row != null)
+                {
+                    for(int j = 0; j < row.LastCellNum; j++)
+                    {
+                        ICell cell = row.GetCell(j);
+                        if(cell == null)
+                        {
+                            return Json("第" + (i + 1) + "行" + (j + 1) + "列单元格内缺失内容");
+                        }
+                    }
+                    Model.T_Base_User user = new Model.T_Base_User();
+                    Model.T_Base_MajorClass majorClass = new Model.T_Base_MajorClass();
+                    Model.T_Base_Architecture architecture = new Model.T_Base_Architecture();
+                    user.Num = row.GetCell(0).ToString();
+                    user.Name = row.GetCell(1).ToString();
+                    if (row.GetCell(2).ToString() == "女")
+                    {
+                        user.Sex = 0;
+                    }
+                    else if (row.GetCell(2).ToString() == "男")
+                    {
+                        user.Sex = 1;
+                    }
+                    majorClass.MajorClassName = row.GetCell(3).ToString();
+                    architecture.ArchitectureName = row.GetCell(4).ToString();
+                    user.PhoneNum = row.GetCell(5).ToString();
+                    majorClass.Architecture = architecture;
+                    user.MajorClass = majorClass;
+                    list.Add(user);
+                }
+            }
+
+            int result = new BLL.T_Base_User().SaveExcelUser(list);
+
+            return Json("");
         }
     }
 }

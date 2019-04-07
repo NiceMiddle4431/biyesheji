@@ -49,9 +49,9 @@ namespace BLL
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public List<Model.T_Base_Apply> GetLecture(int Id)
+        public List<Model.T_Base_Apply> GetLecture(int LectureId,int State)
         {
-            return new DAL.T_Base_Lecture().GetLecture(Id);
+            return new DAL.T_Base_Lecture().GetLecture(LectureId, State);
         }
 
 

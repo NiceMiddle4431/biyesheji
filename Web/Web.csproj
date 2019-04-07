@@ -801,12 +801,12 @@
     <Content Include="Views\Lecture\Index.cshtml" />
     <Content Include="Views\Lecture\Personal.cshtml" />
     <Content Include="Views\Review\Index.cshtml" />
-    <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Statistic\Index.cshtml" />
     <Content Include="Views\Resource\Index.cshtml" />
     <Content Include="Views\Resource\AddIndex.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Statistic\Attendance.cshtml" />
+    <Content Include="Views\User\ExcelIndex.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -820,6 +820,7 @@
     <Folder Include="Models\" />
     <Folder Include="QRCode\" />
     <Folder Include="upLoad\" />
+    <Folder Include="UserModel\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BLL\BLL.csproj">

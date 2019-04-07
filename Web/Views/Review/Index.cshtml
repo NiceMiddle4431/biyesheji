@@ -200,49 +200,55 @@
 
     <!--审核-->
     <script>
-        function Review(ApplyId,LectureId, State, Num) {
-                let result = confirm("确认拒绝？");
-                if (result) {
-                    if (State == 1) {
+        function Review(ApplyId, LectureId, State, Num) {
+            let result = false;
+            if (State == 1) {
+                result = confirm("确认同意？");
+            }else if(State == 2){
+                result = confirm("确认拒绝？");
+            }
+               
+            if (result) {
+                if (State == 1) {
+                    $.ajax({
+                        url: "/Review/Review",
+                        data: {
+                            ApplyId: ApplyId,
+                            LectureId: LectureId,
+                            State: State,
+                            Num: Num
+                        },
+                        type: "POST",
+                        dataType: "json",
+                        success: function (result) {
+                            alert(result);
+                            $("#ReviewList").bootstrapTable('refresh');
+                        }
+                    })
+                } else if (State == 2) {
+                    $("#AddAudit").click();
+                    $("#AddSubmit").click(function () {
                         $.ajax({
                             url: "/Review/Review",
                             data: {
                                 ApplyId: ApplyId,
-                                LectureId:LectureId,
+                                LectureId: LectureId,
                                 State: State,
-                                Num: Num
+                                Num: Num,
+                                Reason: $("#AddReason").val()
                             },
                             type: "POST",
                             dataType: "json",
                             success: function (result) {
                                 alert(result);
+                                $("#AddClose").click();
                                 $("#ReviewList").bootstrapTable('refresh');
                             }
                         })
-                    } else if (State == 2) {
-                        $("#AddAudit").click();
-                        $("#AddSubmit").click(function () {
-                            $.ajax({
-                                url: "/Review/Review",
-                                data: {
-                                    ApplyId: ApplyId,
-                                    LectureId: LectureId,
-                                    State: State,
-                                    Num: Num,
-                                    Reason: $("#AddReason").val()
-                                },
-                                type: "POST",
-                                dataType: "json",
-                                success: function (result) {
-                                    alert(result);
-                                    $("#AddClose").click();
-                                    $("#ReviewList").bootstrapTable('refresh');
-                                }
-                            })
-                        })
-                    }
+                    })
                 }
             }
+        }
     </script>
     <!--审核结束-->
 }

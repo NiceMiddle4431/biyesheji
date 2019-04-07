@@ -44,8 +44,8 @@
     <button id="AddUser" type="button" class="btn btn-default" data-toggle='modal' data-target='#AddModal'>
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>添加
     </button>
-    <button id="AddStudents" type="button" class="btn btn-default" data-toggle='modal' data-target='#AddExcel'>
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>批量添加
+    <button id="AddUsers" type="button" class="btn btn-default" data-toggle='modal' data-target='#AddExcel'>
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Excel批量导入
     </button>
     <button id="DeleteUsers" type="button" class="btn btn-default" style="">
         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
@@ -596,6 +596,14 @@
         })
     </script>
     <!--ajax删除用户信息并更新表格结束-->
+
+
+    <!--Excel页面跳转-->
+    <script>
+        $("#AddUsers").click(function () {
+            window.location.replace("/User/ExcelIndex");
+        })
+    </script>
 }
 
 

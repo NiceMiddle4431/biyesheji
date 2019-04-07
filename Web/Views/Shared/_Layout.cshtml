@@ -117,38 +117,7 @@
                                 <span>@roleMenu.Display</span>
                             </a>
                         </li>
-                    }
-
-                    @*<li class="mt">
-                        <a class="" href="/Architecture/Index">
-                            <i class="fa fa-dashboard"></i>
-                            <span>场地管理</span>
-                        </a>
-                    </li>
-                    <li class="mt">
-                        <a class="" href="/User/Index">
-                            <i class="fa fa-dashboard"></i>
-                            <span>学生管理</span>
-                        </a>
-                    </li>
-                    <li class="mt">
-                        <a class="" href="/Lecture/Index">
-                            <i class="fa fa-dashboard"></i>
-                            <span>讲座列表</span>
-                        </a>
-                    </li>
-                    <li class="mt">
-                        <a class="" href="/Lecture/Personal">
-                            <i class="fa fa-dashboard"></i>
-                            <span>讲座管理</span>
-                        </a>
-                    </li>
-                    <li class="mt">
-                        <a class="" href="/Review/Index">
-                            <i class="fa fa-dashboard"></i>
-                            <span>审核处理</span>
-                        </a>
-                    </li>*@
+                    }                    
                 </ul>
                 <!-- sidebar menu end-->
             </div>
@@ -190,23 +159,6 @@
 <!--script for this page-->
 <script src="/assets/js/sparkline-chart.js"></script>
 <script src="/assets/js/zabuto_calendar.js"></script>
-
-    @*<script>
-        $(document).ready(function () {
-            $.ajax({
-                url: "/Lecture/OrderMessage",
-                date:{
-                    RoleId:1,
-                    Num:'15211220001'
-                },
-                type: "POST",
-                dataType: "JSON",
-                success: function (result) {
-                    
-                }
-            })
-        })
-    </script>*@
 </body>
 </html>
 @RenderSection("javascript",false)

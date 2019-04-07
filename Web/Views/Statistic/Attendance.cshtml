@@ -3,9 +3,22 @@
     ViewBag.Title = "Attendance";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string Num = ViewBag.Num;
+    double Score = ViewBag.Score;
 }
-
-<a href='/Statistic/SaveAllAttendanceExcel?Num=@Num' target='_blank'>导出Excel</a>
+<h4>总获得学分:@Score</h4>
+<div class="btn-group pull-right" id="toolbar">
+    <a href='/Statistic/SaveAllAttendanceExcel?Num=@Num' target='_blank'>
+        <button type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>导出excel
+        </button>
+    </a>
+    <button id="BtnAllLecture" type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>查看全部讲座
+    </button>
+    <button id="BtnPartLecture" type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>查看合格讲座
+    </button>
+</div>
 
 <!--表格开始-->
 <div class="col-lg-12 col-xs-12">
@@ -21,7 +34,7 @@
     <!--表格加载-->
     <script>
         $("#AttendanceList").bootstrapTable({
-            url: "/Statistic/GetAllAttendance?Num=@Num",// 获取表格数据的url
+            url: "/Statistic/GetAllAttendance?Num=@Num&State=0",// 获取表格数据的url
             method: 'post',//请求方式
             dataType: "json",
             dataField: "rows",
@@ -38,6 +51,10 @@
             showToggle: false,//显示一行是否改成竖着
             showPaginationSwitch: true,//是否显示 下面的分页框
             search: true, //显示搜索框
+
+            toolbar: '#toolbar',//工具按钮用哪个容器
+            toolbarAligh: 'left',//工具栏对齐方式
+            buttonsAligh: 'right',//按钮对齐方式
 
             sortOrder: "asc",//排序方式
             locale: 'zh-CN',//中文支持
@@ -106,6 +123,30 @@
     </script>
     <!--表格加载结束-->
 
+    <!--查看讲座加载-->
+    <script>
 
+        $("#BtnAllLecture").click(function () {
+            $.ajax({
+                url: "/Statistic/GetAllAttendance?Num=@Num&State=0",
+                type: "POST",
+                date: "JSON",
+                success: function (result) {
+                    $("#AttendanceList").bootstrapTable('load', result);
+                }
+            })
+        })
+        $("#BtnPartLecture").click(function () {
+            $.ajax({
+                url: "/Statistic/GetAllAttendance?Num=@Num&State=1",
+                type: "POST",
+                date: "JSON",
+                success: function (result) {
+                    $("#AttendanceList").bootstrapTable('load', result);
+                }
+            })
+        })
+    </script>
+    <!--查看讲座加载结束-->
 }
 

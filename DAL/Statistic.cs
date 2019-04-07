@@ -84,12 +84,19 @@ namespace DAL
         /// </summary>
         /// <param name="Num"></param>
         /// <returns></returns>
-        public List<Model.T_Base_Statistic> GetAllAttendance(string Num)
+        public List<Model.T_Base_Statistic> GetAllAttendance(string Num,int State)
         {
             List<Model.T_Base_Statistic> list = new List<Model.T_Base_Statistic>();
             SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
-            cmd.CommandText = "select * from V_Lecture_Statistic where Num = '" + Num + "'";
+            if (State == 0)
+            {
+                cmd.CommandText = "select * from V_Lecture_Statistic where Num = '" + Num + "'";
+            }else if (State == 1)
+            {
+                cmd.CommandText = "select * from V_Lecture_Statistic where Num = '" + Num + "' and EndTime <> '1900/1/1 0:00:00'";
+            }
+
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -109,9 +116,92 @@ namespace DAL
 
                 list.Add(statistic);
             }
-
+            reader.Close();
             config.Close();
             return list;
         }
+
+
+        /// <summary>
+        /// 获取总分
+        /// </summary>
+        /// <param name="Num"></param>
+        /// <returns></returns>
+        public double GetScore(string Num)
+        {
+            double result = 0;
+            SqlConfig config = new DAL.SqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
+            cmd.CommandText = "select * from V_AttendanceExcel where Num = '" + Num + "'";
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                if(!(Convert.ToDateTime(reader["EndTime"]).ToString("yyyy/MM/dd HH:mm:ss").Equals("1900/01/01 00:00:00")))
+                {
+                    result += Convert.ToDouble(reader["Score"]);
+                    string[] score = result.ToString().Split('.');
+                    if (score[1]=="99")
+                    {
+                        result = Convert.ToDouble(score[0] + 1);
+                    }
+                }
+            }
+            reader.Close();
+            config.Close();
+            return result;
+        }
+
+
+        /// <summary>
+        /// 查询参与讲座人员信息
+        /// </summary>
+        /// <param name="LectureId"></param>
+        /// <returns></returns>
+        public List<Model.T_Base_Statistic> SavePeopleExcel(int LectureId)
+        {
+            List<Model.T_Base_Statistic> list = new List<Model.T_Base_Statistic>();
+            SqlConfig config = new SqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
+            cmd.CommandText = "select * from V_AttendanceExcel where LectureId = " + LectureId;
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Model.T_Base_Statistic statistic = new Model.T_Base_Statistic();
+                Model.T_Base_User user = new Model.T_Base_User();
+
+                user.Num = Convert.ToString(reader["Num"]);
+                user.Name = Convert.ToString(reader["Name"]);
+                user.Sex = Convert.ToInt16(reader["Sex"]);
+                user.PhoneNum = Convert.ToString(reader["PhoneNum"]);
+                Model.T_Base_Architecture architecture = new Model.T_Base_Architecture();
+                architecture.ArchitectureName = Convert.ToString(reader["ArchitectureName"]);
+                Model.T_Base_MajorClass majorClass = new Model.T_Base_MajorClass();
+                majorClass.Architecture = architecture;
+                majorClass.MajorClassName = Convert.ToString(reader["MajorClassName"]);
+                user.MajorClass = majorClass;
+
+                statistic.StartTime = Convert.ToDateTime(reader["StartTime"]);
+                statistic.EndTime = Convert.ToDateTime(reader["EndTime"]);
+
+                statistic.User = user;
+                list.Add(statistic);
+            }
+
+            reader.Close();
+            config.Close();
+            return list;
+        }
+
+
+        public int SelectOrder(string Num,int LectureId)
+        {
+            SqlConfig config = new SqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
+            cmd.CommandText = "select count(1) from T_Base_Order where Num='"+Num+"' and LectureId="+LectureId;
+            int result = (int)cmd.ExecuteScalar();
+            config.Close();
+            return result;
+        }
+
     }
 }

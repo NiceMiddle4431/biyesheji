@@ -150,7 +150,7 @@
         oTableInit.InitSubTable = function (index, row, $detail) {
             var cur_table = $detail.html('<table></table>').find('table');
             $(cur_table).bootstrapTable({
-                url: "/Lecture/GetLecture?Id=" + row.Id,// 获取表格数据的url
+                url: "/Lecture/GetLecture?LectureId=" + row.Lecture.Id + "&State=1",// 获取表格数据的url
                 method: 'post',//请求方式
                 dataType: "json",
                 dataField: "data",

@@ -117,7 +117,7 @@ namespace DAL
             SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "insert into T_Base_User values('" + User.Num + 
                 "','"+User.Name+"',"+User.Sex+","+User.MajorClassId+",'"+User.PhoneNum
-                +"','"+User.Num+"',0,"+User.IsAdmin+")";
+                +"','"+User.Num+"',0,"+User.IsAdmin+",3)";
             int result = cmd.ExecuteNonQuery();
             config.Close();
             return result;
@@ -257,7 +257,12 @@ namespace DAL
             return result;
         }
 
-
+        /// <summary>
+        /// 检查用户账号密码
+        /// </summary>
+        /// <param name="LoginName"></param>
+        /// <param name="PassWord"></param>
+        /// <returns></returns>
         public Model.T_Base_User CheckUser(string LoginName, string PassWord)
         {
             Model.T_Base_User user = new Model.T_Base_User();
@@ -287,6 +292,49 @@ namespace DAL
             }
             config.Close();
             return user;
+        }
+
+
+        public int SaveExcelUser(List<Model.T_Base_User> User)
+        {
+            SqlConfig config = new SqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
+            cmd.Transaction = config.getSqlConnection().BeginTransaction();
+            int result = 0; //添加的学生数
+            for (int i = 0; i < User.Count; i++)
+            {
+                //判断该生是否存在
+                cmd.CommandText = "select count(1) from T_Base_User where Num='" + User[i].Num + "'";
+                if ((int)cmd.ExecuteScalar() == 1)
+                {
+                    continue;
+                }
+                //判断学院是否存在
+                cmd.CommandText = "select count(1) from T_Base_Architecture where ArchitectureName='" + User[i].MajorClass.Architecture.ArchitectureName + "'";
+                if ((int)cmd.ExecuteScalar() == 0)
+                {
+                    cmd.CommandText = "insert into T_Base_Architecture values('" + User[i].MajorClass.Architecture.ArchitectureName + "',1)";
+                    cmd.ExecuteNonQuery();
+                }
+                cmd.CommandText = "select Id from T_Base_Architecture where ArchitectureName='" + User[i].MajorClass.Architecture.ArchitectureName + "'";
+                int architectureId = (int)cmd.ExecuteScalar();
+                //判断班级是否存在
+                cmd.CommandText = "select count(1) from T_Base_MajorClass where MajorClassName='" + User[i].MajorClass.MajorClassName + "'";
+                if ((int)cmd.ExecuteScalar() == 0)
+                {
+                    cmd.CommandText = "insert into T_Base_MajorClass values('" + User[i].MajorClass.MajorClassName + "'," + architectureId + ")";
+                    cmd.ExecuteNonQuery();
+                }
+                cmd.CommandText = "select Id from T_Base_MajorClass where MajorClassName='" + User[i].MajorClass.MajorClassName + "'";
+                int majorClassId = (int)cmd.ExecuteScalar();
+                //添加用户
+                cmd.CommandText = "insert into T_Base_User values('" + User[i].Num + "','" + User[i].Name + "'," + User[i].Sex +
+                    "," + majorClassId + ",'" + User[i].PhoneNum + "','" + User[i].Num + "',0,0,3)";
+                result += cmd.ExecuteNonQuery();
+            }
+            cmd.Transaction.Commit();
+            config.Close();
+            return result;
         }
 
     }

@@ -53,6 +53,7 @@ namespace DAL
                 roleMenu.Display = Convert.ToString(reader["Display"]);
                 list.Add(roleMenu);
             }
+            reader.Close();
             config.Close();
             return list;
         }

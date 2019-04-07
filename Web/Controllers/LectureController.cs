@@ -73,9 +73,9 @@ namespace Web.Controllers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public JsonResult GetLecture(int Id)
+        public JsonResult GetLecture(int LectureId,int State)
         {
-            return Json(new BLL.T_Base_Lecture().GetLecture(Id));
+            return Json(new BLL.T_Base_Lecture().GetLecture(LectureId, State));
         }
 
         /// <summary>

@@ -114,5 +114,11 @@ namespace BLL
             return new DAL.T_Base_User().CheckUser(LoginName, PassWord);
         }
 
+
+
+        public int SaveExcelUser(List<Model.T_Base_User> User)
+        {
+            return new DAL.T_Base_User().SaveExcelUser(User);
+        }
     }
 }

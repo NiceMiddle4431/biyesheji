@@ -109,12 +109,20 @@ namespace DAL
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public List<Model.T_Base_Apply> GetLecture(int Id)
+        public List<Model.T_Base_Apply> GetLecture(int LectureId,int State)
         {
             List<Model.T_Base_Apply> list = new List<Model.T_Base_Apply>();
             SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
-            cmd.CommandText = "select * from V_User_Lecture_Place_Audit where Id = " + Id;
+            if (State == 1)
+            {
+                cmd.CommandText = "select * from V_User_Lecture_Place where LectureId = " + LectureId;
+            }
+            else if(State == 2)
+            {
+                cmd.CommandText = "select * from V_User_Lecture_Place_Audit where LectureId = " + LectureId;
+            }
+            
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -152,13 +160,16 @@ namespace DAL
                 lecture.ExpectPeople = Convert.ToInt32(reader["ExpectPeople"]);
                 lecture.RealPeople = Convert.ToInt32(reader["RealPeople"]);
                 lecture.Score = Convert.ToDouble(reader["Score"]);
-                if (reader["Reason"].Equals(DBNull.Value))
+                if (State == 2)
                 {
-                    lecture.Reason = "";
-                }
-                else
-                {
-                    lecture.Reason = Convert.ToString(reader["Reason"]);
+                    if (reader["Reason"].Equals(DBNull.Value))
+                    {
+                        lecture.Reason = "";
+                    }
+                    else
+                    {
+                        lecture.Reason = Convert.ToString(reader["Reason"]);
+                    }
                 }
                 apply.Lecture = lecture;
 

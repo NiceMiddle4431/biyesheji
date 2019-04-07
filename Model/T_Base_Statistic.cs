@@ -51,5 +51,16 @@ namespace Model
         /// 记录讲座信息
         /// </summary>
         public Model.T_Base_Lecture Lecture { get; set; }
+
+
+        /// <summary>
+        /// 记录参与用户信息
+        /// </summary>
+        public Model.T_Base_User User { get; set; }
+
+        /// <summary>
+        /// 是否有预报名
+        /// </summary>
+        public int Order { get; set; }
     }
 }

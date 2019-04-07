@@ -91,7 +91,6 @@
     </div>
 </div>
 <!--申请时模态框结束-->
-
 <!--修改时模态框-->
 <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="EditModalLabel">
     <div class="modal-dialog" role="document">
@@ -183,7 +182,6 @@
     </div>
 </div>
 <!--修改时模态框结束-->
-
 <!--获取二维码时模态框-->
 <div class="modal fade" id="QR" tabindex="-1" role="dialog" aria-labelledby="QR">
     <div class="modal-dialog" role="document">
@@ -193,7 +191,7 @@
                 <h4 class="modal-title" id="AddLectureLabel">签到二维码</h4>
             </div>
             <div class="modal-body">
-                <img id="QRImg"/>
+                <img id="QRImg" />
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" id="QRClose">关闭</button>
@@ -202,6 +200,57 @@
     </div>
 </div>
 <!--获取二维码时模态框结束-->
+<!--导出Excel选择-->
+<div class="modal fade" id="SelectExcel" tabindex="-1" role="dialog" aria-labelledby="SelectExcel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="AddLectureLabel">导出Excel格式选择</h4>
+            </div>
+            <div class="modal-body">
+                <form id="AddForm" class="form-horizontal style-form" method="post" action="/Statistic/SavePeopleExcel">
+                    <div class="form-group">
+                        <input class="hidden" type="text" id="LectureIdExcel" name="LectureIdExcel" value="" />
+                        <input class="hidden" type="text" id="Roke" name="Roke" />
+                        <label class="checkbox-inline">
+                            <input type="checkbox" id="AllExcel" name="AllExcel" value="*" /> 全选
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" id="NumExcel" name="NumExcel" value="Num" /> 学号
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" id="NameExcel" name="NameExcel" value="Name" /> 姓名
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" id="SexExcel" name="SexExcel" value="Sex" /> 性别
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" id="PhoneNumExcel" name="PhoneNumExcel" value="PhoneNum" /> 联系方式
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" id="MajorClassExcel" name="MajorClassExcel" value="MajorClass" /> 班级
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" id="ArchitectureExcel" name="ArchitectureExcel" value="Architecture" /> 学院
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" id="OrderExcel" name="OrderExcel" value="Order" /> 是否有预报名
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" id="StartTimeExcel" name="StartTimeExcel" value="StartTime" /> 到场时间
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" id="EndTimeExcel" name="EndTimeExcel" value="EndTime" /> 退场时间
+                        </label>
+                    </div>
+                    <input type="submit"/>提交
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!--表格开始-->
 <br />
@@ -218,11 +267,10 @@
     <table id="LectureList"></table>
 </div><!-- /col-lg-12 -->
 <!--表格结束-->
-
 <!--操作按钮，讲座信息的座信息的多条删除和申请开始-->
 <div class="btn-group pull-right" id="toolbar">
-    <button id="AddLectureBtn" type="button" class="btn btn-default" 
-           onclick="GetArchitecture()" data-toggle='modal' data-target='#AddLecture'>
+    <button id="AddLectureBtn" type="button" class="btn btn-default"
+            onclick="GetArchitecture()" data-toggle='modal' data-target='#AddLecture'>
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>申请
     </button>
     <button id="DeleteLectureBtn" type="button" class="btn btn-default" style="">
@@ -237,159 +285,161 @@
 
     <!--表格加载-->
     <script>
-            $("#LectureList").bootstrapTable({
-                url: "/Lecture/GetPersonalAllLecture?Num=@Num",// 获取表格数据的url
-                method: 'post',//请求方式
-                dataType: "json",
-                dataField: "rows",
-                classes: 'table',//边框
-                undefinedText: '',//当数据为 undefined 时显示的字符
-                pagination: true,//启动分页
-                striped: true,  //表格显示条纹，默认为false
-                pagination: true, // 在表格底部显示分页组件，默认false
-                pageList: [10, 25, 50], // 设置页面可以显示的数据条数
-                pageSize: 10, // 页面数据条数
-                pageNumber: 1, // 首页页码
-                showColumns: false,  //显示下拉框勾选要显示的列
-                showRefresh: false,  //显示刷新按钮
-                showToggle: false,//显示一行是否改成竖着
-                showPaginationSwitch: false,//是否显示 下面的分页框
-                search: false, //显示搜索框
-                detailView: true,       //详情页面显示
-                //toolbar操作
-                toolbar: '#toolbar',//工具按钮用哪个容器
-                toolbarAligh: 'left',//工具栏对齐方式
-                buttonsAligh: 'right',//按钮对齐方式
+        $("#LectureList").bootstrapTable({
+            url: "/Lecture/GetPersonalAllLecture?Num=@Num",// 获取表格数据的url
+            method: 'post',//请求方式
+            dataType: "json",
+            dataField: "rows",
+            classes: 'table',//边框
+            undefinedText: '',//当数据为 undefined 时显示的字符
+            pagination: true,//启动分页
+            striped: true,  //表格显示条纹，默认为false
+            pagination: true, // 在表格底部显示分页组件，默认false
+            pageList: [10, 25, 50], // 设置页面可以显示的数据条数
+            pageSize: 10, // 页面数据条数
+            pageNumber: 1, // 首页页码
+            showColumns: false,  //显示下拉框勾选要显示的列
+            showRefresh: false,  //显示刷新按钮
+            showToggle: false,//显示一行是否改成竖着
+            showPaginationSwitch: false,//是否显示 下面的分页框
+            search: false, //显示搜索框
+            detailView: true,       //详情页面显示
+            //toolbar操作
+            toolbar: '#toolbar',//工具按钮用哪个容器
+            toolbarAligh: 'left',//工具栏对齐方式
+            buttonsAligh: 'right',//按钮对齐方式
 
-                sortOrder: "asc",//排序方式
-                locale: 'zh-CN',//中文支持
-                sidePagination: 'client', // 设置为服务器端分页
+            sortOrder: "asc",//排序方式
+            locale: 'zh-CN',//中文支持
+            sidePagination: 'client', // 设置为服务器端分页
 
-                columns: [{
-                    checkbox: true
-                }, {
-                    field: 'Id',
-                    title: '讲座信息Id',
-                    visible: false,
-                    align: 'center',
-                    valign: 'middle'
-                }, {
-                    field: 'Lecture.Subject',
-                    title: '讲座信息名',
-                    align: 'center',
-                    valign: 'middle'
-                }, {
-                    field: 'User.Name',
-                    title: '负责人',
-                    align: 'center',
-                    valign: 'middle'
-                }, {
-                    title: '开始时间',
-                    align: 'center',
-                    valign: 'middle',
-                    formatter: function (value, row, index) {
-                        return changeDateFormat(row.Lecture.LectureTime);
-                    }
-                }, {
-                    title: '报名截止时间',
-                    align: 'center',
-                    valign: 'middle',
-                    formatter: function (value, row, index) {
-                        return changeDateFormat(row.Lecture.DeathLine);
-                    },
-
-                }, {
-                    field: 'Place.PlaceName',
-                    title: '举办地点',
-                    align: 'center',
-                    valign: 'middle'
-                }, {
-                    field: 'Lecture.State',
-                    title: '审核理由',
-                    align: 'center',
-                    valign: 'middle',
-                    formatter: function (value, row, index) {
-                        let state = "";
-                        if (value == 0) {
-                            state = "待审核";
-                        } else if (value == 1) {
-                            state = "审核通过";
-                        } else if (value == 2) {
-                            state = "审核未通过";
-                        }
-                        return state;
-                    },
-
-                }, {
-                    title: '操作',
-                    align: 'center',
-                    valign: 'middle',
-                    formatter: function (value, row, index) {
-                        let str = "<button onclick='Edit(" + JSON.stringify(row) +
-                            ")' data-toggle='modal' data-target='#EditModal' class='btn btn-default btn-sm'>" +
-                            "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>修改</span></button>" +
-                             "<button onclick='GetQRCode(" + row.Lecture.QRCode +
-                             ")' data-toggle='modal' data-target='#QR' class='btn btn-default btn-sm'>" +
-                            "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>签到二维码</span></button>" +
-                             "<a href=/Resource/Index?LectureId="+row.Lecture.Id+"><button class='btn btn-default btn-sm'>" +
-                            "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>查看评论</span></button></a>";
-                        return str;
-                    }
-                }],
-
-                //子页面（详情页）内容
-                onExpandRow: function (index, row, $detail) {
-                    oTableInit.InitSubTable(index, row, $detail);
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'Id',
+                title: '讲座信息Id',
+                visible: false,
+                align: 'center',
+                valign: 'middle'
+            }, {
+                field: 'Lecture.Subject',
+                title: '讲座信息名',
+                align: 'center',
+                valign: 'middle'
+            }, {
+                field: 'User.Name',
+                title: '负责人',
+                align: 'center',
+                valign: 'middle'
+            }, {
+                title: '开始时间',
+                align: 'center',
+                valign: 'middle',
+                formatter: function (value, row, index) {
+                    return changeDateFormat(row.Lecture.LectureTime);
                 }
+            }, {
+                title: '报名截止时间',
+                align: 'center',
+                valign: 'middle',
+                formatter: function (value, row, index) {
+                    return changeDateFormat(row.Lecture.DeathLine);
+                },
 
-            })
+            }, {
+                field: 'Place.PlaceName',
+                title: '举办地点',
+                align: 'center',
+                valign: 'middle'
+            }, {
+                field: 'Lecture.State',
+                title: '审核理由',
+                align: 'center',
+                valign: 'middle',
+                formatter: function (value, row, index) {
+                    let state = "";
+                    if (value == 0) {
+                        state = "待审核";
+                    } else if (value == 1) {
+                        state = "审核通过";
+                    } else if (value == 2) {
+                        state = "审核未通过";
+                    }
+                    return state;
+                },
+
+            }, {
+                title: '操作',
+                align: 'center',
+                valign: 'middle',
+                formatter: function (value, row, index) {
+                    let str = "<button onclick='Edit(" + JSON.stringify(row) +
+                        ")' data-toggle='modal' data-target='#EditModal' class='btn btn-default btn-sm'>" +
+                        "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>修改</span></button>" +
+                         "<button onclick='GetQRCode(" + row.Lecture.QRCode +
+                         ")' data-toggle='modal' data-target='#QR' class='btn btn-default btn-sm'>" +
+                        "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>签到二维码</span></button>" +
+                         "<a href='/Resource/Index?LectureId="+row.Lecture.Id+"'><button class='btn btn-default btn-sm'>" +
+                        "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>查看评论</span></button></a>"+
+                         "<button onclick='SetExcelLectureId("+row.Lecture.Id+")' data-toggle='modal' data-target='#SelectExcel' class='btn btn-default btn-sm'>" +
+                        "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>导出Excel</span></button>"
+                    //+"<a href='/Statistic/SavePeopleExcel?LectureId="+row.Lecture.Id+"' target='_blank'>";
+                    return str;
+                }
+            }],
+
+            //子页面（详情页）内容
+            onExpandRow: function (index, row, $detail) {
+                oTableInit.InitSubTable(index, row, $detail);
+            }
+
+        })
     </script>
     <script>
-            var oTableInit = new Object();
-            oTableInit.InitSubTable = function (index, row, $detail) {
-                var cur_table = $detail.html('<table></table>').find('table');
-                $(cur_table).bootstrapTable({
-                    url: "/Lecture/GetLecture?Id=" + row.Id,// 获取表格数据的url
-                    method: 'post',//请求方式
-                    dataType: "json",
-                    dataField: "data",
-                    datailView: true,
-                    pageSize: 10, // 页面数据条数
-                    pageNumber: 1, // 首页页码
-                    pageList: [10, 25],
-                    columns: [{
-                        field: "Lecture.Summary",
-                        title: '内容简介',
-                        align: 'center',
-                        valign: 'middle'
-                    }, {
-                        field: "User.PhoneNum",
-                        title: '联系方式',
-                        align: 'center',
-                        valign: 'middle'
-                    },{
-                        field: "Lecture.Reason",
-                        title: '审核结果',
-                        align: 'center',
-                        valign: 'middle',
-                        formatter: function (value, row, index) {
-                            if (value == "") {
-                                return "审核通过";
-                            } else {
-                                return value;
-                            }
+        var oTableInit = new Object();
+        oTableInit.InitSubTable = function (index, row, $detail) {
+            var cur_table = $detail.html('<table></table>').find('table');
+            $(cur_table).bootstrapTable({
+                url: "/Lecture/GetLecture?LectureId=" + row.Lecture.Id+"&State=2",// 获取表格数据的url
+                method: 'post',//请求方式
+                dataType: "json",
+                dataField: "data",
+                datailView: true,
+                pageSize: 10, // 页面数据条数
+                pageNumber: 1, // 首页页码
+                pageList: [10, 25],
+                columns: [{
+                    field: "Lecture.Summary",
+                    title: '内容简介',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: "User.PhoneNum",
+                    title: '联系方式',
+                    align: 'center',
+                    valign: 'middle'
+                },{
+                    field: "Lecture.Reason",
+                    title: '审核结果',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (value, row, index) {
+                        if (value == "") {
+                            return "审核通过";
+                        } else {
+                            return value;
                         }
-                    }],
-                    //无线循环取子表，直到子表里面没有记录
-                    onExpandRow: function (index, row, $Subdetail) {
-                        oTableInit.InitSubTable(index, row, $Subdetail);
                     }
-                });
-                return oTableInit;
-            };
+                }],
+                //无线循环取子表，直到子表里面没有记录
+                onExpandRow: function (index, row, $Subdetail) {
+                    oTableInit.InitSubTable(index, row, $Subdetail);
+                }
+            });
+            return oTableInit;
+        };
     </script>
     <!--表格加载结束-->
-
     <!--ajax提交申请讲座信息信息-->
     <script>
         //提交讲座信息信息
@@ -419,7 +469,6 @@
         })
     </script>
     <!--ajax提交申请讲座信息信息结束-->
-
     <!--向修改模态框申请待编辑讲座信息信息-->
     <script>
         //编辑讲座信息信息
@@ -469,7 +518,6 @@
         }
     </script>
     <!--向修改模态框申请待编辑讲座信息信息结束-->
-
     <!--ajax提交编辑后的讲座信息-->
     <script>
         function EditSubmit() {
@@ -500,35 +548,33 @@
         }
     </script>
     <!--ajax提交编辑后的讲座信息结束-->
-
     <!--ajax删除讲座信息信息并更新表格-->
     <script>
         $("#DeleteLectureBtn").click(function () {
 
-                var ids = $.map($("#LectureList").bootstrapTable('getSelections'),
-                    function (row) {
-                        return row.Id;
+            var ids = $.map($("#LectureList").bootstrapTable('getSelections'),
+                function (row) {
+                    return row.Id;
+                })
+            if (ids.length <= 0) {
+                alert("请选择至少一条的删除记录");
+            } else {
+                if (confirm("确定删除？")) {
+                    $.ajax({
+                        url: "/Lecture/Delete",
+                        type: "POST",
+                        data: { Ids: ids },
+                        dataType: "json",
+                        success: function (result) {
+                            alert(result);
+                            $("#LectureList").bootstrapTable('refresh');
+                        }
                     })
-                if (ids.length <= 0) {
-                    alert("请选择至少一条的删除记录");
-                } else {
-                    if (confirm("确定删除？")) {
-                        $.ajax({
-                            url: "/Lecture/Delete",
-                            type: "POST",
-                            data: { Ids: ids },
-                            dataType: "json",
-                            success: function (result) {
-                                alert(result);
-                                $("#LectureList").bootstrapTable('refresh');
-                            }
-                        })
-                    }
                 }
-            })
+            }
+        })
     </script>
     <!--ajax删除讲座信息信息并更新表格结束-->
-
     <!--下拉选择加载-->
     <script>
         //获取建筑和教师信息
@@ -592,7 +638,7 @@
             })
         }
     </script>
-    <!--下拉选择加载结束-->
+    <!--下拉选择加载结束-->s
 
     <!--自定义函数-->
     <script>
@@ -652,6 +698,38 @@
         //二维码图片加载
         function GetQRCode(path) {
             $("#QRImg").attr("src","/QRCode/"+path+".jpg");
+        }
+
+        //多选框控制
+        var count = 0;
+        $("#AllExcel").click(function(){
+            if(count==0){
+                $("#NumExcel").attr("disabled",true);
+                $("#NameExcel").attr("disabled",true);
+                $("#SexExcel").attr("disabled",true);
+                $("#PhoneNumExcel").attr("disabled",true);
+                $("#MajorClassExcel").attr("disabled",true);
+                $("#ArchitectureExcel").attr("disabled",true);
+                $("#OrderExcel").attr("disabled",true);
+                $("#StartTimeExcel").attr("disabled",true);
+                $("#EndTimeExcel").attr("disabled",true);
+                count = 1;
+            }else if(count==1){
+                $("#NumExcel").attr("disabled",false);
+                $("#NameExcel").attr("disabled",false);
+                $("#SexExcel").attr("disabled",false);
+                $("#PhoneNumExcel").attr("disabled",false);
+                $("#MajorClassExcel").attr("disabled",false);
+                $("#ArchitectureExcel").attr("disabled",false);
+                $("#OrderExcel").attr("disabled",false);
+                $("#StartTimeExcel").attr("disabled",false);
+                $("#EndTimeExcel").attr("disabled",false);
+                count = 0;
+            }
+        })
+
+        function SetExcelLectureId(LectureId){
+            $("#LectureIdExcel").val(LectureId);
         }
     </script>
     <!--自定义函数结束-->

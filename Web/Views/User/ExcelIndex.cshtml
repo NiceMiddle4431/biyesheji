@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "ExcelIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row mt">
+    <div class="col-lg-12">
+        <div class="form-panel">
+            <form id="AddForm" class="form-horizontal style-form" method="post" action="/User/SaveExcelUser" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label class="col-sm-2 col-sm-2 control-label">学生信息表</label>
+                    <div class="col-sm-6">
+                        <input type="file" class="form-control round-form" id="AddFile" name="AddFile" />
+                    </div>
+                </div>
+                <button type="button" class="btn btn-default" id="AddClose">关闭</button>
+                <button type="submit" class="btn btn-primary" id="AddSubmit">提交</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section javascript{
+    <script>
+        $(document).ready(function () {
+            window.location.replace("http://localhost:6528//UserModel//学生信息批量导入模板.xls");
+        })
+    </script>
+}
+
