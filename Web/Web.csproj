@@ -656,6 +656,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LectureController.cs" />
     <Compile Include="Controllers\MajorClassController.cs" />
+    <Compile Include="Controllers\MsgController.cs" />
     <Compile Include="Controllers\PlaceController.cs" />
     <Compile Include="Controllers\ResourceController.cs" />
     <Compile Include="Controllers\ReviewController.cs" />
@@ -807,6 +808,7 @@
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Statistic\Attendance.cshtml" />
     <Content Include="Views\User\ExcelIndex.cshtml" />
+    <Content Include="Views\Resource\ReportReview.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -821,6 +823,7 @@
     <Folder Include="QRCode\" />
     <Folder Include="upLoad\" />
     <Folder Include="UserModel\" />
+    <Folder Include="Views\Msg\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BLL\BLL.csproj">

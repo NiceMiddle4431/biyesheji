@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string Num = ViewBag.Num;
 }
 
 <!--拒绝时添加理由模态框-->
@@ -216,7 +217,8 @@
                             ApplyId: ApplyId,
                             LectureId: LectureId,
                             State: State,
-                            Num: Num
+                            Num: Num,
+                            ReviewNum:@Num,
                         },
                         type: "POST",
                         dataType: "json",

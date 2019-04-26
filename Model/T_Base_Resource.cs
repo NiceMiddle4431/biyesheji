@@ -43,5 +43,17 @@ namespace Model
         public string FilePosition3 { get; set; }
 
         public DateTime ResourceDate { get; set; }
+
+
+        /// <summary>
+        /// 消息阅读标识 0未看，1以看
+        /// </summary>
+        public int MsgFlag { get; set; }
+
+
+        /// <summary>
+        /// 举报标识，未被举报0，被举报1
+        /// </summary>
+        public int ReviewFlag { get; set; }
     }
 }

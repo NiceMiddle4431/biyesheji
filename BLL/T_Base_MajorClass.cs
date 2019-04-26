@@ -62,5 +62,10 @@ namespace BLL
             string ids = string.Join(",", Ids);
             return new DAL.T_Base_MajorClass().Delete(ids);
         }
+
+        public List<Model.T_Base_User> GetAllUser(int MajorClassId)
+        {
+            return new DAL.T_Base_MajorClass().GetAllUser(MajorClassId);
+        }
     }
 }

@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Home.cs" />
+    <Compile Include="Msg.cs" />
     <Compile Include="T_Base_Admin.cs" />
     <Compile Include="T_Base_Resource.cs" />
     <Compile Include="Review.cs" />
@@ -64,9 +65,6 @@
       <Project>{9a0c7b33-94e5-4e1e-be39-42094ba19e5c}</Project>
       <Name>Model</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

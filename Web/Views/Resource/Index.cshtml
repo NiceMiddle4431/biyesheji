@@ -3,6 +3,8 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
     int LectureId = ViewBag.LectureId;
+    string Num = ViewBag.Num;
+    int Role = ViewBag.Role;
 }
 <!--表格开始-->
 <br />
@@ -26,7 +28,7 @@
     <button type="button" class="btn btn-default" onclick="AddResource(@LectureId)">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>添加
     </button>
-    <button id="DeleteResourceBtn" type="button" class="btn btn-default" style="">
+    <button id="DeleteResourceBtn" type="button" class="btn btn-default" style="" onload="DeleteResourceBtnOnLoad()">
         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
     </button>
 </div>
@@ -70,19 +72,20 @@
         columns: [{
             checkbox: true,
             formatter:function(value,row,index){
-                if(row.Num == '15211220001'){
+                var num = @Num;
+                if(row.Role == 3 && row.Num != num){
                     return {
-                        disabled : false
+                        disabled : true
                     }
                 }else{
                     return {
-                        disabled : true
+                        disabled : false
                     }
                 }
             }
         }, {
             field: 'Id',
-            title: '讲座信息Id',
+            title: '评论Id',
             visible: false,
             align: 'center',
             valign: 'middle'
@@ -97,15 +100,34 @@
             field: 'Content',
             title: '评论内容',
             align: 'center',
-            valign: 'middle'
+            valign: 'middle',
+            formatter: function (value, row, index) {
+                if(row.ReviewFlag==1){
+                    return "该信息暂时无法查看";
+                }else{
+                    return value;
+                }
+            }
         },{
             title: '附件下载',
             align: 'center',
             valign: 'middle',
             formatter: function (value, row, index) {
-                let str = "<a href='http://localhost:6528//upLoad//"+row.FilePosition1+"' download>"+row.FilePosition1+"</a>"+"<br/>"+
-                    "<a href='http://localhost:6528//upLoad//"+row.FilePosition2+"' download>"+row.FilePosition2+"</a>"+"<br/>"+
-                    "<a href='http://localhost:6528//upLoad//"+row.FilePosition3+"' download>"+row.FilePosition3+"</a>";
+                if(row.ReviewFlag==1){
+                    return "该信息暂时无法查看";
+                }else{
+                    let str = "<a href='http://localhost:6528//upLoad//"+row.FilePosition1+"' download>"+row.FilePosition1+"</a>";
+                    return str;
+                }
+            }
+        },{
+            title: '操作',
+            align: 'center',
+            valign: 'middle',
+            formatter: function (value, row, index) {
+                let str = "<button onclick='ResourceReport(" + row.Id +
+                        ")' class='btn btn-default btn-sm'>" +
+                        "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>举报</span></button>";
                 return str;
             }
         }],
@@ -156,6 +178,21 @@
         
         function AddResource(LectureId){
             window.location.href="/Resource/AddIndex?LectureId="+@LectureId;
+        }
+
+        function ResourceReport(ResourceId) {
+            $.ajax({
+                url: "/Resource/ResourceReport?ResourceId="+ResourceId,
+                type: "POST",
+                dataType: "json",
+                success: function (result) {
+                    if(result == 1){
+                        alert("举报成功");
+                    }else{
+                        alert("举报失败");
+                    }
+                }
+            })
         }
 </script>
 <!--自定义函数结束-->

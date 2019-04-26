@@ -79,9 +79,9 @@ namespace BLL
         }
 
 
-        public List<Model.T_Base_Apply> GetPersonalAllLecture(string Num)
+        public List<Model.T_Base_Apply> GetPersonalAllLecture(string Num,int Role)
         {
-            return new DAL.T_Base_Lecture().GetPersonalAllLecture(Num);
+            return new DAL.T_Base_Lecture().GetPersonalAllLecture(Num,Role);
         }
 
 

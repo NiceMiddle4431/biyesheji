@@ -9,11 +9,6 @@ namespace Web.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: Home
-        public ActionResult Index()
-        {
-            return View();
-        }
 
         /// <summary>
         /// 登录页面
@@ -44,9 +39,9 @@ namespace Web.Controllers
         public JsonResult Check(string Num,string Password)
         {
             int result = new BLL.Home().Check(Num, Password);
-            if(result == -2 || result == -3)
+            int role = 0;
+            if (result == -2 || result == -3)
             {
-                int role = 0;
                 if(result == -2)
                 {
                     role = new BLL.T_Base_User().GetUser(Num).Role;
@@ -60,7 +55,7 @@ namespace Web.Controllers
                     role,        //角色
                     "" + Num,          //登录用户Id
                     DateTime.Now,       //当前时间
-                    DateTime.Now.AddMinutes(30),//保存时间
+                    DateTime.Now.AddDays(30),//保存时间
                     true,// 如果为 true，则创建持久 Cookie（跨浏览器会话保存的 Cookie）；否则为 false。
                     ""      //存储在票证中的用户特定的数据
                     );
@@ -70,7 +65,7 @@ namespace Web.Controllers
 
                 Response.Cookies.Add(authCookie);
             }
-            return Json(result);
+            return Json(role);
         }
     }
 }

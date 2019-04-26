@@ -110,5 +110,40 @@ namespace DAL
             return result;
         }
 
+
+        /// <summary>
+        /// 获取该班级全部学生
+        /// </summary>
+        /// <param name="MajorClssId"></param>
+        /// <returns></returns>
+        public List<Model.T_Base_User> GetAllUser(int MajorClassId)
+        {
+            List<Model.T_Base_User> list = new List<Model.T_Base_User>();
+            SqlConfig config = new SqlConfig();
+            SqlCommand cmd = config.getSqlCommand();
+            cmd.CommandText = "select * from V_User_MajorClass_Architecture where MajorClassId = " + MajorClassId + " order by Num";
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Model.T_Base_User user = new Model.T_Base_User();
+                user.Num = Convert.ToString(reader["Num"]);
+                user.Name = Convert.ToString(reader["Name"]);
+                user.Sex = Convert.ToInt16(reader["Sex"]);
+                user.PhoneNum = Convert.ToString(reader["PhoneNum"]);
+
+                Model.T_Base_MajorClass majorClass = new Model.T_Base_MajorClass();
+                majorClass.MajorClassName = Convert.ToString(reader["MajorClassName"]);
+
+                Model.T_Base_Architecture architecture = new Model.T_Base_Architecture();
+                architecture.ArchitectureName = Convert.ToString(reader["ArchitectureName"]);
+
+                majorClass.Architecture = architecture;
+                user.MajorClass = majorClass;
+                list.Add(user);
+            }
+            reader.Close();
+            config.Close();
+            return list;
+        }
     }
 }

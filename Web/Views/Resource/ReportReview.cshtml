@@ -1,0 +1,151 @@
+﻿
+@{
+    ViewBag.Title = "ReportReview";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int Role = ViewBag.Role;
+}
+<h4>待审核评论</h4>
+<div class="col-lg-12 col-xs-12">
+    <table id="ResourceList"></table>
+</div>
+<!--操作按钮，评论多条删除和添加开始-->
+<div class="btn-group pull-right" id="toolbar">
+    <button id="UpdateResourceBtn" type="button" class="btn btn-default" onclick="UpdateResource()">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>恢复
+    </button>
+    <button id="DeleteResourceBtn" type="button" class="btn btn-default" onclick="DeleteResource()">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+    </button>
+</div>
+<!--操作按钮，评论多条删除和添加结束-->
+@section javascript {
+
+    <link href="~/assets/bootstraptable/src/bootstrap-table.css" rel="stylesheet" />
+    <script src="~/assets/bootstraptable/src/bootstrap-table.js"></script>
+
+    <!--表格加载-->
+    <script>
+    $("#ResourceList").bootstrapTable({
+        url: "/Resource/GetAllResourceReport",// 获取表格数据的url
+        method: 'post',//请求方式
+        dataType: "json",
+        dataField: "rows",
+        classes: 'table',//边框
+        undefinedText: '',//当数据为 undefined 时显示的字符
+        pagination: true,//启动分页
+        striped: true,  //表格显示条纹，默认为false
+        pagination: true, // 在表格底部显示分页组件，默认false
+        pageList: [10, 25, 50], // 设置页面可以显示的数据条数
+        pageSize: 10, // 页面数据条数
+        pageNumber: 1, // 首页页码
+        showColumns: true,  //显示下拉框勾选要显示的列
+        showRefresh: false,  //显示刷新按钮
+        showToggle: false,//显示一行是否改成竖着
+        showPaginationSwitch: true,//是否显示 下面的分页框
+        search: false, //显示搜索框
+        detailView: false,       //详情页面显示
+        //toolbar操作
+        toolbar: '#toolbar',//工具按钮用哪个容器
+        toolbarAligh: 'left',//工具栏对齐方式
+        buttonsAligh: 'right',//按钮对齐方式
+
+        sortOrder: "asc",//排序方式
+        locale: 'zh-CN',//中文支持
+        sidePagination: 'client', // 设置为客户端分页
+
+        columns: [{
+            checkbox: true,
+        }, {
+            field: 'Id',
+            title: '评论Id',
+            visible: false,
+            align: 'center',
+            valign: 'middle'
+        }, {
+            title: '评论时间',
+            align: 'center',
+            valign: 'middle',
+            formatter: function (value, row, index) {
+                return changeDateFormat(row.ResourceDate);
+            }
+        },{
+            field: 'Content',
+            title: '评论内容',
+            align: 'center',
+            valign: 'middle',
+        },{
+            title: '附件下载',
+            align: 'center',
+            valign: 'middle',
+            formatter: function (value, row, index) {
+                let str = "<a href='http://localhost:6528//upLoad//" + row.FilePosition1 + "' download>" + row.FilePosition1 + "</a>";
+                return str;
+            }
+        }],
+    })
+    </script>
+
+
+    <script>
+        //日期转换
+        function changeDateFormat(cellval) {
+            if (cellval != null) {
+                var date = new Date(parseInt(cellval.replace("/Date(", "").replace(")/", ""), 10));
+                var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+                var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+                var hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+                var minute = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+                return date.getFullYear() + "/" + month + "/" + currentDate + " "
+                + hours + ":" + minute;
+            }
+        }
+
+        function DeleteResource() {
+            var ids = $.map($("#ResourceList").bootstrapTable('getSelections'),
+            function (row) {
+                return row.Id;
+            })
+            if (ids.length <= 0) {
+                alert("请选择至少一条删除记录");
+            } else {
+                if (confirm("确定删除？")) {
+                    $.ajax({
+                        url: "/Resource/Delete",
+                        type: "POST",
+                        data: { Ids: ids },
+                        dataType: "json",
+                        success: function (result) {
+                            alert("以删除"+result+"条记录");
+                            $("#ResourceList").bootstrapTable('refresh');
+                        }
+                    })
+                }
+            }
+        }
+
+        function UpdateResource() {
+            var ids = $.map($("#ResourceList").bootstrapTable('getSelections'),
+            function (row) {
+                return row.Id;
+            })
+            if (ids.length <= 0) {
+                alert("请选择至少一条恢复记录");
+            } else {
+                if (confirm("确定恢复？")) {
+                    $.ajax({
+                        url: "/Resource/UpdateResource",
+                        type: "POST",
+                        data: { ResourceId: ids },
+                        dataType: "json",
+                        success: function (result) {
+                            alert("以恢复"+result+"条评论");
+                            $("#ResourceList").bootstrapTable('refresh');
+                        }
+                    })
+                }
+            }
+        }
+
+    </script>
+    }
+

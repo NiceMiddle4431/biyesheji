@@ -36,8 +36,19 @@ namespace Model
 
 
         /// <summary>
-        /// 0表示预定失败，1表示预定成功，2表示待通知
+        /// 0表示预定失败，1表示预定成功，2表示待通知  3表示有他人取消后预定成功
         /// </summary>
         public int Result { get; set; }
+
+
+        /// <summary>
+        /// 讲座信息变更通知   0标识未看，1以看
+        /// </summary>
+        public int MsgFlag { get; set; }
+
+
+        public Model.T_Base_Lecture Lecture { get; set; }
+
+        public Model.T_Base_User User { get; set; }
     }
 }

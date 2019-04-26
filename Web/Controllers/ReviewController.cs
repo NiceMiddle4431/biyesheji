@@ -9,8 +9,9 @@ namespace Web.Controllers
     public class ReviewController : Controller
     {
         // GET: Review
-        public ActionResult Index()
+        public ActionResult Index(string Num)
         {
+            ViewBag.Num = Num;
             return View();
         }
 
@@ -23,9 +24,9 @@ namespace Web.Controllers
             });
         }
 
-        public JsonResult Review(int ApplyId,int LectureId,int State,string Num,string Reason="")
+        public JsonResult Review(int ApplyId,int LectureId,int State,string Num,string ReviewNum,string Reason="")
         {
-            int result = new BLL.Review().Review_Updata(ApplyId, LectureId, State,Num,Reason);
+            int result = new BLL.Review().Review_Updata(ApplyId, LectureId, State,Num, ReviewNum, Reason);
             if(result == 1 && State == 1)
             {
                 return Json("同意成功");

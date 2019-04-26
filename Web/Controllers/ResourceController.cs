@@ -9,9 +9,11 @@ namespace Web.Controllers
     public class ResourceController : Controller
     {
         // GET: Resource
-        public ActionResult Index(int LectureId)
+        public ActionResult Index(int LectureId,string Num,int Role)
         {
             ViewBag.LectureId = LectureId;
+            ViewBag.Num = Num;
+            ViewBag.Role = Role;
             return View();
         }
         
@@ -75,49 +77,6 @@ namespace Web.Controllers
                 fileName1 += DateTime.Now.ToString("yyyyMMddHHmmssffff") + type1;
                 file1.SaveAs(path + fileName1);
             }
-            var file2 = Request.Files["AddFilePosition2"];
-            if (file2.ContentLength != 0)
-            {
-
-                string[] strfileName2 = file2.FileName.Split('.');
-                string type2 = "." + strfileName2[strfileName2.Length - 1];
-                for (int i = 0; i < strfileName2.Length - 1; i++)
-                {
-                    if (i != strfileName2.Length - 2)
-                    {
-                        fileName2 += strfileName2[i] + ".";
-                    }
-                    else
-                    {
-                        fileName2 += strfileName2[i];
-                    }
-
-                }
-                fileName2 += DateTime.Now.ToString("yyyyMMddHHmmssffff") + type2;
-                file2.SaveAs(path + fileName2);
-            }
-            var file3 = Request.Files["AddFilePosition3"];
-            if (file3.ContentLength != 0)
-            {
-
-                string[] strfileName3 = file3.FileName.Split('.');
-                string type3 = "." + strfileName3[strfileName3.Length - 1];
-                for (int i = 0; i < strfileName3.Length - 1; i++)
-                {
-                    if (i != strfileName3.Length - 2)
-                    {
-                        fileName3 += strfileName3[i] + ".";
-                    }
-                    else
-                    {
-                        fileName3 += strfileName3[i];
-                    }
-
-                }
-                fileName3 += DateTime.Now.ToString("yyyyMMddHHmmssffff") + type3;
-                file3.SaveAs(path + fileName3);
-            }
-
             resource.FilePosition1 = fileName1;
             resource.FilePosition2 = fileName2;
             resource.FilePosition3 = fileName3;
@@ -132,5 +91,37 @@ namespace Web.Controllers
             }
             
         }
+
+        /// <summary>
+        /// 举报评论，隐藏内容
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult ResourceReport(int ResourceId)
+        {
+            return Json(new BLL.T_Base_Resource().ResourceReport(ResourceId));
+        }
+
+        /// <summary>
+        /// 举报评论审核界面
+        /// </summary>
+        /// <returns></returns>
+        public ViewResult ReportReview(string Num,int Role)
+        {
+            ViewBag.Num = Num;
+            ViewBag.Role = Role;
+            return View();
+        }
+
+        public JsonResult GetAllResourceReport()
+        {
+            return Json(new BLL.T_Base_Resource().GetAllResourceReport());
+        }
+
+
+        public JsonResult UpdateResource(string[] ResourceId)
+        {
+            return Json(new BLL.T_Base_Resource().UpdateResource(ResourceId));
+        }
+
     }
 }

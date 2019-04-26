@@ -60,5 +60,10 @@ namespace BLL
             string ids = string.Join(",", Ids);
             return new DAL.T_Base_Architecture().Delete(ids);
         }
+
+        public List<Model.T_Base_User> GetAllUser(int ArchitectureId)
+        {
+            return new DAL.T_Base_Architecture().GetAllUser(ArchitectureId);
+        }
     }
 }

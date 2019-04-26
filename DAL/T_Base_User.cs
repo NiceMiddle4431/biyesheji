@@ -54,10 +54,8 @@ namespace DAL
                 architecture.ArchitectureName = Convert.ToString(reader["ArchitectureName"]);
                 majorClass.Architecture = architecture;
                 user.MajorClass = majorClass;
-               
+                user.Role = Convert.ToInt16(reader["Role"]);
                 user.PhoneNum =Convert.ToString(reader["PhoneNum"]);
-                user.Number = Convert.ToInt32(reader["Number"]);
-                user.IsAdmin = Convert.ToInt32(reader["IsAdmin"]);
                 list.Add(user);
             }
 
@@ -117,7 +115,7 @@ namespace DAL
             SqlCommand cmd = config.getSqlCommand();
             cmd.CommandText = "insert into T_Base_User values('" + User.Num + 
                 "','"+User.Name+"',"+User.Sex+","+User.MajorClassId+",'"+User.PhoneNum
-                +"','"+User.Num+"',0,"+User.IsAdmin+",3)";
+                +"','"+User.Num+"',0,"+User.Role+")";
             int result = cmd.ExecuteNonQuery();
             config.Close();
             return result;
@@ -172,8 +170,7 @@ namespace DAL
             user.MajorClassId = Convert.ToInt32(reader["MajorClassId"]);
             user.PhoneNum = Convert.ToString(reader["PhoneNum"]);
             user.PassWord = Convert.ToString(reader["PassWord"]);
-            user.Number = Convert.ToInt16(reader["Number"]);
-            user.IsAdmin = Convert.ToInt16(reader["IsAdmin"]);
+            user.Role = Convert.ToInt16(reader["Role"]);
             user.MajorClass = majorClass;
 
             reader.Close();
@@ -213,8 +210,6 @@ namespace DAL
             user.MajorClassId = Convert.ToInt32(reader["MajorClassId"]);
             user.PhoneNum = Convert.ToString(reader["PhoneNum"]);
             user.PassWord = Convert.ToString(reader["PassWord"]);
-            user.Number = Convert.ToInt16(reader["Number"]);
-            user.IsAdmin = Convert.ToInt16(reader["IsAdmin"]);
             user.MajorClass = majorClass;
             user.Role = Convert.ToInt32(reader["Role"]);
 
@@ -235,7 +230,7 @@ namespace DAL
             cmd.CommandText = "update T_Base_User set Num = '"+User.Num+
                 "',Name = '"+User.Name+"',Sex = "+User.Sex+ ",MajorClassId = "
                 + User.MajorClassId+",PhoneNum = "+User.PhoneNum
-                +",IsAdmin = "+User.IsAdmin+" where Id = "+User.Id;
+                +",Role="+User.Role+" where Id = "+User.Id;
             int result = cmd.ExecuteNonQuery();
 
             config.Close();
@@ -282,8 +277,6 @@ namespace DAL
                 user.MajorClassId = Convert.ToInt32(reader["MajorClassId"]);
                 user.PhoneNum = Convert.ToString(reader["PhoneNum"]);
                 user.PassWord = Convert.ToString(reader["PassWord"]);
-                user.Number = Convert.ToInt32(reader["Number"]);
-                user.IsAdmin = Convert.ToInt32(reader["IsAdmin"]);
                 reader.Close();
             }
             else

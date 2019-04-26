@@ -30,7 +30,7 @@ namespace Model
 
 
         /// <summary>
-        /// 讲座状态   0代表待审核   1是审核通过   2是被审核不通过
+        /// 讲座状态   0代表待审核   1是审核通过   2是被审核不通过   3是编辑后待审核
         /// </summary>
         public int State { get; set; }
 
@@ -86,5 +86,11 @@ namespace Model
         /// 拒绝理由
         /// </summary>
         public string Reason { get; set; }
+
+
+        /// <summary>
+        /// 修改标识 0未修改过，1修改过
+        /// </summary>
+        public int AlertFlag { get; set; }
     }
 }

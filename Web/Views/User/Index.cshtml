@@ -2,6 +2,8 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string Num = ViewBag.Num;
+    int Role = ViewBag.Role;
 }
 
 <!--查询条件开始-->
@@ -109,21 +111,24 @@
                             <input type="text" class="form-control round-form" id="AddPhoneNum" name="AddPhoneNum">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 col-sm-2 control-label">是否管理员</label>
-                        <div class="col-sm-6">
-                            <div class="radio">
-                                <label class="col-xs-6 col-lg-6">
-                                    <input type="radio" id="AddIsAdmin0" name="AddIsAdmin" value="0">
-                                    否
-                                </label>
-                                <label class="col-xs-6 col-lg-6">
-                                    <input type="radio" id="AddIsAdmin1" name="AddIsAdmin" value="1">
-                                    是
-                                </label>
+                    @if (Role == 1)
+                    {
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label">是否管理员</label>
+                            <div class="col-sm-6">
+                                <div class="radio">
+                                    <label class="col-xs-6 col-lg-6">
+                                        <input type="radio" id="AddRole0" name="AddRole" value="0">
+                                        否
+                                    </label>
+                                    <label class="col-xs-6 col-lg-6">
+                                        <input type="radio" id="AddRole1" name="AddRole" value="1">
+                                        是
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 </form>
             </div>
             <div class="modal-footer">
@@ -197,19 +202,28 @@
                             <input type="text" class="form-control round-form" id="EditPhoneNum" name="EditPhoneNum">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 col-sm-2 control-label">是否管理员</label>
-                        <div class="col-sm-6">
-                            <div class="radio">
-                                <label class="col-xs-6 col-lg-6">
-                                    <input type="radio" id="EditIsAdmin0" name="EditIsAdmin" value="0">
-                                    否
-                                </label>
-                                <label class="col-xs-6 col-lg-6">
-                                    <input type="radio" id="EditIsAdmin1" name="EditIsAdmin" value="1">
-                                    是
-                                </label>
+                    @if (Role == 1)
+                    {
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label">是否管理员</label>
+                            <div class="col-sm-6">
+                                <div class="radio">
+                                    <label class="col-xs-6 col-lg-6">
+                                        <input type="radio" id="EditRole0" name="EditRole" value="3">
+                                        否
+                                    </label>
+                                    <label class="col-xs-6 col-lg-6">
+                                        <input type="radio" id="EditRole1" name="EditRole" value="2">
+                                        是
+                                    </label>
+                                </div>
                             </div>
+                        </div>
+                    }
+                    <div class="form-group" id="divEditPassWord">
+                        <label class="col-sm-2 col-sm-2 control-label">密码</label>
+                        <div class="col-sm-6">
+                            <input type="password" class="form-control round-form" id="EditPassWord" name="EditPassWord">
                         </div>
                     </div>
                 </form>
@@ -257,13 +271,13 @@
             locale: 'zh-CN',//中文支持
             sidePagination: 'server', // 设置为客户端分页
             queryParamsType: '',//采用自定义查询参数组织方式
-            queryParams: function (params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求               
+            queryParams: function (params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求
                 var Num = $("#txtNum").val();
                 var Name = $("#txtName").val();
                 var MajorClassName = $("#txtMajorClassName").val();
                 return {
                     PageSize: params.pageSize, // 每页要显示的数据条数
-                    PageNumber: params.pageNumber,//请求第几页       
+                    PageNumber: params.pageNumber,//请求第几页
                     Num: Num,
                     Name: Name,
                     MajorClassName: MajorClassName,
@@ -311,22 +325,17 @@
                 align: 'center',
                 valign: 'middle'
             }, {
-                field: 'Number',
-                title: '预约未到次数',
-                align: 'center',
-                valign: 'middle'
-            },{
                 field: 'IsAdmin',
                 title: '是否是管理员',
                 align: 'center',
                 valign: 'middle',
                 formatter: function (value, row, index) {
-                    if (row.IsAdmin == 0) {
+                    if (row.Role == 3) {
                         return '否';
-                    } else if (row.Sex == 1) {
+                    } else if (row.Role == 2 || row.Role==1) {
                         return '是';
                     }
-                }   
+                }
             },
             {
                 title: '操作',
@@ -338,7 +347,11 @@
                         "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>修改</span></button>"+
                         "<button onclick='ResetPassWord(" + row.Id +
                         ")' class='btn btn-default btn-sm'>" +
-                        "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>重置密码</span></button>";
+                        "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>重置密码</span></button>"+
+                        "<a href='/Statistic/SaveAllAttendanceExcel?Num=@Num' target='_blank'>"+
+                        "<button class='btn btn-default btn-sm'>" +
+                        "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>导出Excel</span></button>"
+                        "</a>"
                 }
             }]
         })
@@ -418,7 +431,7 @@
                     AddSex: jQuery('[name="AddSex"]:checked').val(),
                     AddMajorClassId: $("#AddMajorClassId").val(),
                     AddPhoneNum: $("#AddPhoneNum").val(),
-                    AddIsAdmin: jQuery('[name="AddIsAdmin"]:checked').val()
+                    AddRole: jQuery('[name="AddRole"]:checked').val()
                 },
                 type: "POST",
                 dataType: "json",
@@ -506,12 +519,18 @@
                         }
                     })
                     $("#EditPhoneNum").val(user.PhoneNum);
-                    if (user.IsAdmin == 0) {
-                        $('#EditIsAdmin1').removeAttr("checked");
-                        $('#EditIsAdmin0').attr("checked", "checked");
-                    } else if (user.Sex == 1) {
-                        $('#EditIsAdmin0').removeAttr("checked");
-                        $('#EditIsAdmin1').attr("checked", "checked");
+                    if (user.Role == 3) {
+                        $('#EditRole1').removeAttr("checked");
+                        $('#EditRole0').attr("checked", "checked");
+                    } else if (user.Role == 2||user.Role == 1) {
+                        $('#EditRole0').removeAttr("checked");
+                        $('#EditRole1').attr("checked", "checked");
+                    }
+                    $("#EditPassWord").val(user.PassWord);
+                    if(@Num!=user.Num){
+                        $("#divEditPassWord").addClass("hidden");
+                    }else{
+                        $("#divEditPassWord").removeClass("hidden");
                     }
                 }
             })
@@ -554,8 +573,9 @@
                     EditSex: jQuery('[name="EditSex"]:checked').val(),
                     EditMajorClassId: $("#EditMajorClassId").val(),
                     EditPhoneNum: $("#EditPhoneNum").val(),
-                    EditIsAdmin: jQuery('[name="EditIsAdmin"]:checked').val(),
-                    },
+                    EditRole: jQuery('[name="EditRole"]:checked').val(),
+                    EditPassWord:$("#EditPassWord").val(),
+                },
                 type: "POST",
                 dataType: "json",
                 success: function (result) {

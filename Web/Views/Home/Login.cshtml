@@ -80,8 +80,9 @@
             type: "POST",
             dataType: "json",
             success: function (result) {
-                if (result == -2 || result == -3) {
-                    window.location.replace("/Lecture/Index");
+                if (result == 2 || result == 3) {
+                    var Num = $("#Num").val();
+                    window.location.replace("/Lecture/Index?Num="+Num+"&Role="+result);
                 } else {
                     alert("账号或者密码错误");
                 }

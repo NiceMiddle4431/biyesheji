@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Home.cs" />
+    <Compile Include="Msg.cs" />
     <Compile Include="T_Base_Admin.cs" />
     <Compile Include="T_Base_Resource.cs" />
     <Compile Include="Review.cs" />

@@ -37,6 +37,9 @@ namespace Web.Controllers
             else if (result == -3)
             {
                 return Json("存在代签情况");
+            }else if (result == -4)
+            {
+                return Json("学号输入不正确或不存在该学号");
             }
             else if (result == -1)
             {
@@ -315,6 +318,110 @@ namespace Web.Controllers
             book.Write(ms);
             ms.Seek(0, SeekOrigin.Begin);
             return File(ms, "application/vnd.ms-excel", lecture.Subject + "讲座情况.xls");
+        }
+
+
+        /// <summary>
+        /// 统计学院下学生参加讲座总分导出Excel
+        /// </summary>
+        /// <param name="ArchitectureId"></param>
+        /// <returns></returns>
+        public FileResult SaveArchitectureExcel(int ArchitectureId)
+        {
+            List<Model.T_Base_User> list = new BLL.T_Base_Architecture().GetAllUser(ArchitectureId);
+            HSSFWorkbook book = new HSSFWorkbook();             //创建Excel文件对象
+            ISheet sheet = book.CreateSheet();//创建一个sheet页
+            IRow row1 = sheet.CreateRow(0);
+            row1.CreateCell(0).SetCellValue("学号");
+            row1.CreateCell(1).SetCellValue("姓名");
+            row1.CreateCell(2).SetCellValue("性别");
+            row1.CreateCell(3).SetCellValue("联系方式");
+            row1.CreateCell(4).SetCellValue("讲座总分");
+            row1.CreateCell(5).SetCellValue("班级");
+            row1.CreateCell(6).SetCellValue("学院");
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                IRow row = sheet.CreateRow(i + 1);
+                row.CreateCell(0).SetCellValue(list[i].Num);
+                row.CreateCell(1).SetCellValue(list[i].Name);
+                if (list[i].Sex==0)
+                {
+                    row.CreateCell(2).SetCellValue("女");
+                }
+                else if (list[i].Sex == 1)
+                {
+                    row.CreateCell(2).SetCellValue("男");
+                }
+                row.CreateCell(3).SetCellValue(list[i].PhoneNum);
+                row.CreateCell(4).SetCellValue(new BLL.Statistic().GetScore(list[i].Num));
+                row.CreateCell(5).SetCellValue(list[i].MajorClass.MajorClassName);
+                row.CreateCell(6).SetCellValue(list[i].MajorClass.Architecture.ArchitectureName);
+            }
+            sheet.SetColumnWidth(0, 15 * 256);
+            sheet.SetColumnWidth(1, 15 * 256);
+            sheet.SetColumnWidth(2, 8 * 256);
+            sheet.SetColumnWidth(3, 15 * 256);
+            sheet.SetColumnWidth(4, 8 * 256);
+            sheet.SetColumnWidth(5, 20 * 256);
+            sheet.SetColumnWidth(6, 30 * 256);
+
+            MemoryStream ms = new MemoryStream();
+            book.Write(ms);
+            ms.Seek(0, SeekOrigin.Begin);
+            return File(ms, "application/vnd.ms-excel", list[0].MajorClass.Architecture.ArchitectureName + "参加讲座情况.xls");
+        }
+
+
+        /// <summary>
+        /// 统计班级下学生参加讲座总分导出Excel
+        /// </summary>
+        /// <param name="MajorClassId"></param>
+        /// <returns></returns>
+        public FileResult SaveMajorClassExcel(int MajorClassId)
+        {
+            List<Model.T_Base_User> list = new BLL.T_Base_MajorClass().GetAllUser(MajorClassId);
+            HSSFWorkbook book = new HSSFWorkbook();             //创建Excel文件对象
+            ISheet sheet = book.CreateSheet();//创建一个sheet页
+            IRow row1 = sheet.CreateRow(0);
+            row1.CreateCell(0).SetCellValue("学号");
+            row1.CreateCell(1).SetCellValue("姓名");
+            row1.CreateCell(2).SetCellValue("性别");
+            row1.CreateCell(3).SetCellValue("联系方式");
+            row1.CreateCell(4).SetCellValue("讲座总分");
+            row1.CreateCell(5).SetCellValue("班级");
+            row1.CreateCell(6).SetCellValue("学院");
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                IRow row = sheet.CreateRow(i + 1);
+                row.CreateCell(0).SetCellValue(list[i].Num);
+                row.CreateCell(1).SetCellValue(list[i].Name);
+                if (list[i].Sex == 0)
+                {
+                    row.CreateCell(2).SetCellValue("女");
+                }
+                else if (list[i].Sex == 1)
+                {
+                    row.CreateCell(2).SetCellValue("男");
+                }
+                row.CreateCell(3).SetCellValue(list[i].PhoneNum);
+                row.CreateCell(4).SetCellValue(new BLL.Statistic().GetScore(list[i].Num));
+                row.CreateCell(5).SetCellValue(list[i].MajorClass.MajorClassName);
+                row.CreateCell(6).SetCellValue(list[i].MajorClass.Architecture.ArchitectureName);
+            }
+            sheet.SetColumnWidth(0, 15 * 256);
+            sheet.SetColumnWidth(1, 15 * 256);
+            sheet.SetColumnWidth(2, 8 * 256);
+            sheet.SetColumnWidth(3, 15 * 256);
+            sheet.SetColumnWidth(4, 8 * 256);
+            sheet.SetColumnWidth(5, 20 * 256);
+            sheet.SetColumnWidth(6, 30 * 256);
+
+            MemoryStream ms = new MemoryStream();
+            book.Write(ms);
+            ms.Seek(0, SeekOrigin.Begin);
+            return File(ms, "application/vnd.ms-excel", list[0].MajorClass.MajorClassName + "参加讲座情况.xls");
         }
     }
 }

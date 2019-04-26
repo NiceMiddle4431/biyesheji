@@ -6,6 +6,8 @@
     Model.T_Base_User user = new Model.T_Base_User();
 
     int RoleId = -1;
+
+    Model.Msg MsgList = new Model.Msg();
     if (HttpContext.Current.User != null)
     {
         var ticket = (HttpContext.Current.User.Identity as FormsIdentity).Ticket;
@@ -22,7 +24,10 @@
         {
             admin = new BLL.T_Base_Admin().GetAdmin(Num);
         }
+
+        MsgList = new BLL.Msg().GetAllMsg(Num);
     }
+
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -68,7 +73,7 @@
                 <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
             </div>
             <!--logo start-->
-            <a href="index.html" class="logo"><b>高校讲座管理系统</b></a>
+            <a href="/Home/Login" class="logo"><b>高校讲座管理系统</b></a>
             <!--logo end-->
 
             <div class="nav notify-row" id="top_menu">
@@ -78,18 +83,15 @@
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
                             <i class="fa fa-tasks"></i>
-                            <span class="badge bg-theme">3</span>
+                            <span class="badge bg-theme">@MsgList.Resource.Count</span>
                         </a>
                         <ul id="Message" class="dropdown-menu extended tasks-bar">
                             <div class="notify-arrow notify-arrow-green"></div>
-                            <li>
-                                <div class="task-info">
-                                    <div class="desc">Payments Sent</div>
-                                </div>
-                            </li>
-                            <li class="external">
-                                <a href="#">See All Tasks</a>
-                            </li>
+                            <li class="external"></li>
+                            @if (MsgList.Resource.Count > 0 && (@RoleId ==1 || @RoleId == 2))
+                            {
+                                <li class="external"><a href="/Resource/ReportReview?Num=@Num&role=@RoleId"><h4>待处理的举报消息&nbsp; &nbsp; @MsgList.Resource.Count 条</h4></a></li>
+                            }
                         </ul>
                     </li>
                     <!-- settings end -->

@@ -24,5 +24,21 @@ namespace BLL
         {
             return new DAL.T_Base_Resource().AddSaveResource(Resource);
         }
+
+        public int ResourceReport(int ResourceId)
+        {
+            return new DAL.T_Base_Resource().ResourceReport(ResourceId);
+        }
+
+        public List<Model.T_Base_Resource> GetAllResourceReport()
+        {
+            return new DAL.T_Base_Resource().GetAllResourceReport();
+        }
+
+        public int UpdateResource(string[] Ids)
+        {
+            string resourceId = string.Join(",", Ids);
+            return new DAL.T_Base_Resource().UpdateResource(resourceId);
+        }
     }
 }

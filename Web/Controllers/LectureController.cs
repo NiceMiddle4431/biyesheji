@@ -9,9 +9,10 @@ namespace Web.Controllers
     public class LectureController : Controller
     {
         // GET: Lecture
-        public ActionResult Index()
+        public ActionResult Index(string Num,int Role)
         {
-
+            ViewBag.Num = Num;
+            ViewBag.Role = Role;
             return View();
         }
 
@@ -60,6 +61,9 @@ namespace Web.Controllers
             else if (result == -2)
             {
                 return Json("该时间段内存在其他讲座");
+            }else if (result == -3)
+            {
+                return Json("请确保按照格式填入全部信息");
             }
             else
             {
@@ -126,9 +130,10 @@ namespace Web.Controllers
         /// 个人申请讲座管理
         /// </summary>
         /// <returns></returns>
-        public ActionResult Personal(string Num)
+        public ActionResult Personal(string Num,int Role)
         {
             ViewBag.Num = Num;
+            ViewBag.Role = Role;
             return View();
         }
 
@@ -137,9 +142,9 @@ namespace Web.Controllers
         /// </summary>
         /// <param name="Num"></param>
         /// <returns></returns>
-        public JsonResult GetPersonalAllLecture(string Num)
+        public JsonResult GetPersonalAllLecture(string Num,int Role)
         {
-            return Json(new BLL.T_Base_Lecture().GetPersonalAllLecture(Num));
+            return Json(new BLL.T_Base_Lecture().GetPersonalAllLecture(Num, Role));
         }
 
         /// <summary>
@@ -212,7 +217,7 @@ namespace Web.Controllers
                 case 1:
                     return Json("报名成功");
                 case 2:
-                    return Json("人满待审核");
+                    return Json("人满请注意后续地点通知");
                 default:
                     return Json("报名失败");
             }

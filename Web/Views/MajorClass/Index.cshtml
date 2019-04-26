@@ -139,7 +139,11 @@
                 formatter: function (value, row, index) {
                     let str = "<button onclick='Edit(" + row.Id +
                         ")' data-toggle='modal' data-target='#EditModal' class='btn btn-default btn-sm'>" +
-                        "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>修改</span></button>";
+                        "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>修改</span></button>"+
+                        "<a href='/Statistic/SaveMajorClassExcel?MajorClassId="+row.Id+"' target='_blank'>" +
+                        "<button class='btn btn-default btn-sm'>" +
+                        "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>导出Excel</span></button>"
+                        "</a>"
                     return str;
                 }
             }]

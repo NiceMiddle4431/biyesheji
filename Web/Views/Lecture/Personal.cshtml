@@ -3,6 +3,7 @@
     ViewBag.Title = "Personal";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string Num = ViewBag.Num;
+    int Role = ViewBag.Role;
 }
 
 <!--申请时模态框-->
@@ -15,13 +16,6 @@
             </div>
             <div class="modal-body">
                 <form id="AddForm" class="form-horizontal style-form" method="post" action="##">
-
-                    <div class="form-group">
-                        <label class="col-sm-2 col-sm-2 control-label">学号</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control round-form hidden" id="AddNum" name="AddNum">
-                        </div>
-                    </div>
                     <div class="form-group">
                         <label class="col-sm-2 col-sm-2 control-label">主题</label>
                         <div class="col-sm-6">
@@ -37,18 +31,23 @@
                         <label class="col-sm-6 col-sm-6 control-label">最多250个字</label>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 col-sm-2 control-label">开始时间</label>
+                        <label class="col-sm-2 col-sm-2 control-label">开始日期</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control round-form" id="AddLectureTime" name="AddLectureTime">
+                            <input type="date" class="form-control round-form" id="AddLectureDate" name="AddLectureDate" onblur="LectureCheck(0)">
                         </div>
-                        <label class="col-sm-6 col-sm-6 control-label">格式为2008/01/01 08:05</label>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 col-sm-2 control-label">报名截止</label>
+                        <label class="col-sm-2 col-sm-2 control-label">开始时间</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control round-form" id="AddDeathLine" name="AddDeathLine">
+                            <input type="time" class="form-control round-form" id="AddLectureTime" name="AddLectureTime" onblur="">
                         </div>
-                        <label class="col-sm-6 col-sm-6 control-label">格式为2008/01/01 08:05</label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">报名截止日期</label>
+                        <div class="col-sm-6">
+                            <input type="date" class="form-control round-form" id="AddDeathLine" name="AddDeathLine" onblur="DeathLineCheck(0)">
+                        </div>
+                        <label name="LabelDate" class="col-sm-6 col-sm-6 control-label">当天0点</label>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 col-sm-2 control-label">持续时间</label>
@@ -66,13 +65,13 @@
                     <div class="form-group">
                         <label class="col-sm-2 col-sm-2 control-label">举办地点</label>
                         <div class="col-sm-6">
-                            <select class="form-control round-form" id="AddPlaceId" name="AddPlaceId"></select>
+                            <select class="form-control round-form" id="AddPlaceId" name="AddPlaceId" onchange="PeopleNumberCheck(0)"></select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 col-sm-2 control-label">预计人数</label>
                         <div class="col-sm-6">
-                            <select class="form-control round-form" id="AddExpectPeople" ,name="AddExpectPeople"></select>
+                            <select class="form-control round-form" id="AddExpectPeople" ,name="AddExpectPeople" onchange="PeopleNumberCheck(0)"></select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -108,6 +107,12 @@
                         </div>
                     </div>
                     <div class="form-group hidden">
+                        <label class="col-sm-2 col-sm-2 control-label">申请人学号</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control round-form" id="EditNum" name="EditNum">
+                        </div>
+                    </div>
+                    <div class="form-group hidden">
                         <label class="col-sm-2 col-sm-2 control-label">讲座Id</label>
                         <div class="col-sm-6">
                             <input type="text" class="form-control round-form" id="EditLectureId" name="EditLectureId">
@@ -128,18 +133,23 @@
                         <label class="col-sm-6 col-sm-6 control-label">最多250个字</label>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 col-sm-2 control-label">开始时间</label>
+                        <label class="col-sm-2 col-sm-2 control-label">开始日期</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control round-form" id="EditLectureTime" name="EditLectureTime">
+                            <input type="date" class="form-control round-form" id="EditLectureDate" name="EditLectureDate" onblur="LectureCheck(1)">>
                         </div>
-                        <label class="col-sm-6 col-sm-6 control-label">格式为2008/01/01 08:05</label>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 col-sm-2 control-label">报名截止</label>
+                        <label class="col-sm-2 col-sm-2 control-label">开始时间</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control round-form" id="EditDeathLine" name="EditDeathLine">
+                            <input type="time" class="form-control round-form" id="EditLectureTime" name="EditLectureTime">
                         </div>
-                        <label class="col-sm-6 col-sm-6 control-label">格式为2008/01/01 08:05</label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">报名截止日期</label>
+                        <div class="col-sm-6">
+                            <input type="date" class="form-control round-form" id="EditDeathLine" name="EditDeathLine" onblur="DeathLineCheck(1)">
+                        </div>
+                        <label name="LabelDate" class="col-sm-6 col-sm-6 control-label">当天0点</label>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 col-sm-2 control-label">持续时间</label>
@@ -157,13 +167,13 @@
                     <div class="form-group">
                         <label class="col-sm-2 col-sm-2 control-label">举办地点</label>
                         <div class="col-sm-6">
-                            <select class="form-control round-form" id="EditPlaceId" name="EditPlaceId"></select>
+                            <select class="form-control round-form" id="EditPlaceId" name="EditPlaceId" onchange="PeopleNumberCheck(1)"></select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 col-sm-2 control-label">预计人数</label>
                         <div class="col-sm-6">
-                            <select class="form-control round-form" id="EditExpectPeople" ,name="EditExpectPeople"></select>
+                            <select class="form-control round-form" id="EditExpectPeople" ,name="EditExpectPeople" onchange="PeopleNumberCheck(1)"></select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -286,7 +296,7 @@
     <!--表格加载-->
     <script>
         $("#LectureList").bootstrapTable({
-            url: "/Lecture/GetPersonalAllLecture?Num=@Num",// 获取表格数据的url
+            url: "/Lecture/GetPersonalAllLecture?Num=@Num&Role=@Role",// 获取表格数据的url
             method: 'post',//请求方式
             dataType: "json",
             dataField: "rows",
@@ -336,16 +346,21 @@
                 align: 'center',
                 valign: 'middle',
                 formatter: function (value, row, index) {
-                    return changeDateFormat(row.Lecture.LectureTime);
+                    return changeDateFormat(row.Lecture.LectureTime).replace('-','/').replace('-','/')+" "+changeTimeFormat(row.Lecture.LectureTime);
                 }
             }, {
                 title: '报名截止时间',
                 align: 'center',
                 valign: 'middle',
                 formatter: function (value, row, index) {
-                    return changeDateFormat(row.Lecture.DeathLine);
+                    return changeDateFormat(row.Lecture.DeathLine).replace('-','/').replace('-','/');
                 },
 
+            }, {
+                title: '实际人数',
+                field: 'Lecture.RealPeople',
+                align: 'center',
+                valign: 'middle',
             }, {
                 field: 'Place.PlaceName',
                 title: '举办地点',
@@ -358,7 +373,7 @@
                 valign: 'middle',
                 formatter: function (value, row, index) {
                     let state = "";
-                    if (value == 0) {
+                    if (value == 0 || value == 3) {
                         state = "待审核";
                     } else if (value == 1) {
                         state = "审核通过";
@@ -379,11 +394,12 @@
                          "<button onclick='GetQRCode(" + row.Lecture.QRCode +
                          ")' data-toggle='modal' data-target='#QR' class='btn btn-default btn-sm'>" +
                         "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>签到二维码</span></button>" +
-                         "<a href='/Resource/Index?LectureId="+row.Lecture.Id+"'><button class='btn btn-default btn-sm'>" +
+                         "<a href='/Resource/Index?LectureId="+row.Lecture.Id+"&Num=@Num&Role=@Role'><button class='btn btn-default btn-sm'>" +
                         "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>查看评论</span></button></a>"+
                          "<button onclick='SetExcelLectureId("+row.Lecture.Id+")' data-toggle='modal' data-target='#SelectExcel' class='btn btn-default btn-sm'>" +
-                        "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>导出Excel</span></button>"
-                    //+"<a href='/Statistic/SavePeopleExcel?LectureId="+row.Lecture.Id+"' target='_blank'>";
+                        "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>导出Excel</span></button>"+
+                        "<span Id='SpanLecture_"+row.Lecture.Id+"'</Span>";
+
                     return str;
                 }
             }],
@@ -444,13 +460,17 @@
     <script>
         //提交讲座信息信息
         $("#AddSubmit").click(function () {
+            if($("#AddSubject").val()=="" || $("#AddSummary").val()==""||
+                $("#AddLectureTime").val()=="" || $("#AddDeathLine").val()==""){
+                alert("请确保按照格式填入全部信息");
+            }
             $.ajax({
                 url: "/Lecture/AddSaveLecture",
                 data: {
                     AddNum: @Num,
                     AddSubject: $("#AddSubject").val(),
                     AddSummary: $("#AddSummary").val(),
-                    AddLectureTime: $("#AddLectureTime").val(),
+                    AddLectureTime: $("#AddLectureDate").val()+" "+$("#AddLectureTime").val(),
                     AddDeathLine: $("#AddDeathLine").val(),
                     AddSpan: $("#AddSpan").val(),
                     AddExpectPeople: $("#AddExpectPeople").val(),
@@ -473,11 +493,18 @@
     <script>
         //编辑讲座信息信息
         function Edit(row) {
+            var num = @Num;
+            if( row.Num != num){
+                alert("请通知申请人进行编辑");
+                return false;
+            }
+
             $("#EditSubject").val(row.Lecture.Subject);
             $("#EditApplyId").val(row.Id);
             $("#EditLectureId").val(row.LectureId);
             $("#EditSummary").val(row.Lecture.Summary);
-            $("#EditLectureTime").val(changeDateFormat(row.Lecture.LectureTime));
+            $("#EditLectureDate").val(changeDateFormat(row.Lecture.LectureTime));
+            $("#EditLectureTime").val(changeTimeFormat(row.Lecture.LectureTime));
             $("#EditDeathLine").val(changeDateFormat(row.Lecture.DeathLine));
             $.ajax({               //获取学校建筑信息
                 url: "/Architecture/GetAllArchitecture",
@@ -502,9 +529,9 @@
                             $("#EditPlaceId").empty();
                             for (var i = 0; i < place.length; i++) {
                                 if (place[i].Id == row.Place.Id) {
-                                    $("#EditPlaceId").append("<option value='" + place[i].Id + "' selected='selected'>" + place[i].PlaceName + "</option>")
+                                    $("#EditPlaceId").append("<option value='" + place[i].Id + "' selected='selected'>" + place[i].PlaceName + "(可容纳"+place[i].PeopleNum+"人)</option>")
                                 } else {
-                                    $("#EditPlaceId").append("<option value='" + place[i].Id + "'>" + place[i].PlaceName + "</option>")
+                                    $("#EditPlaceId").append("<option value='" + place[i].Id + "'>" + place[i].PlaceName + "(可容纳"+place[i].PeopleNum+"人)</option>")
                                 }
 
                             }
@@ -529,7 +556,7 @@
                     EditLectureId: $("#EditLectureId").val(),
                     EditSubject: $("#EditSubject").val(),
                     EditSummary: $("#EditSummary").val(),
-                    EditLectureTime: $("#EditLectureTime").val(),
+                    EditLectureTime: $("#EditLectureDate").val()+" "+$("#EditLectureTime").val(),
                     EditDeathLine: $("#EditDeathLine").val(),
                     EditSpan: $("#EditSpan").val(),
                     EditExpectPeople: $("#EditExpectPeople").val(),
@@ -577,7 +604,7 @@
     <!--ajax删除讲座信息信息并更新表格结束-->
     <!--下拉选择加载-->
     <script>
-        //获取建筑和教师信息
+        //获取建筑和地点信息
         function GetArchitecture() {
             $.ajax({               //获取学校建筑信息
                 url: "/Architecture/GetAllArchitecture",
@@ -593,7 +620,7 @@
                         }
 
                     }
-                    $.ajax({            //获取建筑内教室信息
+                    $.ajax({            //获取建筑内地点信息
                         url: "/Place/GetAllPlace",
                         data: { ArchitectureId: $("#AddArchitectureId").val() },
                         type: "POST",
@@ -602,11 +629,10 @@
                             $("#AddPlaceId").empty();
                             for (var i = 0; i < place.length; i++) {
                                 if (i == 0) {
-                                    $("#AddPlaceId").append("<option value='" + place[i].Id + "' selected='selected'>" + place[i].PlaceName + "</option>")
+                                    $("#AddPlaceId").append("<option value='" + place[i].Id + "' selected='selected'>" + place[i].PlaceName + "(可容纳"+place[i].PeopleNum+"人)</option>")
                                 } else {
-                                    $("#AddPlaceId").append("<option value='" + place[i].Id + "'>" + place[i].PlaceName + "</option>")
+                                    $("#AddPlaceId").append("<option value='" + place[i].Id + "'>" + place[i].PlaceName + "(可容纳"+place[i].PeopleNum+"人)</option>")
                                 }
-
                             }
                         }
                     })
@@ -628,11 +654,15 @@
                     $("#" + PlaceName).empty();
                     for (var i = 0; i < place.length; i++) {
                         if (i == 0) {
-                            $("#" + PlaceName).append("<option value='" + place[i].Id + "' selected='selected'>" + place[i].PlaceName + "</option>")
+                            $("#" + PlaceName).append("<option value='" + place[i].Id + "' selected='selected'>" + place[i].PlaceName + "(可容纳"+place[i].PeopleNum+"人)</option>")
                         } else {
-                            $("#" + PlaceName).append("<option value='" + place[i].Id + "'>" + place[i].PlaceName + "</option>")
+                            $("#" + PlaceName).append("<option value='" + place[i].Id + "'>" + place[i].PlaceName + "(可容纳"+place[i].PeopleNum+"人)</option>")
                         }
-
+                    }
+                    if(PlaceName.search("Add")!=-1){
+                        PeopleNumberCheck(0);
+                    }else if(PlaceName.search("Edit")!=-1){
+                        PeopleNumberCheck(1)
                     }
                 }
             })
@@ -645,13 +675,19 @@
         //日期转换
         function changeDateFormat(cellval) {
             if (cellval != null) {
-                var date = new Date(parseInt(cellval.replace("/Date(", "").replace(")/", ""), 10));
-                var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
-                var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-                var hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
-                var minute = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
-                return date.getFullYear() + "/" + month + "/" + currentDate + " "
-                + hours + ":" + minute;
+                let date = new Date(parseInt(cellval.replace("/Date(", "").replace(")/", ""), 10));
+                let month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+                let currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+                return date.getFullYear() + "-" + month + "-" + currentDate
+            }
+        }
+        //时间转换
+        function changeTimeFormat(cellval) {
+            if (cellval != null) {
+                let date = new Date(parseInt(cellval.replace("/Date(", "").replace(")/", ""), 10));
+                let hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+                let minute = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+                return hours + ":" + minute;
             }
         }
 
@@ -700,7 +736,7 @@
             $("#QRImg").attr("src","/QRCode/"+path+".jpg");
         }
 
-        //多选框控制
+        //Excel导出时多选框控制
         var count = 0;
         $("#AllExcel").click(function(){
             if(count==0){
@@ -731,6 +767,141 @@
         function SetExcelLectureId(LectureId){
             $("#LectureIdExcel").val(LectureId);
         }
+
+        //预计人数和房间容纳人数检测,0添加时检测，1编辑时检测
+        function PeopleNumberCheck(State){
+            var placePeopleId;
+            var exPectPeople;
+            if(State == 0){
+                placePeopleId = $("#AddPlaceId").val();
+                exPectPeople = $("#AddExpectPeople").val()
+            }else if(State==1){
+                placePeopleId = $("#EditPlaceId").val();
+                exPectPeople = $("#EditExpectPeople").val()
+            }
+            $.ajax({
+                url:"/Place/GetPlace?Id="+placePeopleId,
+                type: "POST",
+                dataType: "JSON",
+                success: function (result) {
+                    if(result.PeopleNum<exPectPeople){
+                        alert("当前地点人数小于期望人数");
+                    }
+                }
+            })
+        }
+
+        //开始时间检测
+        function LectureCheck(State) {
+            let LectureDate;
+            if(State == 0){
+                LectureDate = $("#AddLectureDate").val();
+            }else if(State == 1){
+                LectureDate = $("#AddLectureDate").val();
+            }
+
+            if(LectureDate==""){
+                return false;
+            }
+
+            let now = new Date()
+            let flag = 0;   //0初值，1年份相同，2月份相同
+
+            let strLectureDate = LectureDate.split("-");
+
+            if(strLectureDate[0] < now.getFullYear()){
+                alert("讲座开始日期应在当天之后");
+                return false;
+            }else if(strLectureDate[0] == now.getFullYear()){
+                flag = 1;
+            }
+
+            if(flag == 1){
+                if(strLectureDate[1] < (now.getMonth()+1)){
+                    alert("讲座开始日期应在当天之后");
+                    return false;
+                }else if(strLectureDate[1] == (now.getMonth()+1)){
+                    flag = 2;
+                }
+            }
+
+            if(flag == 2){
+                if(strLectureDate[2] <= now.getDate()){
+                    alert("讲座开始日期应在当天之后");
+                    return false;
+                }
+            }
+        }
+
+        //报名时间检测 0添加 1修改
+        function DeathLineCheck(State) {
+            let DeathDate;
+            let Lecture;
+            if(State == 0){
+                DeathDate = $("#AddDeathLine").val();
+                Lecture = $("#AddLectureDate").val();
+            }else if(State == 1){
+                DeathDate = $("#EditDeathLine").val();
+                Lecture = $("#EditLectureDate").val();
+            }
+
+            LectureCheck(State);
+            if(DeathDate == ""){
+                alert("请填写讲座报名截止日期");
+                return false;
+            }
+
+
+            let now = new Date();
+            let flag = 0;   //0初值，1年份相同，2月份相同
+
+            let strDeathDate = DeathDate.split("-");
+            let strLecture = Lecture.split("-");
+            //与当前时间对比
+            if(strDeathDate[0] < now.getFullYear()){
+                alert("报名截止时间应在当前日期之后至讲座开始当天中任意时间");
+                return false;
+            }else if(strDeathDate[0] == now.getFullYear()){
+                flag = 1;
+            }
+            if(flag == 1){
+                if(strDeathDate[1] < (now.getMonth()+1)){
+                    alert("报名截止时间应在当前日期之后至讲座开始当天中任意时间");
+                    return false;
+                }else if(strDeathDate[1] == (now.getMonth()+1)){
+                    flag = 2;
+                }
+            }
+            if(flag == 2){
+                if(strDeathDate[2] <= now.getDate()){
+                    alert("报名截止时间应在当前日期之后至讲座开始当天中任意时间");
+                    return false;
+                }
+            }
+            //与开始时间对比
+            flag = 0;
+            if(strDeathDate[0] > strLecture[0]){
+                alert("报名截止时间应在当前日期之后至讲座开始当天中任意时间");
+                return false;
+            }else if(strLecture[0] == now.getFullYear()){
+                flag = 1;
+            }
+            if(flag == 1){
+                if(strDeathDate[1] >  strLecture[1]){
+                    alert("报名截止时间应在当前日期之后至讲座开始当天中任意时间");
+                    return false;
+                }else if(strLecture[1] == strLecture[1]){
+                    flag = 2;
+                }
+            }
+            if(flag == 2){
+                if(strLecture[2] > strLecture[2]){
+                    alert("报名截止时间应在当前日期之后至讲座开始当天中任意时间");
+                    return false;
+                }
+            }
+        }
+
     </script>
     <!--自定义函数结束-->
 

@@ -171,10 +171,17 @@
                     if (row.IsCollege == 1) {
                         return str+"<a href='/MajorClass/Index?ArchitectureId=" + row.Id + "'>" +
                         "<button data-toggle='modal' class='btn btn-default btn-sm'>" +
-                    "<span class='glyphicon glyphicon-plus' aria-hidden='true'>查看专业班级</span></button></a>"
+                    "<span class='glyphicon glyphicon-plus' aria-hidden='true'>查看专业班级</span></button></a>"+
+                        "<a href='/Statistic/SaveArchitectureExcel?ArchitectureId="+row.Id+"' target='_blank'>" +
+                        "<button class='btn btn-default btn-sm'>" +
+                        "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>导出Excel</span></button>"
+                        "</a>"
                     } else if (row.IsCollege == 0) {
-                        return str + "<button data-toggle='modal' class='btn btn-default btn-sm' style='visibility:hidden'>" +
-                    "<span class='glyphicon glyphicon-plus' aria-hidden='true'>查看专业班级</span></button>";
+                        return str + "<a><button data-toggle='modal' class='btn btn-default btn-sm' style='visibility:hidden'>" +
+                    "<span class='glyphicon glyphicon-plus' aria-hidden='true'>查看专业班级</span></button></a>" +
+                         "<a href='/Statistic/SaveArchitectureExcel?ArchitectureId='"+row.Id+" target='_blank'>"
+                        "<button class='btn btn-default btn-sm' style='visibility:hidden'>" +
+                        "<span class='glyphicon glyphicon-pencil' aria-hidden='true'>导出讲座分数Excel</span></button></a>"
                     }
                 }
             }]

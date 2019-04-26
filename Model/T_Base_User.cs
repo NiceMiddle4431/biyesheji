@@ -54,18 +54,6 @@ namespace Model
 
 
         /// <summary>
-        /// 预定未到次数
-        /// </summary>
-        public int Number { get; set; }
-
-
-        /// <summary>
-        /// 是否管理员   0表示不是管理员   1表示是管理员
-        /// </summary>
-        public int IsAdmin { get; set; }
-
-
-        /// <summary>
         /// 所属专业班级信息
         /// </summary>
         public Model.T_Base_MajorClass MajorClass { get; set; }

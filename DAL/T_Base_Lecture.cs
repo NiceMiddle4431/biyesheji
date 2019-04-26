@@ -4,8 +4,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using QRCoder;
-using System.Drawing;
+using System.Net.Mail;
+using System.Net;
 
 namespace DAL
 {
@@ -51,8 +51,6 @@ namespace DAL
                 majorClass.MajorClassName = Convert.ToString(reader["MajorClassName"]);
                 user.MajorClass = majorClass;
                 user.PhoneNum = Convert.ToString(reader["PhoneNum"]);
-                user.Number = Convert.ToInt32(reader["Number"]);
-                user.IsAdmin = Convert.ToInt32(reader["IsAdmin"]);
                 apply.User = user;
 
                 Model.T_Base_Lecture lecture = new Model.T_Base_Lecture();
@@ -144,8 +142,6 @@ namespace DAL
                 majorClass.MajorClassName = Convert.ToString(reader["MajorClassName"]);
                 user.MajorClass = majorClass;
                 user.PhoneNum = Convert.ToString(reader["PhoneNum"]);
-                user.Number = Convert.ToInt32(reader["Number"]);
-                user.IsAdmin = Convert.ToInt32(reader["IsAdmin"]);
                 apply.User = user;
 
                 Model.T_Base_Lecture lecture = new Model.T_Base_Lecture();
@@ -205,25 +201,30 @@ namespace DAL
             try
             {
                 cmd.Transaction = config.getSqlConnection().BeginTransaction();
-                if (CheckDateTime(Lecture.LectureTime, Lecture.Span, AddPlaceId))
+                if (CheckDateTime(Lecture.Id,Lecture.LectureTime, Lecture.Span, AddPlaceId))
                 {
                     cmd.CommandText = "insert into T_Base_Lecture " +
                         "values('" + Lecture.Subject + "','" + Lecture.Summary + "',0,-1,'" + Lecture.DeathLine + "','" +
-                        Lecture.LectureTime + "'," + Lecture.Span + "," + Lecture.ExpectPeople + ",0," + Lecture.Score + ")";
-                    cmd.ExecuteNonQuery();
+                        Lecture.LectureTime + "'," + Lecture.Span + "," + Lecture.ExpectPeople + ",0," + Lecture.Score + ",0)";
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch
+                    {
+                        cmd.Transaction.Rollback();
+                        return -3;          //请确保按照格式填入全部信息
+                    }
                     cmd.CommandText = "select top 1 Id from T_Base_Lecture order by Id desc";
                     result = (int)cmd.ExecuteScalar();
                     cmd.CommandText = "insert into T_Base_Apply values('" +
-                        AddNum + "'," + result + "," + AddPlaceId + ",'" + DateTime.Now + "')";
+                        AddNum + "'," + result + "," + AddPlaceId + ",'" + DateTime.Now + "','')";
                     cmd.ExecuteNonQuery();
                     cmd.Transaction.Commit();
-                    QRCodeSave(""+result);      
-                    cmd.CommandText = "update T_Base_Lecture set QRCode = " + result + " where Id = " + result;
-                    cmd.ExecuteNonQuery();
                 }else
                 {
                     cmd.Transaction.Rollback();
-                    return -2;
+                    return -2;          //时间冲突
                 }
             }
             catch
@@ -232,22 +233,6 @@ namespace DAL
             }
             config.Close();
             return result;
-        }
-
-        /// <summary>
-        /// 二维码生成保存
-        /// </summary>
-        /// <param name="strQRCodeName"></param>
-        private void QRCodeSave(string strQRCodeName)
-        {
-            string strCode = "http://212.64.18.220:1234/Statistic/Index?LectureId="+strQRCodeName;
-            QRCodeGenerator qrGenerator = new QRCodeGenerator();
-            QRCodeData qrCodeData = qrGenerator.CreateQrCode(strCode, QRCodeGenerator.ECCLevel.Q);
-            QRCode qrCode = new QRCode(qrCodeData);
-
-            Bitmap qrCodeImage = qrCode.GetGraphic(5, Color.Black, Color.White, null, 15, 6, false);
-            string strFilePath = Environment.CurrentDirectory;
-            qrCodeImage.Save("D:\\VS2015解决方案\\毕业设计\\bysj\\Web\\QRCode\\" + strQRCodeName + ".jpg");
         }
 
         /// <summary>
@@ -263,13 +248,14 @@ namespace DAL
             try
             {
                 cmd.Transaction = config.getSqlConnection().BeginTransaction();
-                if (CheckDateTime(Lecture.LectureTime, Lecture.Span, EditPlaceId))
+                if (CheckDateTime(Lecture.Id,Lecture.LectureTime, Lecture.Span, EditPlaceId))
                 {
+                    //修改地点信息
                     cmd.CommandText = "update T_Base_Lecture set " +
                         "Subject = '" + Lecture.Subject + "', Summary = '" + Lecture.Summary +
-                        "',State = 0,DeathLine = '" + Lecture.DeathLine + "',LectureTime = '" + Lecture.LectureTime +
+                        "',State = 3,DeathLine = '" + Lecture.DeathLine + "',LectureTime = '" + Lecture.LectureTime +
                         "',Span = " + Lecture.Span + ",ExpectPeople = " + Lecture.ExpectPeople +
-                        ",Score = " + Lecture.Score+" where Id = "+Lecture.Id;
+                        ",Score = " + Lecture.Score+",AlertFlag = 1 where Id = "+Lecture.Id;
                     int result1 = cmd.ExecuteNonQuery();
                     cmd.CommandText = "update T_Base_Apply set " +
                         "PlaceId = " + EditPlaceId + "where Id = "+EditApplyId;
@@ -288,7 +274,7 @@ namespace DAL
                     cmd.Transaction.Rollback();
                     return -2;
                 }
-                   
+
             }
             catch
             {
@@ -320,11 +306,18 @@ namespace DAL
         /// </summary>
         /// <param name="Num"></param>
         /// <returns></returns>
-        public List<Model.T_Base_Apply> GetPersonalAllLecture(string Num)
+        public List<Model.T_Base_Apply> GetPersonalAllLecture(string Num,int Role)
         {
             SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
-            cmd.CommandText = "select * from V_User_Lecture_Place where Num = '"+Num+"' order by Id desc";
+            if (Role == 1 || Role == 2)
+            {
+                cmd.CommandText = "select * from V_User_Lecture_Place order by Id desc";
+            }
+            else if (Role == 3)
+            {
+                cmd.CommandText = "select * from V_User_Lecture_Place where Num = '" + Num + "' order by Id desc";
+            }
             SqlDataReader reader = cmd.ExecuteReader();
             List<Model.T_Base_Apply> list = new List<Model.T_Base_Apply>();
             while (reader.Read())
@@ -348,8 +341,6 @@ namespace DAL
                 majorClass.MajorClassName = Convert.ToString(reader["MajorClassName"]);
                 user.MajorClass = majorClass;
                 user.PhoneNum = Convert.ToString(reader["PhoneNum"]);
-                user.Number = Convert.ToInt32(reader["Number"]);
-                user.IsAdmin = Convert.ToInt32(reader["IsAdmin"]);
                 apply.User = user;
 
                 Model.T_Base_Lecture lecture = new Model.T_Base_Lecture();
@@ -391,14 +382,22 @@ namespace DAL
         /// <param name="Span"></param>
         /// <param name="PlaceId"></param>
         /// <returns></returns>
-        public Boolean CheckDateTime(DateTime StartTime,double Span,int PlaceId)
+        public Boolean CheckDateTime(int LectureId,DateTime StartTime,double Span,int PlaceId)
         {
             DateTime EndTime = StartTime.AddHours(Span);
 
             SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
-            cmd.CommandText = "select * from V_User_Lecture_Place where PlaceId = "+PlaceId
-                + " and '"+StartTime.ToString("yyyy/MM/dd")+ "' = FORMAT(LectureTime,'yyyy/MM/dd') and State = 1";
+            if (LectureId == 0)
+            {
+                cmd.CommandText = "select * from V_User_Lecture_Place where PlaceId = " + PlaceId
+                    + " and '" + StartTime.ToString("yyyy/MM/dd") + "' = FORMAT(LectureTime,'yyyy/MM/dd') and State = 1";
+            }else
+            {
+                cmd.CommandText = "select * from V_User_Lecture_Place where PlaceId = " + PlaceId
+                    + " and '" + StartTime.ToString("yyyy/MM/dd") 
+                    + "' = FORMAT(LectureTime,'yyyy/MM/dd') and State = 1 and LectureId <> " + LectureId;
+            }
             SqlDataReader reader = cmd.ExecuteReader();
             
             while (reader.Read())
@@ -447,25 +446,36 @@ namespace DAL
             int ExpectPeople = Convert.ToInt32(reader["ExpectPeople"]);
             int RealPeople = Convert.ToInt32(reader["RealPeople"]);
             reader.Close();
-            if (RealPeople <= ExpectPeople)
+            cmd.CommandText = "update T_Base_Lecture set RealPeoPle = " + (RealPeople + 1) +
+                " where Id = " + LectureId;
+            cmd.ExecuteNonQuery();
+            if (RealPeople < ExpectPeople)
             {
-                cmd.CommandText = "update T_Base_Lecture set RealPeoPle = " + (RealPeople + 1) +
-                    " where Id = " + LectureId;
-                cmd.ExecuteNonQuery();
                 cmd.CommandText = "insert into T_Base_Order values('" +
-                    Num + "'," + LectureId + ",'" + DateTime.Now + "',1)";      //报名成功
+                    Num + "'," + LectureId + ",'" + DateTime.Now + "',1,0)";      //报名成功
                 result = cmd.ExecuteNonQuery();
 
             }
             else
             {
-                cmd.CommandText = "update T_Base_Lecture set RealPeoPle = " + (RealPeople + 1) +
-                    " where Id = " + LectureId;
-                cmd.ExecuteNonQuery();
                 cmd.CommandText = "insert into T_Base_Order values('" +
-                    Num + "'," + LectureId + ",'" + DateTime.Now + "',2)";      //待处理
+                    Num + "'," + LectureId + ",'" + DateTime.Now + "',2,0)";      //待处理
                 result = cmd.ExecuteNonQuery();
                 result = 2;
+
+                //cmd.CommandText = "";
+
+                //MailMessage mailMessage = new MailMessage();
+                //mailMessage.From = new MailAddress("15211220142@stu.wzu.edu.cn");
+                //mailMessage.To.Add(new MailAddress("15211220142@stu.wzu.edu.cn"));
+                //mailMessage.Subject = "报名" + subject + "成功";
+                //mailMessage.Body = "因前面预约人员取消报名，报名预约成功";
+                //SmtpClient client = new SmtpClient();
+                //client.Host = "smtp.wzu.edu.cn";
+                //client.EnableSsl = false;
+                //client.UseDefaultCredentials = false;
+                //client.Credentials = new NetworkCredential("15211220142@stu.wzu.edu.cn", "b5ZF36PPMMmCF883");
+                //client.Send(mailMessage);
             }
             cmd.Transaction.Commit();
             config.Close();
@@ -478,7 +488,7 @@ namespace DAL
         /// <param name="Num"></param>
         /// <param name="LectureId"></param>
         /// <returns></returns>
-        ///  0报名 1以报名 2时间截止 
+        ///  0报名 1以报名 2人满未处理 3时间截止 
         public int OrderSelect(string Num, int LectureId)
         {
             SqlConfig config = new SqlConfig();
@@ -492,11 +502,23 @@ namespace DAL
             if (DeathLine < DateTime.Now)
             {
                 config.Close();
-                return 2;
+                return 3;           //报名已截止
             }
             cmd.CommandText = "select count(1) from T_Base_Order where Num = " + Num +
                 " and LectureId = " + LectureId;
             result = (int)cmd.ExecuteScalar();
+            if (result == 1)
+            {
+                cmd.CommandText = "select Result from T_Base_Order where Num = " + Num +
+                " and LectureId = " + LectureId;
+                result = (int)cmd.ExecuteScalar();
+                if (result == 2)
+                {
+                    return 2;               //报名成功
+                }else if(result == 3){
+                    return 1;               //等后续通知
+                }
+            }
             config.Close();
             return result;
         }
@@ -512,21 +534,43 @@ namespace DAL
             SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
             int result = -1;
-            result = OrderSelect(Num, LectureId);
+            result = OrderSelect(Num, LectureId);       //查询是否有报名
             if(result == 1)
             {
                 cmd.Transaction = config.getSqlConnection().BeginTransaction();
+                cmd.CommandText = "select Result from T_Base_Order where Num='" + Num + "' and LectureId=" + LectureId;
+                int orderResult = (int)cmd.ExecuteScalar();     //报名者的状态
                 cmd.CommandText = "delete from T_Base_Order where Num = "+Num+" and LectureId = "+LectureId;
                 cmd.ExecuteNonQuery();
-                cmd.CommandText = "select RealPeople from T_Base_Lecture where Id = "+LectureId;
+                cmd.CommandText = "select ExpectPeople,RealPeople,Subject from T_Base_Lecture where Id = " + LectureId;
                 SqlDataReader reader = cmd.ExecuteReader();
                 reader.Read();
+                int ExpectPeople = Convert.ToInt32(reader["ExpectPeople"]);
                 int RealPeople = Convert.ToInt32(reader["RealPeople"]);
+                string subject = Convert.ToString(reader["Subject"]);
                 reader.Close();
                 cmd.CommandText = "update T_Base_Lecture set RealPeople = "+(RealPeople-1)+" where Id = "+LectureId;
-                result = cmd.ExecuteNonQuery();
-                if(result == 1)
+                result = cmd.ExecuteNonQuery();     //修改讲座当前人数
+                if(result == 1)                     //取消者报名的状态为报名成功
                 {
+                    if (RealPeople>= ExpectPeople && orderResult==1)
+                    {
+                        cmd.CommandText = "update T_Base_Order set Result=3,MsgFlag=0 where LectureId=" + LectureId +
+                            " and Result=2 and Num=(select top(1) Num from T_Base_Order where LectureId="+LectureId+" and Result=2 order by Id asc)";
+                        cmd.ExecuteNonQuery();
+
+                        MailMessage mailMessage = new MailMessage();
+                        mailMessage.From = new MailAddress("15211220142@stu.wzu.edu.cn");
+                        mailMessage.To.Add(new MailAddress("15211220142@stu.wzu.edu.cn"));
+                        mailMessage.Subject = "报名" + subject + "成功";
+                        mailMessage.Body = "因前面预约人员取消报名，报名预约成功";
+                        SmtpClient client = new SmtpClient();
+                        client.Host = "smtp.wzu.edu.cn";
+                        client.EnableSsl = false;
+                        client.UseDefaultCredentials = false;
+                        client.Credentials = new NetworkCredential("15211220142@stu.wzu.edu.cn", "b5ZF36PPMMmCF883");
+                        client.Send(mailMessage);
+                    }
                     cmd.Transaction.Commit();
                     config.Close();
                     return 1;           //取消成功

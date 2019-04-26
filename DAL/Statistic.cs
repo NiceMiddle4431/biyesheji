@@ -39,9 +39,17 @@ namespace DAL
                 {
                     cmd.CommandText = "insert into T_Base_Statistic values('" +
                         Num + "'," + LectureId + ",'" + DateTime.Now + "','" + DBNull.Value + "','" + Ip + "')";
-                    result = cmd.ExecuteNonQuery();
-                    config.Close();
-                    return 1;               //签到成功
+                    try
+                    {
+                        result = cmd.ExecuteNonQuery();
+                        config.Close();
+                        return 1;               //签到成功
+                    }
+                    catch
+                    {
+                        return -4;               //学号输入不正确或不存在该学号
+                    }
+                  
                 } else
                 {
                     config.Close();
@@ -132,7 +140,7 @@ namespace DAL
             double result = 0;
             SqlConfig config = new DAL.SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
-            cmd.CommandText = "select * from V_AttendanceExcel where Num = '" + Num + "'";
+            cmd.CommandText = "select * from V_Excel where Num = '" + Num + "'";
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -162,7 +170,7 @@ namespace DAL
             List<Model.T_Base_Statistic> list = new List<Model.T_Base_Statistic>();
             SqlConfig config = new SqlConfig();
             SqlCommand cmd = config.getSqlCommand();
-            cmd.CommandText = "select * from V_AttendanceExcel where LectureId = " + LectureId;
+            cmd.CommandText = "select * from V_Excel where LectureId = " + LectureId;
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -193,6 +201,12 @@ namespace DAL
         }
 
 
+        /// <summary>
+        /// 查询是否有预报名
+        /// </summary>
+        /// <param name="Num"></param>
+        /// <param name="LectureId"></param>
+        /// <returns></returns>
         public int SelectOrder(string Num,int LectureId)
         {
             SqlConfig config = new SqlConfig();

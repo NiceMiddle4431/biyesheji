@@ -16,8 +16,10 @@ namespace Web.Controllers
         /// 主界面
         /// </summary>
         /// <returns></returns>
-        public ActionResult Index()
+        public ActionResult Index(string Num,int Role)
         {
+            ViewBag.Num = Num;
+            ViewBag.Role = Role;
             return View();
         }
 
@@ -62,15 +64,16 @@ namespace Web.Controllers
         /// <param name="AddIsAdmin"></param>
         /// <returns></returns>
         public JsonResult AddSaveUser(string AddNum,string AddName,int AddSex,
-            int AddMajorClassId,string AddPhoneNum,int AddIsAdmin)
+            int AddMajorClassId,string AddPhoneNum,int AddRole= 3)
         {
             Model.T_Base_User user = new Model.T_Base_User();
+            user.Id = 0;
             user.Num = AddNum;
             user.Name = AddName;
             user.Sex = AddSex;
             user.MajorClassId = AddMajorClassId;
             user.PhoneNum = AddPhoneNum;
-            user.IsAdmin = AddIsAdmin;
+            user.Role = AddRole;
             int result = new BLL.T_Base_User().AddSaveUser(user);
             if (result == 1)
             {
@@ -122,7 +125,7 @@ namespace Web.Controllers
         /// <param name="EditIsAdmin0"></param>
         /// <returns></returns>
         public JsonResult EditSaveUser(int EditId,string EditNum,string EditName,int EditSex,
-            int EditMajorClassId,string EditPhoneNum,int EditIsAdmin)
+            int EditMajorClassId,string EditPhoneNum,string EditPassWord,int EditRole)
         {
             Model.T_Base_User user = new Model.T_Base_User();
             user.Id = EditId;
@@ -131,8 +134,8 @@ namespace Web.Controllers
             user.Sex = EditSex;
             user.MajorClassId = EditMajorClassId;
             user.PhoneNum = EditPhoneNum;
-            user.IsAdmin = EditIsAdmin;
-
+            user.Role = EditRole;
+            user.PassWord = EditPassWord;
             int result = new BLL.T_Base_User().EditSaveUser(user);
             if (result == 1)
             {
